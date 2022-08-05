@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+		</style>
+	</head>
+	<body>
+        <!-- Remove this when import maps will be widely supported -->
+		<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+
+        <!-- Needed to make the import "three" work-->
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../node_modules/three/build/three.module.js"
+				}
+			}
+		</script>
+
+		<script type="module">
+        import * as THREE from '../node_modules/three/build/three.module.js';
+        import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls.js';
+		import * as CANNON from '../node_modules/cannon-es/dist/cannon-es.js';
+
+		var playerState = "Idle";
+		var cameraTarget = new THREE.Vector3();
+
+		//CANNON SETUP
+		const world = new CANNON.World({
+			gravity: new CANNON.Vec3(0, -9.81, 0)
+		});
+
+		const scene = new THREE.Scene();
+		const camera = new THREE.PerspectiveCamera(
+			45,
+			window.innerWidth / window.innerHeight,
+			0.1,
+			1000
+		);
+		camera.position.set(0, 20, -30);
+
+		const renderer = new THREE.WebGLRenderer();
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		document.body.appendChild( renderer.domElement );
+
+		const orbit = new OrbitControls(camera, renderer.domElement);
+
+		orbit.update();
+
+		//CUBE (THREE)
+		const cubeGeometry = new THREE.BoxGeometry( 2, 2, 2 );
+		const cubeMaterial = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe: true} );
+		const cubeMesh = new THREE.Mesh( cubeGeometry, cubeMaterial );
+		scene.add( cubeMesh );
+
+		//CUBE (CANNON)
+		const cubePhysMat = new CANNON.Material();
+
+		const cubeBody = new CANNON.Body({
+			mass: 10,
+			shape: new CANNON.Box(new CANNON.Vec3(1, 1, 1)),
+			position: new CANNON.Vec3(1, 5, 0),
+			material: cubePhysMat,
+			linearDamping: 0.5,
+ 		    angularDamping: 1,
+		});
+		world.addBody(cubeBody);
+
+		cubeBody.angularVelocity.set(0, 10, 0);
+
+		//GROUND (THREE)
+		const groundGeo = new THREE.PlaneGeometry(30, 30);
+		const groundMat = new THREE.MeshBasicMaterial({ 
+			color: 0xffffff,
+			side: THREE.DoubleSide,
+			wireframe: true 
+		});
+		const groundMesh = new THREE.Mesh(groundGeo, groundMat);
+		scene.add(groundMesh);
+
+		//GROUND (CANNON)
+		const groundPhysMat = new CANNON.Material();
+
+
+		const groundBody = new CANNON.Body({
+			shape: new CANNON.Box(new CANNON.Vec3(15, 15, 0.1)),
+			type: CANNON.Body.STATIC,
+			material: groundPhysMat
+		});
+		world.addBody(groundBody);
+		groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+
+		//CONTACT MATERIALS (CANNON)
+		const groundBoxContactMat = new CANNON.ContactMaterial(
+			groundPhysMat,
+			cubePhysMat,
+			{contactEquationRelaxation : 1000},
+			{restitution : 0}
+		);
+
+		world.addContactMaterial(groundBoxContactMat);
+
+		//EVENT LISTENERS
+		window.addEventListener('resize', function() {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+		});
+
+		var pressed = {"SHIFT" : false, "W" : false, "A" : false, "S" : false, "D" : false};
+		
+		document.addEventListener('keydown',(event) => {
+			if(event.key.toLowerCase() == " ") pressed["SPACE"] = true;
+			if(event.key.toLowerCase() == "shift") pressed["SHIFT"] = true;
+			if(event.key.toLowerCase() == "w") pressed["W"] = true;
+			if(event.key.toLowerCase() == "a") pressed["A"] = true;
+			if(event.key.toLowerCase() == "s") pressed["S"] = true;
+			if(event.key.toLowerCase() == "d") pressed["D"] = true;
+		},false);
+		
+		document.addEventListener('keyup',(event) => {
+			if(event.key.toLowerCase() == " ") pressed["SPACE"] = false;
+			if(event.key.toLowerCase() == "shift") pressed["SHIFT"] = false;
+			if(event.key.toLowerCase() == "w") pressed["W"] = false;
+			if(event.key.toLowerCase() == "a") pressed["A"] = false;
+			if(event.key.toLowerCase() == "s") pressed["S"] = false;
+			if(event.key.toLowerCase() == "d") pressed["D"] = false;
+		},false);
+
+		cubeBody.addEventListener( "collide", function (e) {
+			//Since e.contact.bi and e.contact.bj are the bodies colliding we would like to discover which is the player, in order to know if he is colliding with a floor or something else looking at the collision normal of the other object
+			//the normal of collision with respect to the body e.contact.bi is contained inside e.contact.ni
+			
+			//if e.contact.ni is the collision normal of the player then we negate it to obtain the collision normal of the other object
+			if ( e.contact.bi.id == cubeBody.id ) {
+			e.contact.ni.negate( e.contact.ni );
+			}
+
+			// If the dot product between the vertical positive axis and the contact normal is between 0 and 1 then we know that the player is hitting a floor (or a surface to which he could stand)
+			if ( e.contact.ni.dot( new CANNON.Vec3( 0, 1, 0 ) ) > 0.5) playerState = "Idle";
+		});
+
+		const time = new THREE.Clock();
+		function animate() {
+			world.step(1/60);
+			
+			playerAnimate(time.getDelta());
+
+			groundMesh.position.copy(groundBody.position);
+			groundMesh.quaternion.copy(groundBody.quaternion);
+
+			cubeMesh.position.copy(cubeBody.position);
+			//CubeMesh copies the cubeBody rotation because threejs offers the rotateTowards function to rotate gradually during movement
+			cubeBody.quaternion.copy(cubeMesh.quaternion);
+
+
+			renderer.render( scene, camera );
+		};
+
+		//Functions that applies the updates to the player through each frame (animation, movement, etc.)
+		function playerAnimate(delta){
+
+			if(pressed["SPACE"] && playerState!="Jump"){
+				playerState = "Jump";
+				cubeBody.velocity.y = 10;
+			}
+			else if(pressed["SHIFT"] && playerState!="Jump")
+				playerState = "Run";
+			else if(playerState!="Jump")
+				playerState = "Walk";
+			
+			//Degree of desired direction
+			var relDir = 0;
+
+			if(pressed["W"] && pressed["A"]){
+				relDir = Math.PI/4;
+			}
+			else if(pressed["W"] && pressed["D"]){
+				relDir = -Math.PI/4;
+			}
+			else if(pressed["S"] && pressed["A"]){
+				relDir = 3*Math.PI/4;
+			}
+			else if(pressed["S"] && pressed["D"]){
+				relDir = -3*Math.PI/4;
+			}
+			else if(pressed["W"]){
+				relDir = 0;
+			}
+			else if(pressed["A"]){
+				relDir = Math.PI/2;
+			}
+			else if(pressed["S"]){
+				relDir = Math.PI;
+			}
+			else if(pressed["D"]){
+				relDir = -Math.PI/2;
+			}
+			else {
+				playerState = "Idle";
+			}
+
+			if(playerState == "Run" || playerState == "Walk" || playerState =="Jump"){
+				//Camera angle with respect to player (obtained through x and z displacements)
+				var cameraAngle = Math.atan2(
+					(camera.position.x - cubeBody.position.x),
+					(camera.position.z - cubeBody.position.z));
+
+				//Desired final direction, that has to be reached slowly (using rotateTowards)
+				var desQuat = (new THREE.Quaternion()).setFromAxisAngle(new THREE.Vector3(0,1,0), cameraAngle + relDir);
+				cubeMesh.quaternion.rotateTowards(desQuat, 0.2);
+
+				//Obtain the world direction of the camera
+				var cameraDirection= new THREE.Vector3();
+				camera.getWorldDirection(cameraDirection);
+
+				//Vertical direction not useful for movement, player can't fly
+				cameraDirection.y = 0;
+				cameraDirection.normalize();
+				cameraDirection.applyAxisAngle(new THREE.Vector3(0,1,0), relDir);
+				var moveX = cameraDirection.x * (playerState == 'Run' ? 10 : 1.0) * delta;
+				var moveZ = cameraDirection.z * (playerState == 'Run' ? 10 : 1.0) * delta;
+				cubeBody.position.x += moveX;
+				cubeBody.position.z += moveZ;
+				camera.position.x += moveX;
+				camera.position.z += moveZ;
+
+				// update camera target
+				cameraTarget.x = cubeBody.position.x;
+				cameraTarget.y = cubeBody.position.y + 1;
+				cameraTarget.z = cubeBody.position.z;
+				orbit.target = cameraTarget;
+        }
+
+
+		};
+
+		renderer.setAnimationLoop(animate);
+		</script>
+	</body>
+</html>
