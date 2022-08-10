@@ -1,0 +1,11 @@
+Model Information:
+* title:	Mixamo Character - Erika Archer + Bow - Animated
+* source:	https://sketchfab.com/3d-models/mixamo-character-erika-archer-bow-animated-4679c955f7694d238ec37b0c93c25258
+* author:	tonyflanagan (https://sketchfab.com/tonyflanagan)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Mixamo Character - Erika Archer + Bow - Animated" (https://sketchfab.com/3d-models/mixamo-character-erika-archer-bow-animated-4679c955f7694d238ec37b0c93c25258) by tonyflanagan (https://sketchfab.com/tonyflanagan) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

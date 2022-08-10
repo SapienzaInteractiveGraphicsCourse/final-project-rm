@@ -24,45 +24,115 @@
         import * as THREE from '../node_modules/three/build/three.module.js';
         import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls.js';
 		import * as CANNON from '../node_modules/cannon-es/dist/cannon-es.js';
+		import {GLTFLoader} from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js';
+		import * as TWEEN from '../node_modules/tween.js/dist/tween.esm.js'
 
 		var playerState = "Idle";
 		var cameraTarget = new THREE.Vector3();
+		var mixer;
+		var archerModel, archerModelParent;
+		var archerStructure = {};
 
-		//CANNON SETUP
+		//CANNON AND THREE SETUP
 		const world = new CANNON.World({
 			gravity: new CANNON.Vec3(0, -9.81, 0)
 		});
 
 		const scene = new THREE.Scene();
+		scene.background = new THREE.Color( 0xffeeee );
 		const camera = new THREE.PerspectiveCamera(
 			45,
 			window.innerWidth / window.innerHeight,
 			0.1,
 			1000
 		);
-		camera.position.set(0, 20, -30);
+		camera.position.set(0, 40, -30);
 
 		const renderer = new THREE.WebGLRenderer();
 		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.shadowMap.enabled = true;
 		document.body.appendChild( renderer.domElement );
 
 		const orbit = new OrbitControls(camera, renderer.domElement);
 
 		orbit.update();
+		
+		//LIGHT SETUP
 
+		const ambLight = new THREE.AmbientLight(0xFFFFFF, 0.8);
+		scene.add(ambLight);
+
+		const dirLight = new THREE.DirectionalLight(0xFFFFFF, 10);
+		dirLight.position.set(40, 40, 0);
+		dirLight.target.position.set(-2, 0, 0);
+		dirLight.castShadow = true; 
+		renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+		dirLight.shadow.camera.left = - 15;
+		dirLight.shadow.camera.right = 15;
+		dirLight.shadow.camera.top = 15;
+		dirLight.shadow.camera.bottom = - 15;
+		dirLight.shadow.camera.far = 35000;
+		dirLight.shadow.bias = - 0;
+		scene.add(dirLight);
+		scene.add(dirLight.target);
+
+		const helper = new THREE.CameraHelper( dirLight.shadow.camera );
+		scene.add( helper )
 		//CUBE (THREE)
-		const cubeGeometry = new THREE.BoxGeometry( 2, 2, 2 );
-		const cubeMaterial = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe: true} );
+		const cubeGeometry = new THREE.BoxGeometry( 1.4, 3.0, 2.0 );
+		const cubeMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} );
 		const cubeMesh = new THREE.Mesh( cubeGeometry, cubeMaterial );
-		scene.add( cubeMesh );
+		//scene.add( cubeMesh );
+		cubeMesh.castShadow=true;
+		//cubeMesh.receiveShadow=true;
+		// var cubeMesh;
+
+		const gltfLoader = new GLTFLoader();
+		const url = 'gltf/archer/scene.gltf';
+		gltfLoader.load(url, (gltf) => {
+			archerModel = gltf.scene.getObjectByName("Sketchfab_Scene");
+
+			archerModel.scale.setScalar( 1.7 );
+			//Creating a parent to move the archerModel through its center and rotate it in the correct direction
+			archerModelParent = new THREE.Object3D();
+			archerModel.getWorldPosition(archerModelParent.position);
+			archerModel.position.set(0, -cubeMesh.geometry.parameters.height/2, 0);
+			archerModel.rotation.set(...[0,Math.PI,0]);
+			archerModelParent.add(archerModel);
+			scene.add(archerModelParent);
+			
+			gltf.scene.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.castShadow = true;
+					node.receiveShadow=true;
+			}
+			} );
+
+			//Setting only the basic animation, after we're going to animate it ourserlves
+			const animations = gltf.animations;
+			console.log(animations)
+			mixer = new THREE.AnimationMixer(archerModel);
+
+			mixer.clipAction(animations[2]).play();
+			if (mixer) mixer.update();
+			
+			//Set the components useful for creating animations with TweenJS
+			populateArcherStructure();
+
+
+			archerStructure["rightUpperArm"].rotation.z += Math.PI/2;
+			archerStructure["leftUpperArm"].rotation.z -= Math.PI/2;
+			console.log(dumpObject(archerModel).join('\n'));
+
+		});
 
 		//CUBE (CANNON)
 		const cubePhysMat = new CANNON.Material();
 
 		const cubeBody = new CANNON.Body({
 			mass: 10,
-			shape: new CANNON.Box(new CANNON.Vec3(1, 1, 1)),
-			position: new CANNON.Vec3(1, 5, 0),
+			shape: new CANNON.Box(new CANNON.Vec3(0.7, 1.5, 1.0)),
+			position: new CANNON.Vec3(0, 5, 0),
 			material: cubePhysMat,
 			linearDamping: 0.5,
  		    angularDamping: 1,
@@ -72,21 +142,23 @@
 		cubeBody.angularVelocity.set(0, 10, 0);
 
 		//GROUND (THREE)
-		const groundGeo = new THREE.PlaneGeometry(30, 30);
-		const groundMat = new THREE.MeshBasicMaterial({ 
+		const groundGeo = new THREE.BoxGeometry( 30, 30, 2.0 );
+		const groundMat = new THREE.MeshPhongMaterial({ 
 			color: 0xffffff,
 			side: THREE.DoubleSide,
-			wireframe: true 
-		});
+			wireframe: false
+			});
 		const groundMesh = new THREE.Mesh(groundGeo, groundMat);
 		scene.add(groundMesh);
+		groundMesh.receiveShadow=true;
+		groundMesh.castshadow=true;
 
 		//GROUND (CANNON)
 		const groundPhysMat = new CANNON.Material();
 
 
 		const groundBody = new CANNON.Body({
-			shape: new CANNON.Box(new CANNON.Vec3(15, 15, 0.1)),
+			shape: new CANNON.Box(new CANNON.Vec3(15, 15, 1)),
 			type: CANNON.Body.STATIC,
 			material: groundPhysMat
 		});
@@ -146,18 +218,46 @@
 		const time = new THREE.Clock();
 		function animate() {
 			world.step(1/60);
+			TWEEN.update();
 			
 			playerAnimate(time.getDelta());
 
 			groundMesh.position.copy(groundBody.position);
 			groundMesh.quaternion.copy(groundBody.quaternion);
 
-			cubeMesh.position.copy(cubeBody.position);
-			//CubeMesh copies the cubeBody rotation because threejs offers the rotateTowards function to rotate gradually during movement
-			cubeBody.quaternion.copy(cubeMesh.quaternion);
+			if(cubeMesh){
+				cubeMesh.position.copy(cubeBody.position);
+				//CubeMesh copies the cubeBody rotation because threejs offers the rotateTowards function to rotate gradually during movement
+				cubeBody.quaternion.copy(cubeMesh.quaternion);
+			}
+
+			if(cubeBody && archerModelParent){
+				archerModelParent.position.copy(cubeBody.position);
+				archerModelParent.quaternion.copy(cubeBody.quaternion);
+			}
+
+			//if (mixer) mixer.update(time.getDelta());
 
 
 			renderer.render( scene, camera );
+		};
+
+		//Set elements of archer useful for animations
+		function populateArcherStructure(){
+			archerStructure["rightUpperArm"] = archerModel.getObjectByName('RightArm_51');
+			archerStructure["rightLowerArm"] = archerModel.getObjectByName('RightForeArm_50');
+			archerStructure["rightHand"] = archerModel.getObjectByName('RightHand_49');
+			archerStructure["leftUpperArm"] = archerModel.getObjectByName('LeftArm_27');
+			archerStructure["leftLowerArm"] = archerModel.getObjectByName('LeftForeArm_26');
+			archerStructure["leftHand"] = archerModel.getObjectByName('LeftHand_25');
+			archerStructure["rightUpperLeg"] = archerModel.getObjectByName('RightUpLeg_65');
+			archerStructure["rightLowerLeg"] = archerModel.getObjectByName('RightLeg_64');
+			archerStructure["rightFoot"] = archerModel.getObjectByName('RightFoot_63');
+			archerStructure["leftUpperLeg"] = archerModel.getObjectByName('LeftUpLeg_60');
+			archerStructure["leftLowerLeg"] = archerModel.getObjectByName('LeftLeg_59');
+			archerStructure["leftFoot"] = archerModel.getObjectByName('LeftFoot_58');
+			archerStructure["neck"] = archerModel.getObjectByName('Neck_4');
+			archerStructure["head"] = archerModel.getObjectByName('Head_3');
 		};
 
 		//Functions that applies the updates to the player through each frame (animation, movement, etc.)
@@ -239,6 +339,18 @@
 		};
 
 		renderer.setAnimationLoop(animate);
+
+		function dumpObject(obj, lines = [], isLast = true, prefix = '') {
+  const localPrefix = isLast ? '└─' : '├─';
+  lines.push(`${prefix}${prefix ? localPrefix : ''}${obj.name || '*no-name*'} [${obj.type}]`);
+  const newPrefix = prefix + (isLast ? '  ' : '│ ');
+  const lastNdx = obj.children.length - 1;
+  obj.children.forEach((child, ndx) => {
+    const isLast = ndx === lastNdx;
+    dumpObject(child, lines, isLast, newPrefix);
+  });
+  return lines;
+}
 		</script>
 	</body>
 </html>

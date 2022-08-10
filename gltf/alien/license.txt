@@ -1,0 +1,11 @@
+Model Information:
+* title:	Alien - Red Trooper
+* source:	https://sketchfab.com/3d-models/alien-red-trooper-fb1ccfc18e3a446683bdd029c36bb000
+* author:	Comitre (https://sketchfab.com/Comitre)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Alien - Red Trooper" (https://sketchfab.com/3d-models/alien-red-trooper-fb1ccfc18e3a446683bdd029c36bb000) by Comitre (https://sketchfab.com/Comitre) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
