@@ -30,15 +30,16 @@
 		import {GLTFLoader} from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js';
 		import { TWEEN } from '../node_modules/three/examples/jsm/libs/tween.module.min.js'
 
-		var relDir=0;
+		var relDir=Math.PI;
 		var playerState = "Idle";
 		var cameraTarget = new THREE.Vector3();
 		var mixer;
 		var archerModel, archerModelParent;
 		var arrowModel;
 		var archerStructure = {};
+		var canShoot=true;
 		var lastExecutedAnimation = "Idle";
-		var idle, runA, runB, jumpA, jumpB, walkA, walkB;
+		var idle, runA, runB, jumpA, jumpB, walkA, walkB, shootA, shootB;
 		var arrows =[];
 
 		//CANNON AND THREE SETUP
@@ -187,7 +188,7 @@
 			console.log(dumpObject(archerModel).join('\n'));
 			
 			//TWEEN ANIMATIONS
-			var groupPlayer = new TWEEN.Group();
+			//var groupPlayer = new TWEEN.Group();
 			var startRotations ={"rightShoulderRx": archerStructure["rightShoulder"].rotation.x,"rightShoulderRy": archerStructure["rightShoulder"].rotation.y,"rightShoulderRz": archerStructure["rightShoulder"].rotation.z, 
 								"rightUpperArmRx": archerStructure["rightUpperArm"].rotation.x,"rightUpperArmRy": archerStructure["rightUpperArm"].rotation.y,"rightUpperArmRz": archerStructure["rightUpperArm"].rotation.z, 
 								"rightLowerArmRx": archerStructure["rightLowerArm"].rotation.x,"rightLowerArmRy": archerStructure["rightLowerArm"].rotation.y,"rightLowerArmRz": archerStructure["rightLowerArm"].rotation.z, 
@@ -665,12 +666,134 @@
 														"leftHandThumb3Ry": 0.7854, 
 														"leftHandThumb4Ry": 0.7854}, 400).onComplete(() => runA.start());
 
+			shootA = new TWEEN.Tween(startRotations).to({"rightShoulderRx": -Math.PI/4,"rightShoulderRy": -0.0000,"rightShoulderRz": -0.0000, 
+														"rightUpperArmRx": 0,"rightUpperArmRy": 0.0000,"rightUpperArmRz": 1.3659, 
+														"rightLowerArmRx": 0,"rightLowerArmRy": Math.PI/4,"rightLowerArmRz": 0.0000, 
+														"rightHandRx": 0.0005,"rightHandRy": 0.0000,"rightHandRz": -0.0000, 
+														"leftShoulderRx": Math.PI/4,"leftShoulderRy": -0.0000,"leftShoulderRz": 0.0000, 
+														"leftUpperArmRx": 0,"leftUpperArmRy": -0.0000,"leftUpperArmRz": -1.3659, 
+														"leftLowerArmRx": 0,"leftLowerArmRy": -Math.PI/4,"leftLowerArmRz": -0.0000, 
+														"leftHandRx": 0.0005,"leftHandRy": -0.0000,"leftHandRz": 0.0000, 
+														"rightUpperLegRx": -Math.PI/3,"rightUpperLegRy": 0.0000,"rightUpperLegRz": -0.0001, 
+														"rightLowerLegRx": Math.PI/9,"rightLowerLegRy": 0.0000,"rightLowerLegRz": -0.0000, 
+														"rightFootRx": -0.0010,"rightFootRy": -0.0000,"rightFootRz": 0.0001, 
+														"leftUpperLegRx": Math.PI/3,"leftUpperLegRy": 0.0000,"leftUpperLegRz": -0.0001, 
+														"leftLowerLegRx": Math.PI/9,"leftLowerLegRy": 0.0000,"leftLowerLegRz": 0.0000, 
+														"leftFootRx": -0.0010,"leftFootRy": -0.0000,"leftFootRz": 0.0001, 
+														"neckRx": -0.0000,"neckRy": -0.0000,"neckRz": -0.0000, 
+														"headRx": 0.0000,"headRy": 0.0000,"headRz": -0.0000,
+														"rightHandPinky2Rz": 1.0472, 
+														"rightHandPinky3Rz": 1.0472, 
+														"rightHandPinky4Rz": 1.0472, 
+														"rightHandRing2Rz": 1.0472, 
+														"rightHandRing3Rz": 1.0472, 
+														"rightHandRing4Rz": 1.0472, 
+														"rightHandMiddle2Rz": 1.0472, 
+														"rightHandMiddle3Rz": 1.0472, 
+														"rightHandMiddle4Rz": 1.0472, 
+														"rightHandIndex2Rz": 1.0472, 
+														"rightHandIndex3Rz": 1.0472, 
+														"rightHandIndex4Rz": 1.0472, 
+														"rightHandThumb2Rz": -0.2618, 
+														"rightHandThumb3Rz": -0.2618, 
+														"rightHandThumb4Rz": -0.2618,
+														"rightHandThumb2Ry": -0.7854, 
+														"rightHandThumb3Ry": -0.7854, 
+														"rightHandThumb4Ry": -0.7854, 
+														"leftHandPinky2Rz": -1.0472, 
+														"leftHandPinky3Rz": -1.0472, 
+														"leftHandPinky4Rz": -1.0472, 
+														"leftHandRing2Rz": -1.0472, 
+														"leftHandRing3Rz": -1.0472, 
+														"leftHandRing4Rz": -1.0472, 
+														"leftHandMiddle2Rz": -1.0472, 
+														"leftHandMiddle3Rz": -1.0472, 
+														"leftHandMiddle4Rz": -1.0472, 
+														"leftHandIndex2Rz": -1.0472, 
+														"leftHandIndex3Rz": -1.0472, 
+														"leftHandIndex4Rz": -1.0472, 
+														"leftHandThumb2Rz": 0.2618, 
+														"leftHandThumb3Rz": 0.2618, 
+														"leftHandThumb4Rz": 0.2618,
+														"leftHandThumb2Ry": 0.7854, 
+														"leftHandThumb3Ry": 0.7854, 
+														"leftHandThumb4Ry": 0.7854}, 400).onComplete(() => {
+															throwArrow();
+															shootB.start()		
+														});
+			shootA.onStart(() => {
+															var cameraAngle = Math.atan2(
+																(camera.position.x - cubeBody.position.x),
+																(camera.position.z - cubeBody.position.z));
+																
+														//Player has to be rotated in the correct direction in order to shoot
+														var desQuat = (new THREE.Quaternion()).setFromAxisAngle(new THREE.Vector3(0,1,0), cameraAngle + relDir);
+														cubeMesh.quaternion.copy(desQuat);
+														});
+
+			shootB = new TWEEN.Tween(startRotations).to({"rightShoulderRx": -0.0000,"rightShoulderRy": -0.0000,"rightShoulderRz": -0.0000, 
+														"rightUpperArmRx": 0.0000,"rightUpperArmRy": 0.0000,"rightUpperArmRz": 1.3659, 
+														"rightLowerArmRx": -0.0000,"rightLowerArmRy": -0.0000,"rightLowerArmRz": 0.0000, 
+														"rightHandRx": 0.0005,"rightHandRy": 0.0000,"rightHandRz": -0.0000, 
+														"leftShoulderRx": -0.0000,"leftShoulderRy": -0.0000,"leftShoulderRz": 0.0000, 
+														"leftUpperArmRx": 0.0000,"leftUpperArmRy": -0.0000,"leftUpperArmRz": -1.3659, 
+														"leftLowerArmRx": -0.0000,"leftLowerArmRy": -0.0000,"leftLowerArmRz": -0.0000, 
+														"leftHandRx": 0.0005,"leftHandRy": -0.0000,"leftHandRz": 0.0000, 
+														"rightUpperLegRx": -0.0010,"rightUpperLegRy": 0.0000,"rightUpperLegRz": -0.0001, 
+														"rightLowerLegRx": 0.0020,"rightLowerLegRy": 0.0000,"rightLowerLegRz": -0.0000, 
+														"rightFootRx": -0.0010,"rightFootRy": -0.0000,"rightFootRz": 0.0001, 
+														"leftUpperLegRx": -0.0010,"leftUpperLegRy": 0.0000,"leftUpperLegRz": -0.0001, 
+														"leftLowerLegRx": 0.0021,"leftLowerLegRy": 0.0000,"leftLowerLegRz": 0.0000, 
+														"leftFootRx": -0.0010,"leftFootRy": -0.0000,"leftFootRz": 0.0001, 
+														"neckRx": -0.0000,"neckRy": -0.0000,"neckRz": -0.0000, 
+														"headRx": 0.0000,"headRy": 0.0000,"headRz": -0.0000,
+														"rightHandPinky2Rz": 1.0472, 
+														"rightHandPinky3Rz": 1.0472, 
+														"rightHandPinky4Rz": 1.0472, 
+														"rightHandRing2Rz": 1.0472, 
+														"rightHandRing3Rz": 1.0472, 
+														"rightHandRing4Rz": 1.0472, 
+														"rightHandMiddle2Rz": 1.0472, 
+														"rightHandMiddle3Rz": 1.0472, 
+														"rightHandMiddle4Rz": 1.0472, 
+														"rightHandIndex2Rz": 1.0472, 
+														"rightHandIndex3Rz": 1.0472, 
+														"rightHandIndex4Rz": 1.0472, 
+														"rightHandThumb2Rz": -0.2618, 
+														"rightHandThumb3Rz": -0.2618, 
+														"rightHandThumb4Rz": -0.2618,
+														"rightHandThumb2Ry": -0.7854, 
+														"rightHandThumb3Ry": -0.7854, 
+														"rightHandThumb4Ry": -0.7854, 
+														"leftHandPinky2Rz": -1.0472, 
+														"leftHandPinky3Rz": -1.0472, 
+														"leftHandPinky4Rz": -1.0472, 
+														"leftHandRing2Rz": -1.0472, 
+														"leftHandRing3Rz": -1.0472, 
+														"leftHandRing4Rz": -1.0472, 
+														"leftHandMiddle2Rz": -1.0472, 
+														"leftHandMiddle3Rz": -1.0472, 
+														"leftHandMiddle4Rz": -1.0472, 
+														"leftHandIndex2Rz": -1.0472, 
+														"leftHandIndex3Rz": -1.0472, 
+														"leftHandIndex4Rz": -1.0472, 
+														"leftHandThumb2Rz": 0.2618, 
+														"leftHandThumb3Rz": 0.2618, 
+														"leftHandThumb4Rz": 0.2618,
+														"leftHandThumb2Ry": 0.7854, 
+														"leftHandThumb3Ry": 0.7854, 
+														"leftHandThumb4Ry": 0.7854}, 400).onComplete(() => {
+															canShoot=true;		
+														});
+
 			idle.onUpdate(updateFunction);
 			runA.onUpdate(updateFunction);
 			runB.onUpdate(updateFunction);
 			walkA.onUpdate(updateFunction);
 			walkB.onUpdate(updateFunction);
 			jumpA.onUpdate(updateFunction);
+			shootA.onUpdate(updateFunction);
+			shootB.onUpdate(updateFunction);
 			runA.chain(runB);
 			walkA.chain(walkB);
 
@@ -691,35 +814,53 @@
 		});
 		world.addBody(cubeBody);
 
+		function shoot(){
+			shootA.start();
+		}
+
 		function throwArrow(){
+			//START ANIMATION HERE AND ONLY ON FIRST PHASE COMPLETE SHOOT, THEN AT THE COMPLETE END RESET CANSHOOT TO TRUE
+			var cameraDirection= new THREE.Vector3();
+			camera.getWorldDirection(cameraDirection);
+
+			//Vertical direction not useful for movement, player can't fly
+			cameraDirection.y = 0;
+			cameraDirection.normalize();
+			cameraDirection.applyAxisAngle(new THREE.Vector3(0,1,0), relDir);
+			var moveX = cameraDirection.x;
+			var moveZ = cameraDirection.z;
+			var arrowDirection = new THREE.Vector3(moveX, 0, 0);
+			arrowDirection.add(new THREE.Vector3(0, 0, moveZ));
+
+
 			var cubeArrowCan = new CANNON.Body({
 				mass: 2,
 				shape: new CANNON.Box(new CANNON.Vec3(0.05, 0.05, 0.35 )),
-				position: new CANNON.Vec3(archerModelParent.position.x+2, archerModelParent.position.y+2, archerModelParent.position.z+2),
+				position: new CANNON.Vec3(archerModelParent.position.x + 2*moveX, archerModelParent.position.y, archerModelParent.position.z + 2*moveZ),
 				material: cubePhysMat,
 				linearDamping: 0.5,
 				angularDamping: 1,
 			});
-
+			
 			var cubeArrowMesh = new THREE.Mesh( new THREE.BoxGeometry( 0.1 , 0.1, 0.7), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ));
-
+			
 			var cubeArrowModel = arrowModel.clone();
-
+			
 			var cubeArrowModelParent = new THREE.Object3D();
 			cubeArrowModel.getWorldPosition(cubeArrowModelParent.position);
 			cubeArrowModel.position.set(0 , 0, -cubeArrowMesh.geometry.parameters.depth/2);
 			cubeArrowModelParent.add(cubeArrowModel);
-
+			
 			scene.add( cubeArrowMesh );
 			scene.add( cubeArrowModelParent );
-
+			
 			world.addBody(cubeArrowCan);
+			cubeArrowModelParent.lookAt(arrowDirection);
 
-			var arrowVelocity = 10;
+			var arrowVelocity = 40;
 
-			//DA RIVEDERE DIREZIONE FRECCE
-			 cubeArrowCan.velocity.z = -arrowVelocity * Math.cos(archerModelParent.rotation.x);
-			 cubeArrowCan.velocity.x = -arrowVelocity * Math.sin(archerModelParent.rotation.y);
+			cubeArrowCan.velocity.z = arrowVelocity * moveZ;
+			cubeArrowCan.velocity.x = arrowVelocity * moveX;
 			
 			arrows.push(({"can":cubeArrowCan, "mesh":cubeArrowMesh, "model":cubeArrowModelParent}));
 
@@ -766,7 +907,7 @@
 			renderer.setSize(window.innerWidth, window.innerHeight);
 		});
 
-		var pressed = {"SHIFT" : false, "W" : false, "A" : false, "S" : false, "D" : false};
+		var pressed = {"SHIFT" : false, "W" : false, "A" : false, "S" : false, "D" : false, "F" : false};
 		
 		document.addEventListener('keydown',(event) => {
 			if(event.key.toLowerCase() == " ") pressed["SPACE"] = true;
@@ -775,6 +916,7 @@
 			if(event.key.toLowerCase() == "a") pressed["A"] = true;
 			if(event.key.toLowerCase() == "s") pressed["S"] = true;
 			if(event.key.toLowerCase() == "d") pressed["D"] = true;
+			if(event.key.toLowerCase() == "f") pressed["F"] = true;
 		},false);
 		
 		document.addEventListener('keyup',(event) => {
@@ -784,6 +926,7 @@
 			if(event.key.toLowerCase() == "a") pressed["A"] = false;
 			if(event.key.toLowerCase() == "s") pressed["S"] = false;
 			if(event.key.toLowerCase() == "d") pressed["D"] = false;
+			if(event.key.toLowerCase() == "f") pressed["F"] = false;
 		},false);
 
 		cubeBody.addEventListener( "collide", function (e) {
@@ -824,11 +967,13 @@
 			arrows.forEach(element => {
 				element["mesh"].position.copy(element["can"].position);
 				element["model"].position.copy(element["can"].position);
+				element["can"].quaternion.copy(element["model"].quaternion);
+				element["mesh"].quaternion.copy(element["model"].quaternion);
+
 			});
 
 			renderer.render( scene, camera );
-			if(archerModelParent)
-				console.log(archerModelParent.rotation.y);
+
 			requestAnimationFrame(animate);
 		};
 
@@ -913,14 +1058,17 @@
 			if(pressed["SPACE"] && playerState!="Jump"){
 				playerState = "Jump";
 				cubeBody.velocity.y = 10;
-				throwArrow();
-
 			}
 			else if(pressed["SHIFT"] && playerState!="Jump")
 				playerState = "Run";
 			else if(playerState!="Jump")
 				playerState = "Walk";
-				
+			
+			if(pressed["F"] && canShoot){
+				canShoot=false;
+				shoot();
+			}
+
 			if(pressed["W"] && pressed["A"]){
 				relDir = Math.PI/4;
 			}
