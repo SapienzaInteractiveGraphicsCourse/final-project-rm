@@ -40,8 +40,10 @@
 		var archerStructure = {};
 		var canShoot=true;
 		var lastExecutedAnimation = "Idle";
-		var idle, runA, runB, jumpA, jumpB, walkA, walkB, shootA, shootB, shootC;
+		var idle, runA, runB, jumpA, jumpB, walkA, walkB, shootA, shootB, shootC, targetMovement1, targetMovement2, level2Unlock;
 		var arrows =[];
+		var target1hit = false, target2hit = false;
+		var prevPlayerPosition;
 
 		//CANNON AND THREE SETUP
 		const world = new CANNON.World({
@@ -206,6 +208,17 @@
 			
 			//TWEEN ANIMATIONS
 			//var groupPlayer = new TWEEN.Group();
+			targetMovement1 = new TWEEN.Tween({x:-10}).to({x:-2}, 4000).onUpdate((object)=>{if(targetBody1)targetBody1.position.x= object.x;});
+			targetMovement1.repeat(Infinity).yoyo(true).easing(TWEEN.Easing.Bounce.InOut);
+			targetMovement1.start();
+
+			targetMovement2 = new TWEEN.Tween({x:10}).to({x:2}, 4000).onUpdate((object)=>{if(targetBody2)targetBody2.position.x= object.x;});
+			targetMovement2.repeat(Infinity).yoyo(true).easing(TWEEN.Easing.Bounce.InOut);
+			targetMovement2.start();
+
+			level2Unlock = new TWEEN.Tween({y:10}).to({y:0}, 4000).onUpdate((object)=>{level2PlatformBody.position.y= object.y;});
+			level2Unlock.easing(TWEEN.Easing.Bounce.Out);
+			
 			var startRotations ={"rightShoulderRx": archerStructure["rightShoulder"].rotation.x,"rightShoulderRy": archerStructure["rightShoulder"].rotation.y,"rightShoulderRz": archerStructure["rightShoulder"].rotation.z, 
 								"rightUpperArmRx": archerStructure["rightUpperArm"].rotation.x,"rightUpperArmRy": archerStructure["rightUpperArm"].rotation.y,"rightUpperArmRz": archerStructure["rightUpperArm"].rotation.z, 
 								"rightLowerArmRx": archerStructure["rightLowerArm"].rotation.x,"rightLowerArmRy": archerStructure["rightLowerArm"].rotation.y,"rightLowerArmRz": archerStructure["rightLowerArm"].rotation.z, 
@@ -938,7 +951,6 @@
 		}
 
 		function throwArrow(){
-			//START ANIMATION HERE AND ONLY ON FIRST PHASE COMPLETE SHOOT, THEN AT THE COMPLETE END RESET CANSHOOT TO TRUE
 			var cameraDirection= new THREE.Vector3();
 			camera.getWorldDirection(cameraDirection);
 
@@ -987,8 +999,8 @@
 
 
 		var targetBody1 = new CANNON.Body({
-			shape: new CANNON.Cylinder(0.5,0.5,0.25,10),
-			position: new CANNON.Vec3(-2, 2, 20),
+			shape: new CANNON.Cylinder(1,1,0.5,10),
+			position: new CANNON.Vec3(-2, 2.5, 20),
 			type: CANNON.Body.STATIC
 		});
 		const targetMesh1 = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ) );
@@ -997,14 +1009,20 @@
 		world.addBody(targetBody1);		
 		
 		var targetBody2 = new CANNON.Body({
-			shape: new CANNON.Cylinder(0.5,0.5,0.25,10),
-			position: new CANNON.Vec3(2, 2, 20),
+			shape: new CANNON.Cylinder(1,1,0.5,10),
+			position: new CANNON.Vec3(2, 2.5, 20),
 			type: CANNON.Body.STATIC
 		});
 		const targetMesh2 = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ) );
 		scene.add(targetMesh2);
 		targetBody2.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), Math.PI / 2);
 		world.addBody(targetBody2);
+
+		function objCompleted(){
+			if(!target1hit || !target2hit) return;
+			console.log("LEVEL 2");
+			level2Unlock.start();
+		}
 		
 
 		//GROUND (THREE)
@@ -1030,6 +1048,33 @@
 		});
 		world.addBody(groundBody);
 		groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+
+
+		//LEVEL2PLATFORM (THREE)
+		const level2PlatformGeo = new THREE.BoxGeometry( 30, 30, 2.0 );
+		const level2PlatformMat = new THREE.MeshPhongMaterial({ 
+			color: 0xffffff,
+			side: THREE.DoubleSide,
+			wireframe: false
+			});
+		const level2PlatformMesh = new THREE.Mesh(level2PlatformGeo, level2PlatformMat);
+		scene.add(level2PlatformMesh);
+		level2PlatformMesh.receiveShadow=true;
+		level2PlatformMesh.castshadow=true;
+
+		//LEVEL2PLATFORM (CANNON)
+		const level2PlatformPhysMat = new CANNON.Material();
+
+
+		const level2PlatformBody = new CANNON.Body({
+			shape: new CANNON.Box(new CANNON.Vec3(15, 15, 1)),
+			type: CANNON.Body.STATIC,
+			material: level2PlatformPhysMat,
+			position: new CANNON.Vec3(0, 10, 30)
+		});
+		world.addBody(level2PlatformBody);
+		level2PlatformBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+
 
 		//CONTACT MATERIALS (CANNON)
 		const groundBoxContactMat = new CANNON.ContactMaterial(
@@ -1083,6 +1128,32 @@
 			if ( e.contact.ni.dot( new CANNON.Vec3( 0, 1, 0 ) ) > 0.5) playerState = "Idle";
 		});
 
+		targetBody1.addEventListener("collide", function(e){
+			//We've to check if one of the arrows hit the target1
+			if (targetBody1 && (e.contact.bi.id == targetBody1.id || e.contact.bj.id == targetBody1.id)) {
+				target1hit=true;
+				scene.remove(targetModelParent1);
+				setTimeout(function() {
+					world.removeBody(targetBody1);
+				},0);
+				scene.remove(targetMesh1);
+				objCompleted();
+			}
+		});
+
+		targetBody2.addEventListener("collide", function(e){
+			//We've to check if one of the arrows hit the target2
+			if (targetBody2 && (e.contact.bi.id == targetBody2.id || e.contact.bj.id == targetBody2.id)) {
+				target2hit=true;
+				scene.remove(targetModelParent2);
+				setTimeout(function() {
+					world.removeBody(targetBody2);
+				},0);
+				scene.remove(targetMesh2);
+				objCompleted();
+			}
+		});
+
 		const time = new THREE.Clock();
 		function animate() {
 			world.step(1/60);
@@ -1115,6 +1186,11 @@
 				targetModelParent2.quaternion.copy(targetBody2.quaternion);
 				targetMesh2.quaternion.copy(targetBody2.quaternion);
 				targetMesh2.position.copy(targetBody2.position);
+			}
+
+			if(level2PlatformBody && level2PlatformMesh){
+				level2PlatformMesh.position.copy(level2PlatformBody.position);
+				level2PlatformMesh.quaternion.copy(level2PlatformBody.quaternion);
 			}
 
 			//if (mixer) mixer.update(time.getDelta());
@@ -1275,18 +1351,25 @@
 				cameraDirection.y = 0;
 				cameraDirection.normalize();
 				cameraDirection.applyAxisAngle(new THREE.Vector3(0,1,0), relDir);
-				var moveX = cameraDirection.x * (playerState == 'Run' ? 10 : 1.0) * delta;
-				var moveZ = cameraDirection.z * (playerState == 'Run' ? 10 : 1.0) * delta;
+				var moveX = cameraDirection.x * (playerState == 'Run' ? 10 : 5) * delta;
+				var moveZ = cameraDirection.z * (playerState == 'Run' ? 10 : 5) * delta;
+				var oldx =cubeBody.position.x;
+				var oldz =cubeBody.position.z;
 				cubeBody.position.x += moveX;
 				cubeBody.position.z += moveZ;
-				camera.position.x += moveX;
-				camera.position.z += moveZ;
 
+				//To make the camera move effectively only if the player moves (not if he encounters obstacles)
+				camera.position.x += cubeBody.position.x - oldx;
+				camera.position.z += cubeBody.position.z - oldz;
+
+				console.log(prevPlayerPosition+" "+ cubeBody.position);
 				// update camera target
 				cameraTarget.x = cubeBody.position.x;
 				cameraTarget.y = cubeBody.position.y + 1;
 				cameraTarget.z = cubeBody.position.z;
 				orbit.target = cameraTarget;
+				
+
         }
 
 		changePlayerState();
