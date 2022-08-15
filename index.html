@@ -44,6 +44,8 @@
 		var arrows =[];
 		var target1hit = false, target2hit = false;
 		var prevPlayerPosition;
+		var obsPlatTweens = [];
+		var obsPlat=[];
 
 		//CANNON AND THREE SETUP
 		const world = new CANNON.World({
@@ -215,6 +217,16 @@
 			targetMovement2 = new TWEEN.Tween({x:10}).to({x:2}, 4000).onUpdate((object)=>{if(targetBody2)targetBody2.position.x= object.x;});
 			targetMovement2.repeat(Infinity).yoyo(true).easing(TWEEN.Easing.Bounce.InOut);
 			targetMovement2.start();
+
+			var obsPlatStarts = [new THREE.Vector3(15, 0, 48), new THREE.Vector3(-15, 0, 54), new THREE.Vector3(0, 0, 67) ];
+			var obsPlatEnds = [new THREE.Vector3(-15, 0, 48), new THREE.Vector3(15, 0, 54), new THREE.Vector3(0, 0, 55) ];
+			var genFun = function (i){return (object)=>{if(obsPlat[i] && (obsPlat[i])["body"]){console.log("ciao");obsPlat[i]["body"].position.copy(new THREE.Vector3(object["x"], object["y"], object["z"]))}}}
+			for(var i=0; i<3; i++){
+				var genTween = new TWEEN.Tween({"x" : obsPlatStarts[i].x, "y" : obsPlatStarts[i].y, "z" : obsPlatStarts[i].z}).to({"x" : obsPlatEnds[i].x, "y" : obsPlatEnds[i].y, "z" : obsPlatEnds[i].z}, 4000).onUpdate(genFun(i));
+				genTween.repeat(Infinity).yoyo(true).easing(TWEEN.Easing.Exponential.InOut);
+				obsPlatTweens.push(genTween)
+				genTween.start();
+			}
 
 			level2Unlock = new TWEEN.Tween({y:10}).to({y:0}, 4000).onUpdate((object)=>{level2PlatformBody.position.y= object.y;});
 			level2Unlock.easing(TWEEN.Easing.Bounce.Out);
@@ -1075,6 +1087,39 @@
 		world.addBody(level2PlatformBody);
 		level2PlatformBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
 
+		//OBSTACLES PLATFORMS (THREE)
+		
+		var positions = [new CANNON.Vec3(0, 0, 46),
+						new CANNON.Vec3(0, 0, 52),
+						new CANNON.Vec3(0, 0, 65),];
+
+		
+		for(var i=0; i<positions.length; i++){
+			var genPlatGeo = new THREE.BoxGeometry( 5, 5, 2.0 );
+			var genPlatMat = new THREE.MeshPhongMaterial({ 
+				color: 0xffffff,
+				side: THREE.DoubleSide,
+				wireframe: false
+				});
+			var genPlatMesh = new THREE.Mesh(genPlatGeo, genPlatMat);
+			scene.add(genPlatMesh);
+			genPlatMesh.receiveShadow=true;
+			genPlatMesh.castshadow=true;
+
+			//OBSTACLES PLATFORMS (CANNON)
+			var genPlatPhysMat = new CANNON.Material();
+
+
+			var genPlatBody = new CANNON.Body({
+				shape: new CANNON.Box(new CANNON.Vec3(2.5, 2.5, 1)),
+				type: CANNON.Body.STATIC,
+				material: genPlatPhysMat,
+				position: positions[i]
+			});
+			world.addBody(genPlatBody);
+			genPlatBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+			obsPlat.push({"mesh" : genPlatMesh, "body" : genPlatBody});
+		}
 
 		//CONTACT MATERIALS (CANNON)
 		const groundBoxContactMat = new CANNON.ContactMaterial(
@@ -1159,6 +1204,7 @@
 			world.step(1/60);
 			TWEEN.update();
 
+
 			playerAnimate(time.getDelta());
 
 			groundMesh.position.copy(groundBody.position);
@@ -1201,6 +1247,15 @@
 				element["mesh"].quaternion.copy(element["model"].quaternion);
 
 			});
+
+			obsPlat.forEach(element => {
+				element["mesh"].position.copy(element["body"].position);
+				element["mesh"].quaternion.copy(element["body"].quaternion);
+			});
+
+			if(cubeBody.position.y < -10){
+				gameOver();
+			}
 
 			renderer.render( scene, camera );
 
@@ -1362,7 +1417,6 @@
 				camera.position.x += cubeBody.position.x - oldx;
 				camera.position.z += cubeBody.position.z - oldz;
 
-				console.log(prevPlayerPosition+" "+ cubeBody.position);
 				// update camera target
 				cameraTarget.x = cubeBody.position.x;
 				cameraTarget.y = cubeBody.position.y + 1;
@@ -1374,6 +1428,11 @@
 
 		changePlayerState();
 		};
+
+		//Function to call when the player obtains game over (e.g. he falls down)
+		function gameOver(){
+			location.reload();
+		}
 
 		requestAnimationFrame(animate);
 
