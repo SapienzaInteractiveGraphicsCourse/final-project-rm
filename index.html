@@ -35,14 +35,14 @@
 		var cameraTarget = new THREE.Vector3();
 		var mixer;
 		var archerModel, archerModelParent;
-		var arrowModel, targetModel, targetModel1, targetModel2;
-		var targetModelParent1, targetModelParent2;
+		var arrowModel, targetModel, targetModel1, targetModel2,targetModel3, targetModel4;
+		var targetModelParent1, targetModelParent2, targetModelParent3, targetModelParent4;
 		var archerStructure = {};
 		var canShoot=true;
 		var lastExecutedAnimation = "Idle";
-		var idle, runA, runB, jumpA, jumpB, walkA, walkB, shootA, shootB, shootC, targetMovement1, targetMovement2, level2Unlock;
+		var idle, runA, runB, jumpA, jumpB, walkA, walkB, shootA, shootB, shootC, targetMovement1, targetMovement2, targetMovement3, targetMovement4, level2Unlock, level3Unlock1, level3Unlock2, level3Unlock3, level3Unlock4, level3Unlock5, level3Unlock6;
 		var arrows =[];
-		var target1hit = false, target2hit = false;
+		var target1hit = false, target2hit = false, target3hit=true, target4hit=true;
 		var prevPlayerPosition;
 		var obsPlatTweens = [];
 		var obsPlat=[];
@@ -81,7 +81,7 @@
 		dirLight.target.position.set(-2, 0, 0);
 		dirLight.castShadow = true; 
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
-		dirLight.shadow.camera.left = - 15;
+		dirLight.shadow.camera.left = - 200;
 		dirLight.shadow.camera.right = 15;
 		dirLight.shadow.camera.top = 15;
 		dirLight.shadow.camera.bottom = - 15;
@@ -123,6 +123,20 @@
 			targetModel2.rotation.set(...[Math.PI/2,0,0]);
 			targetModelParent2.add(targetModel2);
 			scene.add(targetModelParent2);
+
+			targetModelParent3 = new THREE.Object3D();
+			targetModelParent4 = new THREE.Object3D();
+			targetModel3 = targetModel.clone();
+			targetModel4 = targetModel.clone();
+			targetModel3.getWorldPosition(targetModelParent3.position);
+			targetModel3.rotation.set(...[Math.PI/2,0,0]);
+			targetModelParent3.add(targetModel3);
+			scene.add(targetModelParent3);
+
+			targetModel4.getWorldPosition(targetModelParent4.position);
+			targetModel4.rotation.set(...[Math.PI/2,0,0]);
+			targetModelParent4.add(targetModel4);
+			scene.add(targetModelParent4);
 		});
 
 		const url = 'gltf/archer/scene.gltf';
@@ -218,9 +232,19 @@
 			targetMovement2.repeat(Infinity).yoyo(true).easing(TWEEN.Easing.Bounce.InOut);
 			targetMovement2.start();
 
-			var obsPlatStarts = [new THREE.Vector3(15, 0, 48), new THREE.Vector3(-15, 0, 54), new THREE.Vector3(0, 0, 67) ];
-			var obsPlatEnds = [new THREE.Vector3(-15, 0, 48), new THREE.Vector3(15, 0, 54), new THREE.Vector3(0, 0, 55) ];
-			var genFun = function (i){return (object)=>{if(obsPlat[i] && (obsPlat[i])["body"]){console.log("ciao");obsPlat[i]["body"].position.copy(new THREE.Vector3(object["x"], object["y"], object["z"]))}}}
+			targetMovement3 = new TWEEN.Tween({x:-10}).to({x:-2}, 4000).onUpdate((object)=>{if(targetBody3)targetBody3.position.x= object.x;});
+			targetMovement3.repeat(Infinity).yoyo(true).easing(TWEEN.Easing.Back.InOut);
+			targetMovement3.start();
+
+			targetMovement4 = new TWEEN.Tween({x:10}).to({x:2}, 4000).onUpdate((object)=>{if(targetBody4)targetBody4.position.x= object.x;});
+			targetMovement4.repeat(Infinity).yoyo(true).easing(TWEEN.Easing.Back.InOut);
+			targetMovement4.start();
+			
+
+
+			var obsPlatStarts = [new THREE.Vector3(15, 0, 0), new THREE.Vector3(-15, 0, 0), new THREE.Vector3(0, 0, 10) ];
+			var obsPlatEnds = [new THREE.Vector3(-15, 0, 0), new THREE.Vector3(15, 0, 0), new THREE.Vector3(0, 0, -10) ];
+			var genFun = function (i){return (object)=>{if(obsPlat[i] && (obsPlat[i])["body"]){obsPlat[i]["body"].velocity.x = object["x"]; obsPlat[i]["body"].velocity.y = object["y"]; obsPlat[i]["body"].velocity.z = object["z"];}}};
 			for(var i=0; i<3; i++){
 				var genTween = new TWEEN.Tween({"x" : obsPlatStarts[i].x, "y" : obsPlatStarts[i].y, "z" : obsPlatStarts[i].z}).to({"x" : obsPlatEnds[i].x, "y" : obsPlatEnds[i].y, "z" : obsPlatEnds[i].z}, 4000).onUpdate(genFun(i));
 				genTween.repeat(Infinity).yoyo(true).easing(TWEEN.Easing.Exponential.InOut);
@@ -230,6 +254,19 @@
 
 			level2Unlock = new TWEEN.Tween({y:10}).to({y:0}, 4000).onUpdate((object)=>{level2PlatformBody.position.y= object.y;});
 			level2Unlock.easing(TWEEN.Easing.Bounce.Out);
+
+			level3Unlock1 = new TWEEN.Tween({x:-20}).to({x:-2.5}, 4000).onUpdate((object)=>{obsPlat[3]["body"].position.x= object.x;});
+			level3Unlock1.easing(TWEEN.Easing.Bounce.Out);
+			level3Unlock2 = new TWEEN.Tween({x:20}).to({x:2.5}, 4000).onUpdate((object)=>{obsPlat[4]["body"].position.x= object.x;});
+			level3Unlock2.easing(TWEEN.Easing.Bounce.Out);
+			level3Unlock3 = new TWEEN.Tween({y:0, x: -20}).to({y:2, x: -2.5}, 4000).onUpdate((object)=>{obsPlat[5]["body"].position.y= object.y;obsPlat[5]["body"].position.x= object.x;});
+			level3Unlock3.easing(TWEEN.Easing.Bounce.Out);
+			level3Unlock4 = new TWEEN.Tween({y:0, x: 20}).to({y:2, x: 2.5}, 4000).onUpdate((object)=>{obsPlat[6]["body"].position.y= object.y;obsPlat[6]["body"].position.x= object.x;});
+			level3Unlock4.easing(TWEEN.Easing.Bounce.Out);
+			level3Unlock5 = new TWEEN.Tween({y:0, x: -20}).to({y:4, x: -2.5}, 4000).onUpdate((object)=>{obsPlat[7]["body"].position.y= object.y;obsPlat[7]["body"].position.x= object.x;});
+			level3Unlock5.easing(TWEEN.Easing.Bounce.Out);
+			level3Unlock6 = new TWEEN.Tween({y:0, x: 20}).to({y:4, x: 2.5}, 4000).onUpdate((object)=>{obsPlat[8]["body"].position.y= object.y;obsPlat[8]["body"].position.x= object.x;});
+			level3Unlock6.easing(TWEEN.Easing.Bounce.Out);
 			
 			var startRotations ={"rightShoulderRx": archerStructure["rightShoulder"].rotation.x,"rightShoulderRy": archerStructure["rightShoulder"].rotation.y,"rightShoulderRz": archerStructure["rightShoulder"].rotation.z, 
 								"rightUpperArmRx": archerStructure["rightUpperArm"].rotation.x,"rightUpperArmRy": archerStructure["rightUpperArm"].rotation.y,"rightUpperArmRz": archerStructure["rightUpperArm"].rotation.z, 
@@ -940,7 +977,6 @@
 			shootC.onUpdate(updateFunctionUpper);
 			runA.chain(runB);
 			walkA.chain(walkB);
-
 		});
 
 
@@ -1030,10 +1066,41 @@
 		targetBody2.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), Math.PI / 2);
 		world.addBody(targetBody2);
 
-		function objCompleted(){
+		var targetBody3 = new CANNON.Body({
+			shape: new CANNON.Cylinder(1,1,0.5,10),
+			position: new CANNON.Vec3(-2, 2.5, 90),
+			type: CANNON.Body.STATIC
+		});
+		const targetMesh3 = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ) );
+		scene.add(targetMesh3);
+		targetBody3.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), Math.PI / 2);
+		world.addBody(targetBody3);		
+		
+		var targetBody4 = new CANNON.Body({
+			shape: new CANNON.Cylinder(1,1,0.5,10),
+			position: new CANNON.Vec3(2, 2.5, 90),
+			type: CANNON.Body.STATIC
+		});
+		const targetMesh4 = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ) );
+		scene.add(targetMesh4);
+		targetBody4.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), Math.PI / 2);
+		world.addBody(targetBody4);
+
+		function obj1Completed(){
 			if(!target1hit || !target2hit) return;
 			console.log("LEVEL 2");
 			level2Unlock.start();
+		}
+
+		function obj2Completed(){
+			if(!target3hit || !target4hit) return;
+			console.log("LEVEL 3");
+			level3Unlock1.start();
+			level3Unlock2.start();
+			level3Unlock3.start();
+			level3Unlock4.start();
+			level3Unlock5.start();
+			level3Unlock6.start();
 		}
 		
 
@@ -1055,7 +1122,7 @@
 
 		const groundBody = new CANNON.Body({
 			shape: new CANNON.Box(new CANNON.Vec3(15, 15, 1)),
-			type: CANNON.Body.STATIC,
+			type: CANNON.Body.KINEMATIC,
 			material: groundPhysMat
 		});
 		world.addBody(groundBody);
@@ -1080,18 +1147,50 @@
 
 		const level2PlatformBody = new CANNON.Body({
 			shape: new CANNON.Box(new CANNON.Vec3(15, 15, 1)),
-			type: CANNON.Body.STATIC,
+			type: CANNON.Body.KINEMATIC,
 			material: level2PlatformPhysMat,
 			position: new CANNON.Vec3(0, 10, 30)
 		});
 		world.addBody(level2PlatformBody);
 		level2PlatformBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
 
+		//LEVEL3PLATFORM (THREE)
+		const level3PlatformGeo = new THREE.BoxGeometry( 30, 30, 3.0 );
+		const level3PlatformMat = new THREE.MeshPhongMaterial({ 
+			color: 0xffffff,
+			side: THREE.DoubleSide,
+			wireframe: false
+			});
+		const level3PlatformMesh = new THREE.Mesh(level3PlatformGeo, level3PlatformMat);
+		scene.add(level3PlatformMesh);
+		level3PlatformMesh.receiveShadow=true;
+		level3PlatformMesh.castshadow=true;
+
+		//LEVEL3PLATFORM (CANNON)
+		const level3PlatformPhysMat = new CANNON.Material();
+
+
+		const level3PlatformBody = new CANNON.Body({
+			shape: new CANNON.Box(new CANNON.Vec3(15, 15, 1)),
+			type: CANNON.Body.KINEMATIC,
+			material: level3PlatformPhysMat,
+			position: new CANNON.Vec3(0, 6.5, 117.5)
+		});
+		world.addBody(level3PlatformBody);
+		level3PlatformBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+
 		//OBSTACLES PLATFORMS (THREE)
-		
-		var positions = [new CANNON.Vec3(0, 0, 46),
-						new CANNON.Vec3(0, 0, 52),
-						new CANNON.Vec3(0, 0, 65),];
+
+		var positions = [new CANNON.Vec3(-15, 0, 48),
+						new CANNON.Vec3(15, 0, 54),
+						new CANNON.Vec3(0, 0, 67),
+						new CANNON.Vec3(-20, 0, 90),
+						new CANNON.Vec3(20, 0, 90),
+						new CANNON.Vec3(-20, 0, 95),
+						new CANNON.Vec3(20, 0, 95),
+						new CANNON.Vec3(-20, 0, 100),
+						new CANNON.Vec3(20, 0, 100)
+					];
 
 		
 		for(var i=0; i<positions.length; i++){
@@ -1107,13 +1206,11 @@
 			genPlatMesh.castshadow=true;
 
 			//OBSTACLES PLATFORMS (CANNON)
-			var genPlatPhysMat = new CANNON.Material();
-
 
 			var genPlatBody = new CANNON.Body({
 				shape: new CANNON.Box(new CANNON.Vec3(2.5, 2.5, 1)),
-				type: CANNON.Body.STATIC,
-				material: genPlatPhysMat,
+				type: CANNON.Body.KINEMATIC,
+				material: groundPhysMat,
 				position: positions[i]
 			});
 			world.addBody(genPlatBody);
@@ -1126,7 +1223,9 @@
 			groundPhysMat,
 			cubePhysMat,
 			{contactEquationRelaxation : 1000},
-			{restitution : 0}
+			{restitution : 0},
+			{linearDamping : 1},
+			{friction : 1}
 		);
 
 		world.addContactMaterial(groundBoxContactMat);
@@ -1182,7 +1281,7 @@
 					world.removeBody(targetBody1);
 				},0);
 				scene.remove(targetMesh1);
-				objCompleted();
+				obj1Completed();
 			}
 		});
 
@@ -1195,7 +1294,33 @@
 					world.removeBody(targetBody2);
 				},0);
 				scene.remove(targetMesh2);
-				objCompleted();
+				obj1Completed();
+			}
+		});
+
+		targetBody3.addEventListener("collide", function(e){
+			//We've to check if one of the arrows hit the target1
+			if (targetBody3 && (e.contact.bi.id == targetBody3.id || e.contact.bj.id == targetBody3.id)) {
+				target3hit=true;
+				scene.remove(targetModelParent3);
+				setTimeout(function() {
+					world.removeBody(targetBody3);
+				},0);
+				scene.remove(targetMesh3);
+				obj2Completed();
+			}
+		});
+
+		targetBody4.addEventListener("collide", function(e){
+			//We've to check if one of the arrows hit the target1
+			if (targetBody4 && (e.contact.bi.id == targetBody4.id || e.contact.bj.id == targetBody4.id)) {
+				target4hit=true;
+				scene.remove(targetModelParent4);
+				setTimeout(function() {
+					world.removeBody(targetBody4);
+				},0);
+				scene.remove(targetMesh4);
+				obj2Completed();
 			}
 		});
 
@@ -1233,10 +1358,27 @@
 				targetMesh2.quaternion.copy(targetBody2.quaternion);
 				targetMesh2.position.copy(targetBody2.position);
 			}
+			if(targetBody3 && targetModelParent3 && targetMesh3){
+				targetModelParent3.position.copy(targetBody3.position);
+				targetModelParent3.quaternion.copy(targetBody3.quaternion);
+				targetMesh3.quaternion.copy(targetBody3.quaternion);
+				targetMesh3.position.copy(targetBody3.position);
+			}		
+			if(targetBody4 && targetModelParent4 && targetMesh4){
+				targetModelParent4.position.copy(targetBody4.position);
+				targetModelParent4.quaternion.copy(targetBody4.quaternion);
+				targetMesh4.quaternion.copy(targetBody4.quaternion);
+				targetMesh4.position.copy(targetBody4.position);
+			}
 
 			if(level2PlatformBody && level2PlatformMesh){
 				level2PlatformMesh.position.copy(level2PlatformBody.position);
 				level2PlatformMesh.quaternion.copy(level2PlatformBody.quaternion);
+			}
+
+			if(level3PlatformBody && level3PlatformMesh){
+				level3PlatformMesh.position.copy(level3PlatformBody.position);
+				level3PlatformMesh.quaternion.copy(level3PlatformBody.quaternion);
 			}
 
 			//if (mixer) mixer.update(time.getDelta());
