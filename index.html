@@ -30,7 +30,7 @@
 		import {GLTFLoader} from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js';
 		import { TWEEN } from '../node_modules/three/examples/jsm/libs/tween.module.min.js'
 
-		var relDir=Math.PI;
+		var relDir=0;
 		var playerState = "Idle";
 		var cameraTarget = new THREE.Vector3();
 		var mixer;
@@ -42,14 +42,15 @@
 		var lastExecutedAnimation = "Idle";
 		var idle, runA, runB, jumpA, jumpB, walkA, walkB, shootA, shootB, shootC, targetMovement1, targetMovement2, targetMovement3, targetMovement4, level2Unlock, level3Unlock1, level3Unlock2, level3Unlock3, level3Unlock4, level3Unlock5, level3Unlock6;
 		var arrows =[];
-		var target1hit = false, target2hit = false, target3hit=true, target4hit=true;
+		var target1hit = false, target2hit = false, target3hit=false, target4hit=false;
 		var prevPlayerPosition;
 		var obsPlatTweens = [];
 		var obsPlat=[];
+		var oldx = 0, oldz = 0, oldy = 10;
 
 		//CANNON AND THREE SETUP
 		const world = new CANNON.World({
-			gravity: new CANNON.Vec3(0, -9.81, 0)
+			gravity: new CANNON.Vec3(0, -20, 0)
 		});
 
 		const scene = new THREE.Scene();
@@ -60,7 +61,8 @@
 			0.1,
 			1000
 		);
-		camera.position.set(0, 10, -8);
+
+		camera.position.set(0,10,-20);
 
 		const renderer = new THREE.WebGLRenderer();
 		renderer.setSize( window.innerWidth, window.innerHeight );
@@ -68,8 +70,8 @@
 		document.body.appendChild( renderer.domElement );
 
 		const orbit = new OrbitControls(camera, renderer.domElement);
-
-		orbit.update();
+		orbit.enablePan = false;
+		orbit.enableZoom = false;
 		
 		//LIGHT SETUP
 
@@ -96,7 +98,7 @@
 		const cubeGeometry = new THREE.BoxGeometry( 1.4, 3.0, 2.0 );
 		const cubeMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} );
 		const cubeMesh = new THREE.Mesh( cubeGeometry, cubeMaterial );
-		//scene.add( cubeMesh );
+		scene.add( cubeMesh );
 		cubeMesh.castShadow=true;
 		//cubeMesh.receiveShadow=true;
 		// var cubeMesh;
@@ -157,6 +159,7 @@
 				if (node.isMesh) { 
 					node.castShadow = true;
 					node.receiveShadow=true;
+					node.frustumCulled=false;
 			}
 			} );
 
@@ -219,8 +222,8 @@
 			// Object.keys(archerStructure).forEach(key => {
 			// out += ('archerStructure["'+ key + '"].rotation.x = ' + 'object["'+ key + 'Rx"]' +  ';' +'archerStructure["'+ key + '"].rotation.y = ' + 'object["'+ key + 'Ry"]' + ';' + 'archerStructure["'+ key + '"].rotation.z = ' + 'object["'+ key + 'Rz"]' +  '; \n');				
 			// });
-			console.log(out);
-			console.log(dumpObject(archerModel).join('\n'));
+			// console.log(out);
+			// console.log(dumpObject(archerModel).join('\n'));
 			
 			//TWEEN ANIMATIONS
 			//var groupPlayer = new TWEEN.Group();
@@ -842,17 +845,11 @@
 														"leftHandThumb4Rz": 0.2618,
 														"leftHandThumb2Ry": 0.7854, 
 														"leftHandThumb3Ry": 0.7854, 
-														"leftHandThumb4Ry": 0.7854}, 400).onComplete(() => {
+														"leftHandThumb4Ry": 0.7854}, 200).onComplete(() => {
 															shootB.start()		
 														});
 			shootA.onStart(() => {
-															var cameraAngle = Math.atan2(
-																(camera.position.x - cubeBody.position.x),
-																(camera.position.z - cubeBody.position.z));
-																
-														//Player has to be rotated in the correct direction in order to shoot
-														var desQuat = (new THREE.Quaternion()).setFromAxisAngle(new THREE.Vector3(0,1,0), cameraAngle + relDir);
-														cubeMesh.quaternion.copy(desQuat);
+															
 														});
 
 			shootB = new TWEEN.Tween(startRotations).to({"rightShoulderRx": -Math.PI/2,"rightShoulderRy": -0.0000,"rightShoulderRz": Math.PI/8, 
@@ -906,7 +903,7 @@
 														"leftHandThumb4Rz": 0.2618,
 														"leftHandThumb2Ry": 0.7854, 
 														"leftHandThumb3Ry": 0.7854, 
-														"leftHandThumb4Ry": 0.7854}, 400).onComplete(() => {
+														"leftHandThumb4Ry": 0.7854}, 200).onComplete(() => {
 															throwArrow();
 															shootC.start()		
 														});
@@ -962,7 +959,7 @@
 														"leftHandThumb4Rz": 0.2618,
 														"leftHandThumb2Ry": 0.7854, 
 														"leftHandThumb3Ry": 0.7854, 
-														"leftHandThumb4Ry": 0.7854}, 400).onComplete(() => {
+														"leftHandThumb4Ry": 0.7854}, 200).onComplete(() => {
 															canShoot=true;		
 														});
 
@@ -985,12 +982,13 @@
 		const cubePhysMat = new CANNON.Material();
 
 		const cubeBody = new CANNON.Body({
-			mass: 10,
+			mass: 80,
 			shape: new CANNON.Box(new CANNON.Vec3(0.7, 1.5, 1.0)),
 			position: new CANNON.Vec3(0, 5, 0),
 			material: cubePhysMat,
 			linearDamping: 0.5,
- 		    angularDamping: 1,
+ 		    angularDamping: 0.5,
+			type: CANNON.Body.DYNAMIC 
 		});
 		world.addBody(cubeBody);
 
@@ -1016,9 +1014,9 @@
 				mass: 2,
 				shape: new CANNON.Box(new CANNON.Vec3(0.05, 0.05, 0.35 )),  
 				position: new CANNON.Vec3(archerModelParent.position.x + 2*moveX, archerModelParent.position.y+0.8, archerModelParent.position.z + 2*moveZ),
-				material: cubePhysMat,
+				//material: cubePhysMat,
 				linearDamping: 0.5,
-				angularDamping: 1,
+				angularDamping: 0.5,
 			});
 			
 			var cubeArrowMesh = new THREE.Mesh( new THREE.BoxGeometry( 0.1 , 0.1, 0.7), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ));
@@ -1117,7 +1115,9 @@
 		groundMesh.castshadow=true;
 
 		//GROUND (CANNON)
-		const groundPhysMat = new CANNON.Material();
+		const groundPhysMat = new CANNON.Material(
+
+		);
 
 
 		const groundBody = new CANNON.Body({
@@ -1171,7 +1171,7 @@
 
 
 		const level3PlatformBody = new CANNON.Body({
-			shape: new CANNON.Box(new CANNON.Vec3(15, 15, 1)),
+			shape: new CANNON.Box(new CANNON.Vec3(15, 15, 1.5)),
 			type: CANNON.Body.KINEMATIC,
 			material: level3PlatformPhysMat,
 			position: new CANNON.Vec3(0, 6.5, 117.5)
@@ -1211,7 +1211,9 @@
 				shape: new CANNON.Box(new CANNON.Vec3(2.5, 2.5, 1)),
 				type: CANNON.Body.KINEMATIC,
 				material: groundPhysMat,
-				position: positions[i]
+				position: positions[i],
+				linearDamping: 1,
+ 		    	angularDamping: 1
 			});
 			world.addBody(genPlatBody);
 			genPlatBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
@@ -1222,10 +1224,11 @@
 		const groundBoxContactMat = new CANNON.ContactMaterial(
 			groundPhysMat,
 			cubePhysMat,
-			{contactEquationRelaxation : 1000},
 			{restitution : 0},
-			{linearDamping : 1},
 			{friction : 1}
+			// {contactEquationRelaxation : 1000},
+			// {restitution : 0},
+			// {linearDamping : 1},
 		);
 
 		world.addContactMaterial(groundBoxContactMat);
@@ -1328,6 +1331,8 @@
 		function animate() {
 			world.step(1/60);
 			TWEEN.update();
+			orbit.update();
+
 
 
 			playerAnimate(time.getDelta());
@@ -1398,6 +1403,11 @@
 			if(cubeBody.position.y < -10){
 				gameOver();
 			}
+
+			// console.log(camera.position)
+
+
+
 
 			renderer.render( scene, camera );
 
@@ -1490,7 +1500,7 @@
 			
 			if(pressed["SPACE"] && playerState!="Jump"){
 				playerState = "Jump";
-				cubeBody.velocity.y = 10;
+				cubeBody.velocity.y = 12;
 			}
 			else if(pressed["SHIFT"] && playerState!="Jump")
 				playerState = "Run";
@@ -1530,15 +1540,16 @@
 				playerState = "Idle";
 			}
 
-			if(playerState == "Run" || playerState == "Walk" || playerState =="Jump"){
-				//Camera angle with respect to player (obtained through x and z displacements)
-				var cameraAngle = Math.atan2(
-					(camera.position.x - cubeBody.position.x),
-					(camera.position.z - cubeBody.position.z));
+			//Camera angle with respect to player (obtained through x and z displacements)
+			var cameraAngle = Math.atan2(
+				(camera.position.x - cubeBody.position.x),
+				(camera.position.z - cubeBody.position.z));
 
-				//Desired final direction, that has to be reached slowly (using rotateTowards)
-				var desQuat = (new THREE.Quaternion()).setFromAxisAngle(new THREE.Vector3(0,1,0), cameraAngle + relDir);
-				cubeMesh.quaternion.rotateTowards(desQuat, 0.2);
+			//Desired final direction, that has to be reached slowly (using rotateTowards)
+			var desQuat = (new THREE.Quaternion()).setFromAxisAngle(new THREE.Vector3(0,1,0), cameraAngle + relDir);
+			cubeMesh.quaternion.rotateTowards(desQuat, 0.2);
+
+			if(playerState == "Run" || playerState == "Walk" || playerState =="Jump"){
 
 				//Obtain the world direction of the camera
 				var cameraDirection= new THREE.Vector3();
@@ -1548,28 +1559,44 @@
 				cameraDirection.y = 0;
 				cameraDirection.normalize();
 				cameraDirection.applyAxisAngle(new THREE.Vector3(0,1,0), relDir);
-				var moveX = cameraDirection.x * (playerState == 'Run' ? 10 : 5) * delta;
-				var moveZ = cameraDirection.z * (playerState == 'Run' ? 10 : 5) * delta;
-				var oldx =cubeBody.position.x;
-				var oldz =cubeBody.position.z;
+				var moveX = cameraDirection.x * (playerState == 'Run' ? 15 : 8) * delta;
+				var moveZ = cameraDirection.z * (playerState == 'Run' ? 15 : 8) * delta;
+
 				cubeBody.position.x += moveX;
 				cubeBody.position.z += moveZ;
 
-				//To make the camera move effectively only if the player moves (not if he encounters obstacles)
-				camera.position.x += cubeBody.position.x - oldx;
-				camera.position.z += cubeBody.position.z - oldz;
 
-				// update camera target
-				cameraTarget.x = cubeBody.position.x;
-				cameraTarget.y = cubeBody.position.y + 1;
-				cameraTarget.z = cubeBody.position.z;
-				orbit.target = cameraTarget;
+
 				
+				
+				
+			}
+			//To make the camera move effectively only if the player moves (not if he encounters obstacles)
+			camera.position.x += cubeBody.position.x - oldx;
+			camera.position.z += cubeBody.position.z - oldz;
 
-        }
+			// update camera target
+			cameraTarget.x += cubeBody.position.x -oldx;
+			//Update y easing only if "standing on a platform at different height"
+			if(playerState!="Jump" && oldy<cubeBody.position.y-0.1 || oldy>cubeBody.position.y+0.1){
+				oldy = cubeBody.position.y;
+				cameraMoveY();
+			}
+			cameraTarget.z += cubeBody.position.z - oldz;
+			orbit.target = cameraTarget;
+
+
+			oldx =cubeBody.position.x;
+			oldz =cubeBody.position.z;
 
 		changePlayerState();
 		};
+
+		function cameraMoveY(){
+			var moveYTween= new TWEEN.Tween({y : cameraTarget.y}).to({y : cubeBody.position.y + 2}, 800).onUpdate((object)=>{cameraTarget.y= object.y;});
+			moveYTween.easing(TWEEN.Easing.Quadratic.InOut);
+			moveYTween.start();
+		}
 
 		//Function to call when the player obtains game over (e.g. he falls down)
 		function gameOver(){
