@@ -47,6 +47,9 @@
 		var obsPlatTweens = [];
 		var obsPlat=[];
 		var oldx = 0, oldz = 0, oldy = 10;
+		var cameraAngle, desQuat;
+		var rotatingPlatModel;
+		var rotatePlatFloatingTweens =[];
 
 		//CANNON AND THREE SETUP
 		const world = new CANNON.World({
@@ -70,8 +73,8 @@
 		document.body.appendChild( renderer.domElement );
 
 		const orbit = new OrbitControls(camera, renderer.domElement);
-		orbit.enablePan = false;
-		orbit.enableZoom = false;
+		orbit.enablePan = true;
+		orbit.enableZoom = true;
 		
 		//LIGHT SETUP
 
@@ -82,13 +85,14 @@
 		dirLight.position.set(40, 40, 0);
 		dirLight.target.position.set(-2, 0, 0);
 		dirLight.castShadow = true; 
-		renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 		dirLight.shadow.camera.left = - 200;
 		dirLight.shadow.camera.right = 15;
 		dirLight.shadow.camera.top = 15;
 		dirLight.shadow.camera.bottom = - 15;
-		dirLight.shadow.camera.far = 35000;
+		dirLight.shadow.camera.far = 100;
 		dirLight.shadow.bias = - 0;
+		dirLight.shadow.mapSize.width = Math.pow(2,12); // default
+		dirLight.shadow.mapSize.height = Math.pow(2,12); // default
 		scene.add(dirLight);
 		scene.add(dirLight.target);
 
@@ -104,9 +108,109 @@
 		// var cubeMesh;
 		const gltfLoader = new GLTFLoader();
 
+		//GROUND (THREE)
+		const groundGeo = new THREE.BoxGeometry( 30, 30, 2.0 );
+		const groundMat = new THREE.MeshPhongMaterial({ 
+			color: 0xffffff,
+			side: THREE.DoubleSide,
+			wireframe: false
+			});
+		const groundMesh = new THREE.Mesh(groundGeo, groundMat);
+		scene.add(groundMesh);
+		groundMesh.receiveShadow=true;
+		groundMesh.castshadow=true;
+
+		//GROUND (CANNON)
+		const groundPhysMat = new CANNON.Material();
+
+
+		const groundBody = new CANNON.Body({
+			shape: new CANNON.Box(new CANNON.Vec3(15, 15, 1)),
+			type: CANNON.Body.KINEMATIC,
+			material: groundPhysMat
+		});
+		world.addBody(groundBody);
+		groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+
+
 		gltfLoader.load("gltf/arrow/scene.gltf", (gltf) => {
 			arrowModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			arrowModel.scale.setScalar( 0.01 );
+		});
+
+		gltfLoader.load("gltf/floating_platform/scene.gltf", (gltf) => {
+			rotatingPlatModel = gltf.scene.getObjectByName("Sketchfab_Scene");
+			rotatingPlatModel.scale.setScalar( 0.05 );
+
+
+
+			//OBSTACLES PLATFORMS (THREE)
+
+		var positions = [new CANNON.Vec3(-15, 0, 48),
+						new CANNON.Vec3(15, 0, 54),
+						new CANNON.Vec3(0, 0, 67),
+						new CANNON.Vec3(-20, 0, 90),
+						new CANNON.Vec3(20, 0, 90),
+						new CANNON.Vec3(-20, 0, 95),
+						new CANNON.Vec3(20, 0, 95),
+						new CANNON.Vec3(-20, 0, 100),
+						new CANNON.Vec3(20, 0, 100)
+					];
+
+		
+		for(var i=0; i<positions.length; i++){
+			var genPlatGeo = new THREE.CylinderGeometry( 2.5, 2.5, 0.5, 8 );
+			var genPlatMat = new THREE.MeshPhongMaterial({ 
+				color: 0x00ff00,
+				side: THREE.DoubleSide,
+				wireframe: true
+				});
+			var genPlatMesh = new THREE.Mesh(genPlatGeo, genPlatMat);
+			scene.add(genPlatMesh);
+			genPlatMesh.receiveShadow=true;
+			genPlatMesh.castshadow=true;
+
+			var genPlatModel = rotatingPlatModel.clone();
+			var rotatingPlatModelParent = new THREE.Object3D();
+			rotatingPlatModel.getWorldPosition(rotatingPlatModelParent.position);
+			rotatingPlatModel.rotation.set(...[0,0,0]);
+			rotatingPlatModelParent.add(genPlatModel);
+
+			scene.add(rotatingPlatModelParent);
+
+			//OBSTACLES PLATFORMS (CANNON)
+
+			var genPlatBody = new CANNON.Body({
+				shape: new CANNON.Cylinder(2.5,2.5,0.5,8),
+				type: CANNON.Body.KINEMATIC,
+				material: groundPhysMat,
+				position: positions[i],
+				linearDamping: 1,
+ 		    	angularDamping: 1
+			});
+			world.addBody(genPlatBody);
+			genPlatBody.quaternion.setFromEuler(0, 0, 0);
+			obsPlat.push({"mesh" : genPlatMesh, "body" : genPlatBody, "model": rotatingPlatModelParent});
+		}
+
+		obsPlat.forEach(element => {
+			var helix = element["model"].getObjectByName("Helix");
+
+			var rotateHelixTween = new TWEEN.Tween({theta:0}).to({theta:2*Math.PI}, 1000).onUpdate((object)=>{if(helix)helix.rotation.z= object.theta;});
+			rotateHelixTween.repeat(Infinity);
+			rotateHelixTween.start();
+
+			var rotatePlatFloating = new TWEEN.Tween({y:element["body"].position.y}).to({y:element["body"].position.y+0.2}, 200).onUpdate((object)=>{if(element["body"])element["body"].position.y= object.y;});
+			rotatePlatFloating.repeat(Infinity).yoyo(true);
+			rotatePlatFloating.start();
+
+			rotatePlatFloatingTweens.push(rotatePlatFloating);
+		});
+		var helix = genPlatModel.getObjectByName("Helix");
+
+			var rotateHelixTween = new TWEEN.Tween({theta:0}).to({theta:2*Math.PI}, 1000).onUpdate((object)=>{if(helix)helix.rotation.z= object.theta;});
+			rotateHelixTween.repeat(Infinity);
+			rotateHelixTween.start();
 		});
 
 		gltfLoader.load("gltf/target/scene.gltf", (gltf) => {
@@ -222,8 +326,6 @@
 			// Object.keys(archerStructure).forEach(key => {
 			// out += ('archerStructure["'+ key + '"].rotation.x = ' + 'object["'+ key + 'Rx"]' +  ';' +'archerStructure["'+ key + '"].rotation.y = ' + 'object["'+ key + 'Ry"]' + ';' + 'archerStructure["'+ key + '"].rotation.z = ' + 'object["'+ key + 'Rz"]' +  '; \n');				
 			// });
-			// console.log(out);
-			// console.log(dumpObject(archerModel).join('\n'));
 			
 			//TWEEN ANIMATIONS
 			//var groupPlayer = new TWEEN.Group();
@@ -1014,7 +1116,6 @@
 				mass: 2,
 				shape: new CANNON.Box(new CANNON.Vec3(0.05, 0.05, 0.35 )),  
 				position: new CANNON.Vec3(archerModelParent.position.x + 2*moveX, archerModelParent.position.y+0.8, archerModelParent.position.z + 2*moveZ),
-				//material: cubePhysMat,
 				linearDamping: 0.5,
 				angularDamping: 0.5,
 			});
@@ -1093,7 +1194,22 @@
 		function obj2Completed(){
 			if(!target3hit || !target4hit) return;
 			console.log("LEVEL 3");
-			level3Unlock1.start();
+			rotatePlatFloatingTweens.forEach(element => {
+				element.stop();
+				rotatePlatFloatingTweens.filter(function(ele){ 
+					return ele != element; 
+				});
+			});
+			
+			level3Unlock1.onComplete(()=> {
+				obsPlat.forEach(element => {
+				var rotatePlatFloating = new TWEEN.Tween({y:element["body"].position.y}).to({y:element["body"].position.y+0.2}, 200).onUpdate((object)=>{if(element["body"])element["body"].position.y= object.y;});
+				rotatePlatFloating.repeat(Infinity).yoyo(true);
+				rotatePlatFloating.start();
+
+				rotatePlatFloatingTweens.push(rotatePlatFloating);
+			});
+			}).start();
 			level3Unlock2.start();
 			level3Unlock3.start();
 			level3Unlock4.start();
@@ -1102,32 +1218,7 @@
 		}
 		
 
-		//GROUND (THREE)
-		const groundGeo = new THREE.BoxGeometry( 30, 30, 2.0 );
-		const groundMat = new THREE.MeshPhongMaterial({ 
-			color: 0xffffff,
-			side: THREE.DoubleSide,
-			wireframe: false
-			});
-		const groundMesh = new THREE.Mesh(groundGeo, groundMat);
-		scene.add(groundMesh);
-		groundMesh.receiveShadow=true;
-		groundMesh.castshadow=true;
-
-		//GROUND (CANNON)
-		const groundPhysMat = new CANNON.Material(
-
-		);
-
-
-		const groundBody = new CANNON.Body({
-			shape: new CANNON.Box(new CANNON.Vec3(15, 15, 1)),
-			type: CANNON.Body.KINEMATIC,
-			material: groundPhysMat
-		});
-		world.addBody(groundBody);
-		groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
-
+		
 
 		//LEVEL2PLATFORM (THREE)
 		const level2PlatformGeo = new THREE.BoxGeometry( 30, 30, 2.0 );
@@ -1179,46 +1270,7 @@
 		world.addBody(level3PlatformBody);
 		level3PlatformBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
 
-		//OBSTACLES PLATFORMS (THREE)
-
-		var positions = [new CANNON.Vec3(-15, 0, 48),
-						new CANNON.Vec3(15, 0, 54),
-						new CANNON.Vec3(0, 0, 67),
-						new CANNON.Vec3(-20, 0, 90),
-						new CANNON.Vec3(20, 0, 90),
-						new CANNON.Vec3(-20, 0, 95),
-						new CANNON.Vec3(20, 0, 95),
-						new CANNON.Vec3(-20, 0, 100),
-						new CANNON.Vec3(20, 0, 100)
-					];
-
 		
-		for(var i=0; i<positions.length; i++){
-			var genPlatGeo = new THREE.BoxGeometry( 5, 5, 2.0 );
-			var genPlatMat = new THREE.MeshPhongMaterial({ 
-				color: 0xffffff,
-				side: THREE.DoubleSide,
-				wireframe: false
-				});
-			var genPlatMesh = new THREE.Mesh(genPlatGeo, genPlatMat);
-			scene.add(genPlatMesh);
-			genPlatMesh.receiveShadow=true;
-			genPlatMesh.castshadow=true;
-
-			//OBSTACLES PLATFORMS (CANNON)
-
-			var genPlatBody = new CANNON.Body({
-				shape: new CANNON.Box(new CANNON.Vec3(2.5, 2.5, 1)),
-				type: CANNON.Body.KINEMATIC,
-				material: groundPhysMat,
-				position: positions[i],
-				linearDamping: 1,
- 		    	angularDamping: 1
-			});
-			world.addBody(genPlatBody);
-			genPlatBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
-			obsPlat.push({"mesh" : genPlatMesh, "body" : genPlatBody});
-		}
 
 		//CONTACT MATERIALS (CANNON)
 		const groundBoxContactMat = new CANNON.ContactMaterial(
@@ -1398,6 +1450,8 @@
 			obsPlat.forEach(element => {
 				element["mesh"].position.copy(element["body"].position);
 				element["mesh"].quaternion.copy(element["body"].quaternion);
+				element["model"].position.copy(element["body"].position);
+				element["model"].quaternion.copy(element["body"].quaternion);
 			});
 
 			if(cubeBody.position.y < -10){
@@ -1413,6 +1467,8 @@
 
 			requestAnimationFrame(animate);
 		};
+
+
 
 		//Set elements of archer useful for animations
 		function populateArcherStructure(){
@@ -1500,7 +1556,7 @@
 			
 			if(pressed["SPACE"] && playerState!="Jump"){
 				playerState = "Jump";
-				cubeBody.velocity.y = 12;
+				cubeBody.velocity.y = 15;
 			}
 			else if(pressed["SHIFT"] && playerState!="Jump")
 				playerState = "Run";
@@ -1541,12 +1597,12 @@
 			}
 
 			//Camera angle with respect to player (obtained through x and z displacements)
-			var cameraAngle = Math.atan2(
+			cameraAngle = Math.atan2(
 				(camera.position.x - cubeBody.position.x),
 				(camera.position.z - cubeBody.position.z));
 
 			//Desired final direction, that has to be reached slowly (using rotateTowards)
-			var desQuat = (new THREE.Quaternion()).setFromAxisAngle(new THREE.Vector3(0,1,0), cameraAngle + relDir);
+			desQuat = (new THREE.Quaternion()).setFromAxisAngle(new THREE.Vector3(0,1,0), cameraAngle + relDir);
 			cubeMesh.quaternion.rotateTowards(desQuat, 0.2);
 
 			if(playerState == "Run" || playerState == "Walk" || playerState =="Jump"){
