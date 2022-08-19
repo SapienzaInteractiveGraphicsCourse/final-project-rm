@@ -50,6 +50,7 @@
 		var cameraAngle, desQuat;
 		var rotatingPlatModel;
 		var rotatePlatFloatingTweens =[];
+		var skyboxModel, mainPlatModel, groundPlatModelParent, level2PlatformModelParent, level3PlatformModelParent;
 
 		//CANNON AND THREE SETUP
 		const world = new CANNON.World({
@@ -109,11 +110,11 @@
 		const gltfLoader = new GLTFLoader();
 
 		//GROUND (THREE)
-		const groundGeo = new THREE.BoxGeometry( 30, 30, 2.0 );
+		const groundGeo = new THREE.CylinderGeometry( 18, 18, 1, 6 );
 		const groundMat = new THREE.MeshPhongMaterial({ 
-			color: 0xffffff,
+			color: 0x00ff00,
 			side: THREE.DoubleSide,
-			wireframe: false
+			wireframe: true
 			});
 		const groundMesh = new THREE.Mesh(groundGeo, groundMat);
 		scene.add(groundMesh);
@@ -125,17 +126,59 @@
 
 
 		const groundBody = new CANNON.Body({
-			shape: new CANNON.Box(new CANNON.Vec3(15, 15, 1)),
+			shape: new CANNON.Cylinder(18,18,1,6),
 			type: CANNON.Body.KINEMATIC,
 			material: groundPhysMat
 		});
 		world.addBody(groundBody);
-		groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+		groundBody.quaternion.setFromEuler(0, Math.PI/6, 0);
 
 
 		gltfLoader.load("gltf/arrow/scene.gltf", (gltf) => {
 			arrowModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			arrowModel.scale.setScalar( 0.01 );
+		});
+
+		gltfLoader.load("gltf/main_plat/scene.gltf", (gltf) => {
+			mainPlatModel = gltf.scene.getObjectByName("Sketchfab_Scene");
+			mainPlatModel.scale.setScalar( 4.5 );
+
+			var groundPlatModel = mainPlatModel.clone();
+			groundPlatModelParent = new THREE.Object3D();
+			groundPlatModel.getWorldPosition(groundPlatModelParent.position);
+			groundPlatModel.rotation.set(...[0,0,0]);
+			groundPlatModelParent.add(groundPlatModel);
+			scene.add(groundPlatModelParent);
+
+			var level2PlatformModel= mainPlatModel.clone();
+			level2PlatformModelParent = new THREE.Object3D();
+			level2PlatformModel.getWorldPosition(level2PlatformModelParent.position);
+			level2PlatformModel.rotation.set(...[0,0,0]);
+			level2PlatformModelParent.add(level2PlatformModel);
+			scene.add(level2PlatformModelParent);
+
+			var level3PlatformModel = mainPlatModel.clone();
+			level3PlatformModelParent = new THREE.Object3D();
+			level3PlatformModel.getWorldPosition(level3PlatformModelParent.position);
+			level3PlatformModel.rotation.set(...[0,0,0]);
+			level3PlatformModelParent.add(level3PlatformModel);
+			scene.add(level3PlatformModelParent);
+		});
+
+		gltfLoader.load("gltf/skybox/scene.gltf", (gltf) => {
+			skyboxModel = gltf.scene.getObjectByName("Sketchfab_Scene");
+			skyboxModel.scale.setScalar( 1 );
+			skyboxModel.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.castShadow = false;
+					node.receiveShadow=false;
+					node.frustumCulled=false;
+					//var prevMaterial = node.material;
+					//node.material = new THREE.MeshBasicMaterial();
+					//THREE.MeshPhongMaterial.prototype.copy.call( node.material, prevMaterial );
+			}
+			} );
+			scene.add(skyboxModel);
 		});
 
 		gltfLoader.load("gltf/floating_platform/scene.gltf", (gltf) => {
@@ -1221,11 +1264,11 @@
 		
 
 		//LEVEL2PLATFORM (THREE)
-		const level2PlatformGeo = new THREE.BoxGeometry( 30, 30, 2.0 );
+		const level2PlatformGeo = new THREE.CylinderGeometry( 18, 18, 1, 6 );
 		const level2PlatformMat = new THREE.MeshPhongMaterial({ 
-			color: 0xffffff,
+			color: 0x00ff00,
 			side: THREE.DoubleSide,
-			wireframe: false
+			wireframe: true
 			});
 		const level2PlatformMesh = new THREE.Mesh(level2PlatformGeo, level2PlatformMat);
 		scene.add(level2PlatformMesh);
@@ -1237,20 +1280,21 @@
 
 
 		const level2PlatformBody = new CANNON.Body({
-			shape: new CANNON.Box(new CANNON.Vec3(15, 15, 1)),
+			shape: new CANNON.Cylinder(18,18,1,6),
 			type: CANNON.Body.KINEMATIC,
 			material: level2PlatformPhysMat,
 			position: new CANNON.Vec3(0, 10, 30)
 		});
 		world.addBody(level2PlatformBody);
-		level2PlatformBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+		level2PlatformBody.quaternion.setFromEuler(0, Math.PI/6, 0);
+
 
 		//LEVEL3PLATFORM (THREE)
-		const level3PlatformGeo = new THREE.BoxGeometry( 30, 30, 3.0 );
+		const level3PlatformGeo = new THREE.CylinderGeometry( 18, 18, 1, 6 );
 		const level3PlatformMat = new THREE.MeshPhongMaterial({ 
-			color: 0xffffff,
+			color: 0x00ff00,
 			side: THREE.DoubleSide,
-			wireframe: false
+			wireframe: true
 			});
 		const level3PlatformMesh = new THREE.Mesh(level3PlatformGeo, level3PlatformMat);
 		scene.add(level3PlatformMesh);
@@ -1262,13 +1306,13 @@
 
 
 		const level3PlatformBody = new CANNON.Body({
-			shape: new CANNON.Box(new CANNON.Vec3(15, 15, 1.5)),
+			shape: new CANNON.Cylinder(18,18,1,6),
 			type: CANNON.Body.KINEMATIC,
 			material: level3PlatformPhysMat,
 			position: new CANNON.Vec3(0, 6.5, 117.5)
 		});
 		world.addBody(level3PlatformBody);
-		level3PlatformBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+		level3PlatformBody.quaternion.setFromEuler(0, Math.PI/6, 0);
 
 		
 
@@ -1389,8 +1433,13 @@
 
 			playerAnimate(time.getDelta());
 
-			groundMesh.position.copy(groundBody.position);
-			groundMesh.quaternion.copy(groundBody.quaternion);
+			if(groundMesh && groundPlatModelParent){
+				groundMesh.position.copy(groundBody.position);
+				groundMesh.quaternion.copy(groundBody.quaternion);
+				groundPlatModelParent.position.copy(groundBody.position);
+				groundPlatModelParent.quaternion.copy(groundBody.quaternion);
+				groundPlatModelParent.rotation.y-=Math.PI/6;
+			}
 
 			if(cubeMesh){
 				cubeMesh.position.copy(cubeBody.position);
@@ -1428,14 +1477,20 @@
 				targetMesh4.position.copy(targetBody4.position);
 			}
 
-			if(level2PlatformBody && level2PlatformMesh){
+			if(level2PlatformBody && level2PlatformMesh && level2PlatformModelParent){
 				level2PlatformMesh.position.copy(level2PlatformBody.position);
 				level2PlatformMesh.quaternion.copy(level2PlatformBody.quaternion);
+				level2PlatformModelParent.position.copy(level2PlatformBody.position);
+				level2PlatformModelParent.quaternion.copy(level2PlatformBody.quaternion);
+				level2PlatformModelParent.rotation.y-=Math.PI/6;
 			}
 
-			if(level3PlatformBody && level3PlatformMesh){
+			if(level3PlatformBody && level3PlatformMesh && level3PlatformModelParent){
 				level3PlatformMesh.position.copy(level3PlatformBody.position);
 				level3PlatformMesh.quaternion.copy(level3PlatformBody.quaternion);
+				level3PlatformModelParent.position.copy(level3PlatformBody.position);
+				level3PlatformModelParent.quaternion.copy(level3PlatformBody.quaternion);
+				level3PlatformModelParent.rotation.y-=Math.PI/6;
 			}
 
 			//if (mixer) mixer.update(time.getDelta());
@@ -1568,29 +1623,39 @@
 				shoot();
 			}
 
+			var moving = false;
+
 			if(pressed["W"] && pressed["A"]){
 				relDir = Math.PI/4;
+				moving=true;
 			}
 			else if(pressed["W"] && pressed["D"]){
 				relDir = -Math.PI/4;
+				moving=true;
 			}
 			else if(pressed["S"] && pressed["A"]){
 				relDir = 3*Math.PI/4;
+				moving=true;
 			}
 			else if(pressed["S"] && pressed["D"]){
 				relDir = -3*Math.PI/4;
+				moving=true;
 			}
 			else if(pressed["W"]){
 				relDir = 0;
+				moving=true;
 			}
 			else if(pressed["A"]){
 				relDir = Math.PI/2;
+				moving=true;
 			}
 			else if(pressed["S"]){
 				relDir = Math.PI;
+				moving=true;
 			}
 			else if(pressed["D"]){
 				relDir = -Math.PI/2;
+				moving=true;
 			}
 			else  if(playerState!="Jump") {
 				playerState = "Idle";
@@ -1605,7 +1670,7 @@
 			desQuat = (new THREE.Quaternion()).setFromAxisAngle(new THREE.Vector3(0,1,0), cameraAngle + relDir);
 			cubeMesh.quaternion.rotateTowards(desQuat, 0.2);
 
-			if(playerState == "Run" || playerState == "Walk" || playerState =="Jump"){
+			if(moving == true){
 
 				//Obtain the world direction of the camera
 				var cameraDirection= new THREE.Vector3();

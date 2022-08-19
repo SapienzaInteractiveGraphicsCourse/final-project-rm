@@ -1,0 +1,11 @@
+Model Information:
+* title:	Tron Armory Hex Platform Lowpoly
+* source:	https://sketchfab.com/3d-models/tron-armory-hex-platform-lowpoly-cb1eaab43a114df2a9fa17529ef46d8d
+* author:	IndieArtsMidwest (https://sketchfab.com/IndieArtsMidwest)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Tron Armory Hex Platform Lowpoly" (https://sketchfab.com/3d-models/tron-armory-hex-platform-lowpoly-cb1eaab43a114df2a9fa17529ef46d8d) by IndieArtsMidwest (https://sketchfab.com/IndieArtsMidwest) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
