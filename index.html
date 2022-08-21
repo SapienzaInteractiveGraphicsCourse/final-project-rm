@@ -21,11 +21,9 @@
 			}
 		</script>
 
-		<!-- <script src="../node_modules/tween.js/dist/tween.umd.js"></script> -->
-
 		<script type="module">
         import * as THREE from '../node_modules/three/build/three.module.js';
-        import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls.js';
+        import { OrbitControls } from '../node_modules/three/examples/jsm/controls/ModifiedOrbitControls.js';
 		import * as CANNON from '../node_modules/cannon-es/dist/cannon-es.js';
 		import {GLTFLoader} from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js';
 		import { TWEEN } from '../node_modules/three/examples/jsm/libs/tween.module.min.js'
@@ -80,17 +78,22 @@
 			1000
 			);
 			
-			camera.position.set(0,10,-20);
 			
 			const renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			renderer.shadowMap.enabled = true;
 			document.body.appendChild( renderer.domElement );
 			renderer.toneMappingExposure = 0.5;
+			
+			var orbit = new OrbitControls(camera,renderer.domElement);
+			camera.position.set(0,10,-20);
+			camera.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), Math.PI);
 
-		const orbit = new OrbitControls(camera, renderer.domElement);
-		orbit.enablePan = true;
-		orbit.enableZoom = true;
+			//add event listener to your document.body
+			document.body.addEventListener( 'click', function () {
+				//lock mouse on screen
+				orbit.lock();
+			}, false );
 		
 		//LIGHT SETUP
 
@@ -1177,7 +1180,7 @@
 		const cubeBody = new CANNON.Body({
 			mass: 80,
 			shape: new CANNON.Box(new CANNON.Vec3(0.7, 1.5, 1.0)),
-			position: new CANNON.Vec3(0, 5, 0),
+			position: new CANNON.Vec3(0, 2.8, 0),
 			material: cubePhysMat,
 			linearDamping: 0.5,
  		    angularDamping: 0.5,
@@ -1471,12 +1474,14 @@
 			}
 		});
 
+		orbit.addEventListener('lock', () => (console.log("locked")));
+		orbit.addEventListener('unlock', () => (console.log("unlocked")/*menu.style.display = 'block'*/));
+
 		const time = new THREE.Clock();
 		function animate() {
 			world.step(1/60);
 			TWEEN.update();
 			orbit.update();
-
 
 
 			playerAnimate(time.getDelta());
