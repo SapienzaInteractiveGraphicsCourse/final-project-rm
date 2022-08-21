@@ -29,6 +29,7 @@
 		import * as CANNON from '../node_modules/cannon-es/dist/cannon-es.js';
 		import {GLTFLoader} from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js';
 		import { TWEEN } from '../node_modules/three/examples/jsm/libs/tween.module.min.js'
+		import { Sky } from '../node_modules/three/examples/jsm/objects/Sky.js';
 
 		var relDir=0;
 		var playerState = "Idle";
@@ -58,20 +59,34 @@
 		});
 
 		const scene = new THREE.Scene();
-		scene.background = new THREE.Color( 0xffeeee );
+		// scene.background = new THREE.Color( 0x00C0F0 );
+		var sky = new Sky();
+		sky.scale.setScalar( 450000 );
+		scene.add( sky );
+		var sunPosition = new THREE.Vector3();
+
+		sky.material.uniforms[ 'turbidity' ].value =20;
+		sky.material.uniforms[ 'mieCoefficient' ].value =0;
+		sky.material.uniforms[ 'mieDirectionalG' ].value =1;
+		sky.material.uniforms[ 'rayleigh' ].value =0.15;
+		sunPosition.setFromSphericalCoords( 1, THREE.MathUtils.degToRad( 90 - 45 ), THREE.MathUtils.degToRad( 90 ) );
+		sky.material.uniforms[ 'sunPosition' ].value.copy( sunPosition );
+
+		
 		const camera = new THREE.PerspectiveCamera(
 			45,
 			window.innerWidth / window.innerHeight,
 			0.1,
 			1000
-		);
-
-		camera.position.set(0,10,-20);
-
-		const renderer = new THREE.WebGLRenderer();
-		renderer.setSize( window.innerWidth, window.innerHeight );
-		renderer.shadowMap.enabled = true;
-		document.body.appendChild( renderer.domElement );
+			);
+			
+			camera.position.set(0,10,-20);
+			
+			const renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.shadowMap.enabled = true;
+			document.body.appendChild( renderer.domElement );
+			renderer.toneMappingExposure = 0.5;
 
 		const orbit = new OrbitControls(camera, renderer.domElement);
 		orbit.enablePan = true;
@@ -117,7 +132,7 @@
 			wireframe: true
 			});
 		const groundMesh = new THREE.Mesh(groundGeo, groundMat);
-		scene.add(groundMesh);
+		//scene.add(groundMesh);
 		groundMesh.receiveShadow=true;
 		groundMesh.castshadow=true;
 
@@ -137,11 +152,28 @@
 		gltfLoader.load("gltf/arrow/scene.gltf", (gltf) => {
 			arrowModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			arrowModel.scale.setScalar( 0.01 );
+
+			gltf.scene.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.castShadow = true;
+					node.receiveShadow=true;
+					node.frustumCulled=false;
+			}
+			} );
 		});
 
 		gltfLoader.load("gltf/main_plat/scene.gltf", (gltf) => {
 			mainPlatModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			mainPlatModel.scale.setScalar( 4.5 );
+
+			
+			gltf.scene.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.castShadow = true;
+					node.receiveShadow=true;
+					node.frustumCulled=false;
+			}
+			} );
 
 			var groundPlatModel = mainPlatModel.clone();
 			groundPlatModelParent = new THREE.Object3D();
@@ -168,14 +200,14 @@
 		gltfLoader.load("gltf/skybox/scene.gltf", (gltf) => {
 			skyboxModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			skyboxModel.scale.setScalar( 1 );
+			//Removing the sky (it causes issues with directional light)
+			var sky= gltf.scene.getObjectByName("hoth_sky");
+			sky.visible=false;
 			skyboxModel.traverse( function( node ) {
 				if (node.isMesh) { 
-					node.castShadow = false;
-					node.receiveShadow=false;
-					node.frustumCulled=false;
-					//var prevMaterial = node.material;
-					//node.material = new THREE.MeshBasicMaterial();
-					//THREE.MeshPhongMaterial.prototype.copy.call( node.material, prevMaterial );
+					node.castShadow = true;
+					node.receiveShadow=true;
+					node.frustumCulled=true;
 			}
 			} );
 			scene.add(skyboxModel);
@@ -185,13 +217,21 @@
 			rotatingPlatModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			rotatingPlatModel.scale.setScalar( 0.05 );
 
+			gltf.scene.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.castShadow = true;
+					node.receiveShadow=true;
+					node.frustumCulled=false;
+			}
+			} );
+
 
 
 			//OBSTACLES PLATFORMS (THREE)
 
-		var positions = [new CANNON.Vec3(-15, 0, 48),
-						new CANNON.Vec3(15, 0, 54),
-						new CANNON.Vec3(0, 0, 67),
+		var positions = [new CANNON.Vec3(-15, -1, 48),
+						new CANNON.Vec3(15, -1, 54),
+						new CANNON.Vec3(0, -1, 67),
 						new CANNON.Vec3(-20, 0, 90),
 						new CANNON.Vec3(20, 0, 90),
 						new CANNON.Vec3(-20, 0, 95),
@@ -259,6 +299,16 @@
 		gltfLoader.load("gltf/target/scene.gltf", (gltf) => {
 			targetModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			targetModel.scale.setScalar( 0.3 );
+
+			
+			gltf.scene.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.castShadow = true;
+					node.receiveShadow=true;
+					node.frustumCulled=false;
+			}
+			} );
+
 			targetModelParent1 = new THREE.Object3D();
 			targetModelParent2 = new THREE.Object3D();
 			targetModel1 = targetModel.clone();
@@ -287,10 +337,8 @@
 			targetModelParent4.add(targetModel4);
 			scene.add(targetModelParent4);
 		});
-
-		const url = 'gltf/archer/scene.gltf';
 		
-		gltfLoader.load(url, (gltf) => {
+		gltfLoader.load("gltf/archer/scene.gltf", (gltf) => {
 			archerModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 
 			archerModel.scale.setScalar( 1.7 );
@@ -400,7 +448,7 @@
 				genTween.start();
 			}
 
-			level2Unlock = new TWEEN.Tween({y:10}).to({y:0}, 4000).onUpdate((object)=>{level2PlatformBody.position.y= object.y;});
+			level2Unlock = new TWEEN.Tween({theta:Math.PI/2}).to({theta:0}, 4000).onUpdate((object)=>{		level2PlatformBody.quaternion.setFromEuler(object.theta, Math.PI/6, 0)});
 			level2Unlock.easing(TWEEN.Easing.Bounce.Out);
 
 			level3Unlock1 = new TWEEN.Tween({x:-20}).to({x:-2.5}, 4000).onUpdate((object)=>{obsPlat[3]["body"].position.x= object.x;});
@@ -1210,7 +1258,7 @@
 
 		var targetBody3 = new CANNON.Body({
 			shape: new CANNON.Cylinder(1,1,0.5,10),
-			position: new CANNON.Vec3(-2, 2.5, 90),
+			position: new CANNON.Vec3(-2, 1.5, 90),
 			type: CANNON.Body.STATIC
 		});
 		const targetMesh3 = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ) );
@@ -1220,7 +1268,7 @@
 		
 		var targetBody4 = new CANNON.Body({
 			shape: new CANNON.Cylinder(1,1,0.5,10),
-			position: new CANNON.Vec3(2, 2.5, 90),
+			position: new CANNON.Vec3(2, 1.5, 90),
 			type: CANNON.Body.STATIC
 		});
 		const targetMesh4 = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ) );
@@ -1283,10 +1331,10 @@
 			shape: new CANNON.Cylinder(18,18,1,6),
 			type: CANNON.Body.KINEMATIC,
 			material: level2PlatformPhysMat,
-			position: new CANNON.Vec3(0, 10, 30)
+			position: new CANNON.Vec3(0, 0, 31)
 		});
 		world.addBody(level2PlatformBody);
-		level2PlatformBody.quaternion.setFromEuler(0, Math.PI/6, 0);
+		level2PlatformBody.quaternion.setFromEuler(Math.PI/2, Math.PI/6, 0);
 
 
 		//LEVEL3PLATFORM (THREE)
