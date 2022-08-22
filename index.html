@@ -4,7 +4,127 @@
 		<meta charset="utf-8">
 		<title>My first three.js app</title>
 		<style>
-			body { margin: 0; }
+			body { margin: 0;
+				background: #000;
+				font-family: Helvetica, sans-serif; }
+			
+			.example {
+			float: left;
+			margin: 10px;
+			}
+			.inp {
+			background: rgba(0,127,128,0.68);
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+			border: 1px solid rgba(128,255,255,0.25);
+			color: rgba(255,255,255,0.75);
+			text-shadow: 0 0 10px rgba(0,255,255,0.95);
+			font-size: 30px;
+			padding: 10px 30px;
+			text-shadow: 0 0 10px rgba(0,255,255,0.5);
+			outline: none;
+			}
+			.inp:hover {
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			border: 1px solid rgba(128,255,255,0.75);
+			}
+			.inp:focus {
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			border: 1px solid rgba(128,255,255,0.75);
+			}
+			.inp-secondary {
+			background-color: transparent;
+			color: rgba(0,127,128,0.8);
+			text-shadow: 0 0 12px rgba(0,255,255,0.3);
+			/* text-shadow: none; */
+			border: 1px solid rgba(128,255,255,0.5);
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.25);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.25);
+			}
+			.btn {
+			background: rgba(0,127,128,0.68);
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+			border: 1px solid rgba(128,255,255,0.25);
+			color: rgba(255,255,255,0.75);
+			text-shadow: 0 0 10px rgba(0,255,255,0.95);
+			font-size: 30px;
+			padding: 10px 30px;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			outline: none;
+			}
+			.btn:hover {
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			border: 1px solid rgba(128,255,255,0.75);
+			}
+			.btn-primary:active {
+			background: rgba(0,127,128,0.9);
+			}
+			.btn-secondary {
+			background-color: transparent;
+			color: rgba(0,127,128,0.8);
+			text-shadow: 0 0 12px rgba(0,255,255,0.3);
+			/* text-shadow: none; */
+			border: 1px solid rgba(128,255,255,0.5);
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.25);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.25);
+			}
+			.btn-secondary:active {
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			}
+			.element {
+			position: relative;
+			width: 120px;
+			height: 160px;
+			color: #fff;
+			text-align: center;
+			background: rgba(0,127,128,0.68);
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+			border: 1px solid rgba(128,255,255,0.25);
+			cursor: default;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			}
+			.element:hover {
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			border: 1px solid rgba(128,255,255,0.75);
+			}
+			.element .number {
+			font-size: 12px;
+			color: rgba(128,255,255,0.75);
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			}
+			.element .symbol {
+			color: rgba(255,255,255,0.75);
+			text-shadow: 0 0 10px rgba(0,255,255,0.95);
+			position: absolute;
+			font-size: 60px;
+			font-weight: bold;
+			top: 40px;
+			left: 0px;
+			right: 0px;
+			}
+			.element .details {
+			font-size: 12px;
+			color: rgba(128,255,255,0.75);
+			position: absolute;
+			bottom: 15px;
+			left: 0px;
+			right: 0px;
+			}
 		</style>
 	</head>
 	<body>
@@ -20,6 +140,44 @@
 				}
 			}
 		</script>
+
+
+
+
+		<!-- Pause Menu -->
+		<div id="pause_bg" style = "position: absolute; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7);">
+			<button id="pause_fg" class="btn btn-primary example" style="width: 70%; height: auto; text-align: center; cursor: pointer; margin-left:15%;  margin-top: 20%; padding: 2%;">
+				<p style=" font-size: 50px; vertical-align: top;">
+					<b>PAUSE</b>
+				</p>
+				<hr/>
+				<p style="font-size:100px;">
+					<b>CLICK TO RESUME</b>
+				</p>
+				<span style="border: 1px solid white; padding: 2%;">
+					<span>
+						<span>Move: </span>
+						<img style="vertical-align:middle" src="img/wasd.png" width="4%">
+					</span>
+					|
+					<span>
+						<span>Jump: </span>
+						<img style="vertical-align:middle" src="img/space-bar.png" width="4%">
+					</span>
+					|
+					<span>
+						<span>Look: </span>
+						<img style="vertical-align:middle" src="img/mouse.png" width="4%">
+					</span>
+					|
+					<span>
+						<span>Shoot an arrow: </span>
+						<img style="vertical-align:middle" src="img/f-key.png" width="4%">
+					</span>
+				</span>
+			  </button>
+				
+		</div>
 
 		<script type="module">
         import * as THREE from '../node_modules/three/build/three.module.js';
@@ -50,6 +208,8 @@
 		var rotatingPlatModel;
 		var rotatePlatFloatingTweens =[];
 		var skyboxModel, mainPlatModel, groundPlatModelParent, level2PlatformModelParent, level3PlatformModelParent;
+		var pause_bg = document.getElementById("pause_bg");
+		var pause_fg = document.getElementById("pause_fg");
 
 		//CANNON AND THREE SETUP
 		const world = new CANNON.World({
@@ -89,11 +249,18 @@
 			camera.position.set(0,10,-20);
 			camera.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), Math.PI);
 
-			//add event listener to your document.body
+			var lastUnlockTime = null;
+
 			document.body.addEventListener( 'click', function () {
-				//lock mouse on screen
-				orbit.lock();
+				if (lastUnlockTime && (performance.now() - lastUnlockTime) < 1250) {
+					return
+				}
+				else
+					orbit.lock();
 			}, false );
+
+
+
 		
 		//LIGHT SETUP
 
@@ -1474,8 +1641,8 @@
 			}
 		});
 
-		orbit.addEventListener('lock', () => (console.log("locked")));
-		orbit.addEventListener('unlock', () => (console.log("unlocked")/*menu.style.display = 'block'*/));
+		orbit.addEventListener('lock', function() {pause_bg.style.display = 'none'; pause_fg.style.display = 'none';});
+		orbit.addEventListener('unlock', function() {lastUnlockTime = performance.now(); pause_fg.style.display = ''; pause_bg.style.display = '';});
 
 		const time = new THREE.Clock();
 		function animate() {
