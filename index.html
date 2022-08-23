@@ -125,6 +125,7 @@
 			left: 0px;
 			right: 0px;
 			}
+
 		</style>
 	</head>
 	<body>
@@ -142,11 +143,17 @@
 		</script>
 
 
-
+		<!-- Initial loading bar -->
+		<div id="gameLoading_bg" style="text-align:center; position: absolute; width: 100%; height: 100%; background-color: rgba(0,0,0,1);">
+			<div id="gameLoading_fg" style="text-align:center; position:absolute;     width: 100em; height: auto; margin: 0 auto; padding: 10px; margin-top:20%;  position: relative; ">
+				<label id="gameLoading_label" style=" font-size: 3em; color:white;" for="gameLoading_fb_bar">Loading in progress:</label><br>
+				<progress  id="gameLoading_fg_bar" style="width: 100em; height: 3em;" max="100" ></progress>
+			</div>
+		</div>
 
 		<!-- Pause Menu -->
-		<div id="pause_bg" style = "position: absolute; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7);">
-			<button id="pause_fg" class="btn btn-primary example" style="width: 70%; height: auto; text-align: center; cursor: pointer; margin-left:15%;  margin-top: 20%; padding: 2%;">
+		<div id="pause_bg" style = "position: absolute; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); display:none;">
+			<button id="pause_fg" class="btn btn-primary example" style="width: 70%; height: auto; text-align: center; cursor: pointer; margin-left:15%;  margin-top: 20%; padding: 2%; display:none;">
 				<p style=" font-size: 50px; vertical-align: top;">
 					<b>PAUSE</b>
 				</p>
@@ -179,6 +186,7 @@
 				
 		</div>
 
+
 		<script type="module">
         import * as THREE from '../node_modules/three/build/three.module.js';
         import { OrbitControls } from '../node_modules/three/examples/jsm/controls/ModifiedOrbitControls.js';
@@ -187,6 +195,8 @@
 		import { TWEEN } from '../node_modules/three/examples/jsm/libs/tween.module.min.js'
 		import { Sky } from '../node_modules/three/examples/jsm/objects/Sky.js';
 
+		var gameLoaded = false;
+		var animateScene = true;
 		var relDir=0;
 		var playerState = "Idle";
 		var cameraTarget = new THREE.Vector3();
@@ -252,7 +262,7 @@
 			var lastUnlockTime = null;
 
 			document.body.addEventListener( 'click', function () {
-				if (lastUnlockTime && (performance.now() - lastUnlockTime) < 1250) {
+				if ( !gameLoaded || (lastUnlockTime && (performance.now() - lastUnlockTime) < 1250)) {
 					return
 				}
 				else
@@ -292,8 +302,12 @@
 		cubeMesh.castShadow=true;
 		//cubeMesh.receiveShadow=true;
 		// var cubeMesh;
-		const gltfLoader = new GLTFLoader();
-
+		const loadingManager = new THREE.LoadingManager();
+		loadingManager.onLoad = () => {gameLoaded = true; document.querySelector('#gameLoading_fg').style.display = 'none'; document.querySelector('#gameLoading_bg').style.display = 'none'; pause_fg.style.display = ''; pause_bg.style.display = '';};
+		loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
+			document.querySelector('#gameLoading_fg_bar').setAttribute("value",`${itemsLoaded / itemsTotal * 100 | 0}`);
+		};
+		const gltfLoader = new GLTFLoader(loadingManager);
 		//GROUND (THREE)
 		const groundGeo = new THREE.CylinderGeometry( 18, 18, 1, 6 );
 		const groundMat = new THREE.MeshPhongMaterial({ 
@@ -1641,102 +1655,103 @@
 			}
 		});
 
-		orbit.addEventListener('lock', function() {pause_bg.style.display = 'none'; pause_fg.style.display = 'none';});
-		orbit.addEventListener('unlock', function() {lastUnlockTime = performance.now(); pause_fg.style.display = ''; pause_bg.style.display = '';});
+		orbit.addEventListener('lock', function() {animateScene=false; pause_bg.style.display = 'none'; pause_fg.style.display = 'none';});
+		orbit.addEventListener('unlock', function() {lastUnlockTime = performance.now(); animateScene=true; pause_fg.style.display = ''; pause_bg.style.display = '';});
 
 		const time = new THREE.Clock();
 		function animate() {
-			world.step(1/60);
-			TWEEN.update();
-			orbit.update();
+			if(animateScene == false){
+				world.step(1/60);
+				TWEEN.update();
+				orbit.update();
 
 
-			playerAnimate(time.getDelta());
+				playerAnimate(time.getDelta());
 
-			if(groundMesh && groundPlatModelParent){
-				groundMesh.position.copy(groundBody.position);
-				groundMesh.quaternion.copy(groundBody.quaternion);
-				groundPlatModelParent.position.copy(groundBody.position);
-				groundPlatModelParent.quaternion.copy(groundBody.quaternion);
-				groundPlatModelParent.rotation.y-=Math.PI/6;
+				if(groundMesh && groundPlatModelParent){
+					groundMesh.position.copy(groundBody.position);
+					groundMesh.quaternion.copy(groundBody.quaternion);
+					groundPlatModelParent.position.copy(groundBody.position);
+					groundPlatModelParent.quaternion.copy(groundBody.quaternion);
+					groundPlatModelParent.rotation.y-=Math.PI/6;
+				}
+
+				if(cubeMesh){
+					cubeMesh.position.copy(cubeBody.position);
+					//CubeMesh copies the cubeBody rotation because threejs offers the rotateTowards function to rotate gradually during movement
+					cubeBody.quaternion.copy(cubeMesh.quaternion);
+				}
+
+				if(cubeBody && archerModelParent){
+					archerModelParent.position.copy(cubeBody.position);
+					archerModelParent.quaternion.copy(cubeBody.quaternion);
+				}
+
+				if(targetBody1 && targetModelParent1 && targetMesh1){
+					targetModelParent1.position.copy(targetBody1.position);
+					targetModelParent1.quaternion.copy(targetBody1.quaternion);
+					targetMesh1.quaternion.copy(targetBody1.quaternion);
+					targetMesh1.position.copy(targetBody1.position);
+				}
+				if(targetBody2 && targetModelParent2 && targetMesh2){
+					targetModelParent2.position.copy(targetBody2.position);
+					targetModelParent2.quaternion.copy(targetBody2.quaternion);
+					targetMesh2.quaternion.copy(targetBody2.quaternion);
+					targetMesh2.position.copy(targetBody2.position);
+				}
+				if(targetBody3 && targetModelParent3 && targetMesh3){
+					targetModelParent3.position.copy(targetBody3.position);
+					targetModelParent3.quaternion.copy(targetBody3.quaternion);
+					targetMesh3.quaternion.copy(targetBody3.quaternion);
+					targetMesh3.position.copy(targetBody3.position);
+				}		
+				if(targetBody4 && targetModelParent4 && targetMesh4){
+					targetModelParent4.position.copy(targetBody4.position);
+					targetModelParent4.quaternion.copy(targetBody4.quaternion);
+					targetMesh4.quaternion.copy(targetBody4.quaternion);
+					targetMesh4.position.copy(targetBody4.position);
+				}
+
+				if(level2PlatformBody && level2PlatformMesh && level2PlatformModelParent){
+					level2PlatformMesh.position.copy(level2PlatformBody.position);
+					level2PlatformMesh.quaternion.copy(level2PlatformBody.quaternion);
+					level2PlatformModelParent.position.copy(level2PlatformBody.position);
+					level2PlatformModelParent.quaternion.copy(level2PlatformBody.quaternion);
+					level2PlatformModelParent.rotation.y-=Math.PI/6;
+				}
+
+				if(level3PlatformBody && level3PlatformMesh && level3PlatformModelParent){
+					level3PlatformMesh.position.copy(level3PlatformBody.position);
+					level3PlatformMesh.quaternion.copy(level3PlatformBody.quaternion);
+					level3PlatformModelParent.position.copy(level3PlatformBody.position);
+					level3PlatformModelParent.quaternion.copy(level3PlatformBody.quaternion);
+					level3PlatformModelParent.rotation.y-=Math.PI/6;
+				}
+
+				//if (mixer) mixer.update(time.getDelta());
+				arrows.forEach(element => {
+					element["mesh"].position.copy(element["can"].position);
+					element["model"].position.copy(element["can"].position);
+					element["can"].quaternion.copy(element["model"].quaternion);
+					element["mesh"].quaternion.copy(element["model"].quaternion);
+
+				});
+
+				obsPlat.forEach(element => {
+					element["mesh"].position.copy(element["body"].position);
+					element["mesh"].quaternion.copy(element["body"].quaternion);
+					element["model"].position.copy(element["body"].position);
+					element["model"].quaternion.copy(element["body"].quaternion);
+				});
+
+				if(cubeBody.position.y < -10){
+					gameOver();
+				}
+
+				// console.log(camera.position)
+
+
 			}
-
-			if(cubeMesh){
-				cubeMesh.position.copy(cubeBody.position);
-				//CubeMesh copies the cubeBody rotation because threejs offers the rotateTowards function to rotate gradually during movement
-				cubeBody.quaternion.copy(cubeMesh.quaternion);
-			}
-
-			if(cubeBody && archerModelParent){
-				archerModelParent.position.copy(cubeBody.position);
-				archerModelParent.quaternion.copy(cubeBody.quaternion);
-			}
-
-			if(targetBody1 && targetModelParent1 && targetMesh1){
-				targetModelParent1.position.copy(targetBody1.position);
-				targetModelParent1.quaternion.copy(targetBody1.quaternion);
-				targetMesh1.quaternion.copy(targetBody1.quaternion);
-				targetMesh1.position.copy(targetBody1.position);
-			}
-			if(targetBody2 && targetModelParent2 && targetMesh2){
-				targetModelParent2.position.copy(targetBody2.position);
-				targetModelParent2.quaternion.copy(targetBody2.quaternion);
-				targetMesh2.quaternion.copy(targetBody2.quaternion);
-				targetMesh2.position.copy(targetBody2.position);
-			}
-			if(targetBody3 && targetModelParent3 && targetMesh3){
-				targetModelParent3.position.copy(targetBody3.position);
-				targetModelParent3.quaternion.copy(targetBody3.quaternion);
-				targetMesh3.quaternion.copy(targetBody3.quaternion);
-				targetMesh3.position.copy(targetBody3.position);
-			}		
-			if(targetBody4 && targetModelParent4 && targetMesh4){
-				targetModelParent4.position.copy(targetBody4.position);
-				targetModelParent4.quaternion.copy(targetBody4.quaternion);
-				targetMesh4.quaternion.copy(targetBody4.quaternion);
-				targetMesh4.position.copy(targetBody4.position);
-			}
-
-			if(level2PlatformBody && level2PlatformMesh && level2PlatformModelParent){
-				level2PlatformMesh.position.copy(level2PlatformBody.position);
-				level2PlatformMesh.quaternion.copy(level2PlatformBody.quaternion);
-				level2PlatformModelParent.position.copy(level2PlatformBody.position);
-				level2PlatformModelParent.quaternion.copy(level2PlatformBody.quaternion);
-				level2PlatformModelParent.rotation.y-=Math.PI/6;
-			}
-
-			if(level3PlatformBody && level3PlatformMesh && level3PlatformModelParent){
-				level3PlatformMesh.position.copy(level3PlatformBody.position);
-				level3PlatformMesh.quaternion.copy(level3PlatformBody.quaternion);
-				level3PlatformModelParent.position.copy(level3PlatformBody.position);
-				level3PlatformModelParent.quaternion.copy(level3PlatformBody.quaternion);
-				level3PlatformModelParent.rotation.y-=Math.PI/6;
-			}
-
-			//if (mixer) mixer.update(time.getDelta());
-			arrows.forEach(element => {
-				element["mesh"].position.copy(element["can"].position);
-				element["model"].position.copy(element["can"].position);
-				element["can"].quaternion.copy(element["model"].quaternion);
-				element["mesh"].quaternion.copy(element["model"].quaternion);
-
-			});
-
-			obsPlat.forEach(element => {
-				element["mesh"].position.copy(element["body"].position);
-				element["mesh"].quaternion.copy(element["body"].quaternion);
-				element["model"].position.copy(element["body"].position);
-				element["model"].quaternion.copy(element["body"].quaternion);
-			});
-
-			if(cubeBody.position.y < -10){
-				gameOver();
-			}
-
-			// console.log(camera.position)
-
-
-
 
 			renderer.render( scene, camera );
 
