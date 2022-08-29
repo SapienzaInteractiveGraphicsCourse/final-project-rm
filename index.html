@@ -213,6 +213,8 @@
 		var prevPlayerPosition;
 		var obsPlatTweens = [];
 		var obsPlat=[];
+		var robots=[];
+		var robotsTweens = [];
 		var oldx = 0, oldz = 0, oldy = 10;
 		var cameraAngle, desQuat;
 		var rotatingPlatModel;
@@ -293,12 +295,12 @@
 		scene.add(dirLight.target);
 
 		const helper = new THREE.CameraHelper( dirLight.shadow.camera );
-		scene.add( helper )
+		//scene.add( helper )
 		//CUBE (THREE)
 		const cubeGeometry = new THREE.BoxGeometry( 1.4, 3.0, 2.0 );
 		const cubeMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} );
 		const cubeMesh = new THREE.Mesh( cubeGeometry, cubeMaterial );
-		scene.add( cubeMesh );
+		//scene.add( cubeMesh );
 		cubeMesh.castShadow=true;
 		//cubeMesh.receiveShadow=true;
 		// var cubeMesh;
@@ -433,7 +435,7 @@
 				wireframe: true
 				});
 			var genPlatMesh = new THREE.Mesh(genPlatGeo, genPlatMat);
-			scene.add(genPlatMesh);
+			//scene.add(genPlatMesh);
 			genPlatMesh.receiveShadow=true;
 			genPlatMesh.castshadow=true;
 
@@ -521,7 +523,87 @@
 			targetModelParent4.add(targetModel4);
 			scene.add(targetModelParent4);
 		});
-		
+	
+		gltfLoader.load("gltf/robot/scene.gltf", (gltf) => {
+			var robotModel = gltf.scene.getObjectByName("Sketchfab_Scene");
+
+			robotModel.scale.setScalar( 1 );
+
+
+			console.log(dumpObject(robotModel).join('\n'));
+			
+			gltf.scene.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.castShadow = true;
+					node.receiveShadow=true;
+					node.frustumCulled=false;
+			}
+			} );
+
+			var positions = [new CANNON.Vec3(5, 8.7, 117.5),
+						new CANNON.Vec3(-5, 8.7, 117.5),
+						new CANNON.Vec3(0, 8.7, 122.5),
+					];
+
+
+			//Function that returns the listener for the collision event of the robots (can't create the listener directly in the loop)
+			function robotColliderEvent(genRobot){
+				return (e) => {
+					var arrowsBodies = Array.from(arrows, x => x.can.id);
+					if (genRobot["body"] && ((e.contact.bi.id == genRobot["body"].id && arrowsBodies.includes(e.contact.bj.id)) || (e.contact.bj.id == genRobot["body"].id && arrowsBodies.includes(e.contact.bj.id)))) {
+						scene.remove(genRobot["model"]);
+						setTimeout(function() {
+							world.removeBody(genRobot["body"]);
+						},0);
+						scene.remove(genRobot["mesh"]);
+						robots.filter(function(ele){ 
+							return ele != genRobot; 
+						});
+					}
+				} 
+			}
+
+			for(var i=0; i<positions.length; i++){
+				var genRobotGeo = new THREE.BoxGeometry( 2.5 , 4.4, 2)
+				var genRobotMat = new THREE.MeshPhongMaterial({ 
+					color: 0x00ff00,
+					side: THREE.DoubleSide,
+					wireframe: true
+					});
+				var genRobotMesh = new THREE.Mesh(genRobotGeo, genRobotMat);
+				scene.add(genRobotMesh);
+				genRobotMesh.receiveShadow=true;
+				genRobotMesh.castshadow=true;
+
+				var robotModelParent = new THREE.Object3D();
+				robotModel.getWorldPosition(robotModelParent.position);
+				robotModel.position.set(0, -genRobotMesh.geometry.parameters.height/2, genRobotMesh.geometry.parameters.depth/4);
+				robotModel.rotation.set(...[0,Math.PI,0]);
+				var genRobotModel = robotModel.clone();
+				robotModelParent.add(genRobotModel);
+
+				scene.add(robotModelParent);
+
+				//OBSTACLES PLATFORMS (CANNON)
+
+				var genRobotBody = new CANNON.Body({
+					mass: 180,
+					shape: new CANNON.Box(new CANNON.Vec3(1.25, 2.2, 1)),
+					material: cubePhysMat,
+					position: positions[i],
+					linearDamping: 0.5,
+					angularDamping: 0.5,
+					type: CANNON.Body.DYNAMIC 
+				});
+				world.addBody(genRobotBody);
+				genRobotBody.quaternion.setFromEuler(0, 0, 0);
+				var genRobot = {"mesh" : genRobotMesh, "body" : genRobotBody, "model": robotModelParent};
+				robots.push(genRobot);
+
+				genRobotBody.addEventListener("collide", robotColliderEvent(genRobot));
+			}
+		});
+
 		gltfLoader.load("gltf/archer/scene.gltf", (gltf) => {
 			archerModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 
@@ -1404,7 +1486,7 @@
 			cubeArrowModel.position.set(0 , 0, -cubeArrowMesh.geometry.parameters.depth/2);
 			cubeArrowModelParent.add(cubeArrowModel);
 			
-			scene.add( cubeArrowMesh );
+			//scene.add( cubeArrowMesh );
 			scene.add( cubeArrowModelParent );
 			
 			world.addBody(cubeArrowCan);
@@ -1426,7 +1508,7 @@
 			type: CANNON.Body.STATIC
 		});
 		const targetMesh1 = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ) );
-		scene.add(targetMesh1);
+		//scene.add(targetMesh1);
 		targetBody1.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), Math.PI / 2);
 		world.addBody(targetBody1);		
 		
@@ -1436,7 +1518,7 @@
 			type: CANNON.Body.STATIC
 		});
 		const targetMesh2 = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ) );
-		scene.add(targetMesh2);
+		//scene.add(targetMesh2);
 		targetBody2.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), Math.PI / 2);
 		world.addBody(targetBody2);
 
@@ -1446,7 +1528,7 @@
 			type: CANNON.Body.STATIC
 		});
 		const targetMesh3 = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ) );
-		scene.add(targetMesh3);
+		//scene.add(targetMesh3);
 		targetBody3.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), Math.PI / 2);
 		world.addBody(targetBody3);		
 		
@@ -1456,7 +1538,7 @@
 			type: CANNON.Body.STATIC
 		});
 		const targetMesh4 = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ) );
-		scene.add(targetMesh4);
+		//scene.add(targetMesh4);
 		targetBody4.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), Math.PI / 2);
 		world.addBody(targetBody4);
 
@@ -1503,7 +1585,7 @@
 			wireframe: true
 			});
 		const level2PlatformMesh = new THREE.Mesh(level2PlatformGeo, level2PlatformMat);
-		scene.add(level2PlatformMesh);
+		//scene.add(level2PlatformMesh);
 		level2PlatformMesh.receiveShadow=true;
 		level2PlatformMesh.castshadow=true;
 
@@ -1529,7 +1611,7 @@
 			wireframe: true
 			});
 		const level3PlatformMesh = new THREE.Mesh(level3PlatformGeo, level3PlatformMat);
-		scene.add(level3PlatformMesh);
+		//scene.add(level3PlatformMesh);
 		level3PlatformMesh.receiveShadow=true;
 		level3PlatformMesh.castshadow=true;
 
@@ -1655,6 +1737,8 @@
 			}
 		});
 
+
+
 		orbit.addEventListener('lock', function() {animateScene=false; pause_bg.style.display = 'none'; pause_fg.style.display = 'none';});
 		orbit.addEventListener('unlock', function() {lastUnlockTime = performance.now(); animateScene=true; pause_fg.style.display = ''; pause_bg.style.display = '';});
 
@@ -1738,6 +1822,13 @@
 				});
 
 				obsPlat.forEach(element => {
+					element["mesh"].position.copy(element["body"].position);
+					element["mesh"].quaternion.copy(element["body"].quaternion);
+					element["model"].position.copy(element["body"].position);
+					element["model"].quaternion.copy(element["body"].quaternion);
+				});
+
+				robots.forEach(element => {
 					element["mesh"].position.copy(element["body"].position);
 					element["mesh"].quaternion.copy(element["body"].quaternion);
 					element["model"].position.copy(element["body"].position);
@@ -1846,7 +1937,7 @@
 			
 			if(pressed["SPACE"] && playerState!="Jump"){
 				playerState = "Jump";
-				cubeBody.velocity.y = 15;
+				cubeBody.velocity.y = 100;
 			}
 			else if(pressed["SHIFT"] && playerState!="Jump")
 				playerState = "Run";

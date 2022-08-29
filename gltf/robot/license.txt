@@ -1,0 +1,11 @@
+Model Information:
+* title:	RobotExpressive_run
+* source:	https://sketchfab.com/3d-models/robotexpressive-run-b14fef091cd94234a27b0e0aa0fdee94
+* author:	aaron11111 (https://sketchfab.com/aaron11111)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "RobotExpressive_run" (https://sketchfab.com/3d-models/robotexpressive-run-b14fef091cd94234a27b0e0aa0fdee94) by aaron11111 (https://sketchfab.com/aaron11111) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
