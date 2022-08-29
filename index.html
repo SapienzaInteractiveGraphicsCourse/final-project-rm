@@ -530,7 +530,6 @@
 			robotModel.scale.setScalar( 1 );
 
 
-			console.log(dumpObject(robotModel).join('\n'));
 			
 			gltf.scene.traverse( function( node ) {
 				if (node.isMesh) { 
@@ -543,6 +542,7 @@
 			var positions = [new CANNON.Vec3(5, 8.7, 117.5),
 						new CANNON.Vec3(-5, 8.7, 117.5),
 						new CANNON.Vec3(0, 8.7, 122.5),
+						new CANNON.Vec3(0, 3.2, 4)
 					];
 
 
@@ -597,7 +597,8 @@
 				});
 				world.addBody(genRobotBody);
 				genRobotBody.quaternion.setFromEuler(0, 0, 0);
-				var genRobot = {"mesh" : genRobotMesh, "body" : genRobotBody, "model": robotModelParent};
+				var genRobotStructure = populateRobotStructure(genRobotModel);
+				var genRobot = {"mesh" : genRobotMesh, "body" : genRobotBody, "model": robotModelParent, "structure": genRobotStructure};
 				robots.push(genRobot);
 
 				genRobotBody.addEventListener("collide", robotColliderEvent(genRobot));
@@ -615,7 +616,8 @@
 			archerModel.rotation.set(...[0,Math.PI,0]);
 			archerModelParent.add(archerModel);
 			scene.add(archerModelParent);
-			
+			// console.log(dumpObject(archerModel).join('\n'));
+
 			gltf.scene.traverse( function( node ) {
 				if (node.isMesh) { 
 					node.castShadow = true;
@@ -1899,8 +1901,125 @@
 			archerStructure["leftHandThumb2"] = archerModel.getObjectByName('LeftHandThumb2_7');
 			archerStructure["leftHandThumb3"] = archerModel.getObjectByName('LeftHandThumb3_6');
 			archerStructure["leftHandThumb4"] = archerModel.getObjectByName('LeftHandThumb4_5');
+
+
+			// archerStructure["hips"] = archerModel.getObjectByName("Hips_66")
+			// archerStructure["spine"] = archerModel.getObjectByName("Spine_55")
+			// archerStructure["spine1"] = archerModel.getObjectByName("Spine1_54")
+			// archerStructure["spine2"] = archerModel.getObjectByName("Spine2_53")
+			// archerStructure["neck"] = archerModel.getObjectByName("Neck_4")
+			// archerStructure["head"] = archerModel.getObjectByName("Head_3")
+			// archerStructure["rightEye"] = archerModel.getObjectByName("RightEye_0")
+			// archerStructure["leftEye"] = archerModel.getObjectByName("LeftEye_1")
+			// archerStructure["headTop_End"] = archerModel.getObjectByName("HeadTop_End_2")
+			// archerStructure["leftShoulder"] = archerModel.getObjectByName("LeftShoulder_28")
+			// archerStructure["leftArm"] = archerModel.getObjectByName("LeftArm_27")
+			// archerStructure["leftForeArm"] = archerModel.getObjectByName("LeftForeArm_26")
+			// archerStructure["leftHand"] = archerModel.getObjectByName("LeftHand_25")
+			// archerStructure["leftHandThumb1"] = archerModel.getObjectByName("LeftHandThumb1_8")
+			// archerStructure["leftHandThumb2"] = archerModel.getObjectByName("LeftHandThumb2_7")
+			// archerStructure["leftHandThumb3"] = archerModel.getObjectByName("LeftHandThumb3_6")
+			// archerStructure["leftHandThumb4"] = archerModel.getObjectByName("LeftHandThumb4_5")
+			// archerStructure["leftHandIndex1"] = archerModel.getObjectByName("LeftHandIndex1_12")
+			// archerStructure["leftHandIndex2"] = archerModel.getObjectByName("LeftHandIndex2_11")
+			// archerStructure["leftHandIndex3"] = archerModel.getObjectByName("LeftHandIndex3_10")
+			// archerStructure["leftHandIndex4"] = archerModel.getObjectByName("LeftHandIndex4_9")
+			// archerStructure["leftHandMiddle1"] = archerModel.getObjectByName("LeftHandMiddle1_16")
+			// archerStructure["leftHandMiddle2"] = archerModel.getObjectByName("LeftHandMiddle2_15")
+			// archerStructure["leftHandMiddle3"] = archerModel.getObjectByName("LeftHandMiddle3_14")
+			// archerStructure["leftHandMiddle4"] = archerModel.getObjectByName("LeftHandMiddle4_13")
+			// archerStructure["leftHandRing1"] = archerModel.getObjectByName("LeftHandRing1_20")
+			// archerStructure["leftHandRing2"] = archerModel.getObjectByName("LeftHandRing2_19")
+			// archerStructure["leftHandRing3"] = archerModel.getObjectByName("LeftHandRing3_18")
+			// archerStructure["leftHandRing4"] = archerModel.getObjectByName("LeftHandRing4_17")
+			// archerStructure["leftHandPinky1"] = archerModel.getObjectByName("LeftHandPinky1_24")
+			// archerStructure["leftHandPinky2"] = archerModel.getObjectByName("LeftHandPinky2_23")
+			// archerStructure["leftHandPinky3"] = archerModel.getObjectByName("LeftHandPinky3_22")
+			// archerStructure["leftHandPinky4"] = archerModel.getObjectByName("LeftHandPinky4_21")
+			// archerStructure["rightShoulder"] = archerModel.getObjectByName("RightShoulder_52")
+			// archerStructure["rightArm"] = archerModel.getObjectByName("RightArm_51")
+			// archerStructure["rightForeArm"] = archerModel.getObjectByName("RightForeArm_50")
+			// archerStructure["rightHand"] = archerModel.getObjectByName("RightHand_49")
+			// archerStructure["rightHandPinky1"] = archerModel.getObjectByName("RightHandPinky1_32")
+			// archerStructure["rightHandPinky2"] = archerModel.getObjectByName("RightHandPinky2_31")
+			// archerStructure["rightHandPinky3"] = archerModel.getObjectByName("RightHandPinky3_30")
+			// archerStructure["rightHandPinky4"] = archerModel.getObjectByName("RightHandPinky4_29")
+			// archerStructure["rightHandRing1"] = archerModel.getObjectByName("RightHandRing1_36")
+			// archerStructure["rightHandRing2"] = archerModel.getObjectByName("RightHandRing2_35")
+			// archerStructure["rightHandRing3"] = archerModel.getObjectByName("RightHandRing3_34")
+			// archerStructure["rightHandRing4"] = archerModel.getObjectByName("RightHandRing4_33")
+			// archerStructure["rightHandMiddle1"] = archerModel.getObjectByName("RightHandMiddle1_40")
+			// archerStructure["rightHandMiddle2"] = archerModel.getObjectByName("RightHandMiddle2_39")
+			// archerStructure["rightHandMiddle3"] = archerModel.getObjectByName("RightHandMiddle3_38")
+			// archerStructure["rightHandMiddle4"] = archerModel.getObjectByName("RightHandMiddle4_37")
+			// archerStructure["rightHandIndex1"] = archerModel.getObjectByName("RightHandIndex1_44")
+			// archerStructure["rightHandIndex2"] = archerModel.getObjectByName("RightHandIndex2_43")
+			// archerStructure["rightHandIndex3"] = archerModel.getObjectByName("RightHandIndex3_42")
+			// archerStructure["rightHandIndex4"] = archerModel.getObjectByName("RightHandIndex4_41")
+			// archerStructure["rightHandThumb1"] = archerModel.getObjectByName("RightHandThumb1_48")
+			// archerStructure["rightHandThumb2"] = archerModel.getObjectByName("RightHandThumb2_47")
+			// archerStructure["rightHandThumb3"] = archerModel.getObjectByName("RightHandThumb3_46")
+			// archerStructure["rightHandThumb4"] = archerModel.getObjectByName("RightHandThumb4_45")
+			// archerStructure["leftUpLeg"] = archerModel.getObjectByName("LeftUpLeg_60")
+			// archerStructure["leftLeg"] = archerModel.getObjectByName("LeftLeg_59")
+			// archerStructure["leftFoot"] = archerModel.getObjectByName("LeftFoot_58")
+			// archerStructure["leftToeBase"] = archerModel.getObjectByName("LeftToeBase_57")
+			// archerStructure["leftToe_End"] = archerModel.getObjectByName("LeftToe_End_56")
+			// archerStructure["rightUpLeg"] = archerModel.getObjectByName("RightUpLeg_65")
+			// archerStructure["rightLeg"] = archerModel.getObjectByName("RightLeg_64")
+			// archerStructure["rightFoot"] = archerModel.getObjectByName("RightFoot_63")
+			// archerStructure["rightToeBase"] = archerModel.getObjectByName("RightToeBase_62")
+			// archerStructure["rightToe_End"] = archerModel.getObjectByName("RightToe_End_61")
 		};
 
+		function populateRobotStructure(genRobotModel){
+			var struct = {};
+			struct["rootJoint"] = genRobotModel.getObjectByName("GLTF_created_0_rootJoint")
+			struct["bone"] = genRobotModel.getObjectByName("Bone_74")
+			struct["footL"] = genRobotModel.getObjectByName("FootL_2")
+			struct["body"] = genRobotModel.getObjectByName("Body_66")
+			struct["upperLegL"] = genRobotModel.getObjectByName("UpperLegL_7")
+			struct["lowerLegL"] = genRobotModel.getObjectByName("LowerLegL_5")
+			struct["upperLegR"] = genRobotModel.getObjectByName("UpperLegR_12")
+			struct["lowerLegR"] = genRobotModel.getObjectByName("LowerLegR_10")
+			struct["hips"] = genRobotModel.getObjectByName("Hips_62")
+			struct["abdomen"] = genRobotModel.getObjectByName("Abdomen_61")
+			struct["torso"] = genRobotModel.getObjectByName("Torso_1_60")
+			struct["neck"] = genRobotModel.getObjectByName("Neck_19")
+			struct["head"] = genRobotModel.getObjectByName("Head_1_18")
+			struct["shoulderR"] = genRobotModel.getObjectByName("ShoulderR_59")
+			struct["upperArmR"] = genRobotModel.getObjectByName("UpperArmR_57")
+			struct["lowerArmR"] = genRobotModel.getObjectByName("LowerArmR_55")
+			struct["thumbR"] = genRobotModel.getObjectByName("ThumbR_46")
+			struct["thumb2R"] = genRobotModel.getObjectByName("Thumb2R_45")
+			struct["palm2R"] = genRobotModel.getObjectByName("Palm2R_43")
+			struct["middle1R"] = genRobotModel.getObjectByName("Middle1R_42")
+			struct["middle2R"] = genRobotModel.getObjectByName("Middle2R_41")
+			struct["palm1R"] = genRobotModel.getObjectByName("Palm1R_50")
+			struct["indexR"] = genRobotModel.getObjectByName("IndexR_49")
+			struct["index2R"] = genRobotModel.getObjectByName("Index2R_48")
+			struct["palm3R"] = genRobotModel.getObjectByName("Palm3R_54")
+			struct["ring1R"] = genRobotModel.getObjectByName("Ring1R_53")
+			struct["ring2R"] = genRobotModel.getObjectByName("Ring2R_52")
+			struct["shoulderL"] = genRobotModel.getObjectByName("ShoulderL_39")
+			struct["upperArmL"] = genRobotModel.getObjectByName("UpperArmL_37")
+			struct["lowerArmL"] = genRobotModel.getObjectByName("LowerArmL_35")
+			struct["palm2L"] = genRobotModel.getObjectByName("Palm2L_23")
+			struct["middle1L"] = genRobotModel.getObjectByName("Middle1L_22")
+			struct["middle2L"] = genRobotModel.getObjectByName("Middle2L_21")
+			struct["thumbL"] = genRobotModel.getObjectByName("ThumbL_26")
+			struct["thumb2L"] = genRobotModel.getObjectByName("Thumb2L_25")
+			struct["palm1L"] = genRobotModel.getObjectByName("Palm1L_30")
+			struct["indexL"] = genRobotModel.getObjectByName("IndexL_29")
+			struct["index2L"] = genRobotModel.getObjectByName("Index2L_28")
+			struct["palm3L"] = genRobotModel.getObjectByName("Palm3L_34")
+			struct["ring1L"] = genRobotModel.getObjectByName("Ring1L_33")
+			struct["ring2L"] = genRobotModel.getObjectByName("Ring2L_32")
+			struct["poleTargetL"] = genRobotModel.getObjectByName("PoleTargetL_68")
+			struct["footR"] = genRobotModel.getObjectByName("FootR_71")
+			struct["poleTargetR"] = genRobotModel.getObjectByName("PoleTargetR_73")
+			return struct;
+		}		
 		//Set the correct player animation
 		function changePlayerState(){
 			if(lastExecutedAnimation == playerState) return;
@@ -1937,7 +2056,7 @@
 			
 			if(pressed["SPACE"] && playerState!="Jump"){
 				playerState = "Jump";
-				cubeBody.velocity.y = 100;
+				cubeBody.velocity.y = 15;
 			}
 			else if(pressed["SHIFT"] && playerState!="Jump")
 				playerState = "Run";
