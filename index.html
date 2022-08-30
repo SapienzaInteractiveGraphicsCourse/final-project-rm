@@ -529,7 +529,6 @@
 
 			robotModel.scale.setScalar( 1 );
 
-
 			
 			gltf.scene.traverse( function( node ) {
 				if (node.isMesh) { 
@@ -561,6 +560,144 @@
 						});
 					}
 				} 
+			}
+
+			//Tween update function, can't create it directly in the loop
+			function createUpdateFunction(genRobotStructure){
+				return (object, elapsedTime) => {
+					genRobotStructure["rootJoint"].rotation.x = object["rootJointRx"]; 
+					genRobotStructure["rootJoint"].rotation.y = object["rootJointRy"]; 
+					genRobotStructure["rootJoint"].rotation.z = object["rootJointRz"];
+					genRobotStructure["bone"].rotation.x = object["boneRx"]; 
+					genRobotStructure["bone"].rotation.y = object["boneRy"]; 
+					genRobotStructure["bone"].rotation.z = object["boneRz"];
+					genRobotStructure["footL"].rotation.x = object["footLRx"]; 
+					genRobotStructure["footL"].rotation.y = object["footLRy"]; 
+					genRobotStructure["footL"].rotation.z = object["footLRz"];
+					genRobotStructure["body"].rotation.x = object["bodyRx"]; 
+					genRobotStructure["body"].rotation.y = object["bodyRy"]; 
+					genRobotStructure["body"].rotation.z = object["bodyRz"];
+					genRobotStructure["upperLegL"].rotation.x = object["upperLegLRx"]; 
+					genRobotStructure["upperLegL"].rotation.y = object["upperLegLRy"]; 
+					genRobotStructure["upperLegL"].rotation.z = object["upperLegLRz"];
+					genRobotStructure["lowerLegL"].rotation.x = object["lowerLegLRx"]; 
+					genRobotStructure["lowerLegL"].rotation.y = object["lowerLegLRy"]; 
+					genRobotStructure["lowerLegL"].rotation.z = object["lowerLegLRz"];
+					genRobotStructure["upperLegR"].rotation.x = object["upperLegRRx"]; 
+					genRobotStructure["upperLegR"].rotation.y = object["upperLegRRy"]; 
+					genRobotStructure["upperLegR"].rotation.z = object["upperLegRRz"];
+					genRobotStructure["lowerLegR"].rotation.x = object["lowerLegRRx"]; 
+					genRobotStructure["lowerLegR"].rotation.y = object["lowerLegRRy"]; 
+					genRobotStructure["lowerLegR"].rotation.z = object["lowerLegRRz"];
+					genRobotStructure["hips"].rotation.x = object["hipsRx"]; 
+					genRobotStructure["hips"].rotation.y = object["hipsRy"]; 
+					genRobotStructure["hips"].rotation.z = object["hipsRz"];
+					genRobotStructure["abdomen"].rotation.x = object["abdomenRx"]; 
+					genRobotStructure["abdomen"].rotation.y = object["abdomenRy"]; 
+					genRobotStructure["abdomen"].rotation.z = object["abdomenRz"];
+					genRobotStructure["torso"].rotation.x = object["torsoRx"]; 
+					genRobotStructure["torso"].rotation.y = object["torsoRy"]; 
+					genRobotStructure["torso"].rotation.z = object["torsoRz"];
+					genRobotStructure["neck"].rotation.x = object["neckRx"]; 
+					genRobotStructure["neck"].rotation.y = object["neckRy"]; 
+					genRobotStructure["neck"].rotation.z = object["neckRz"];
+					genRobotStructure["head"].rotation.x = object["headRx"]; 
+					genRobotStructure["head"].rotation.y = object["headRy"]; 
+					genRobotStructure["head"].rotation.z = object["headRz"];
+					genRobotStructure["shoulderR"].rotation.x = object["shoulderRRx"]; 
+					genRobotStructure["shoulderR"].rotation.y = object["shoulderRRy"]; 
+					genRobotStructure["shoulderR"].rotation.z = object["shoulderRRz"];
+					genRobotStructure["upperArmR"].rotation.x = object["upperArmRRx"]; 
+					genRobotStructure["upperArmR"].rotation.y = object["upperArmRRy"]; 
+					genRobotStructure["upperArmR"].rotation.z = object["upperArmRRz"];
+					genRobotStructure["lowerArmR"].rotation.x = object["lowerArmRRx"]; 
+					genRobotStructure["lowerArmR"].rotation.y = object["lowerArmRRy"]; 
+					genRobotStructure["lowerArmR"].rotation.z = object["lowerArmRRz"];
+					genRobotStructure["thumbR"].rotation.x = object["thumbRRx"]; 
+					genRobotStructure["thumbR"].rotation.y = object["thumbRRy"]; 
+					genRobotStructure["thumbR"].rotation.z = object["thumbRRz"];
+					genRobotStructure["thumb2R"].rotation.x = object["thumb2RRx"]; 
+					genRobotStructure["thumb2R"].rotation.y = object["thumb2RRy"]; 
+					genRobotStructure["thumb2R"].rotation.z = object["thumb2RRz"];
+					genRobotStructure["palm2R"].rotation.x = object["palm2RRx"]; 
+					genRobotStructure["palm2R"].rotation.y = object["palm2RRy"]; 
+					genRobotStructure["palm2R"].rotation.z = object["palm2RRz"];
+					genRobotStructure["middle1R"].rotation.x = object["middle1RRx"]; 
+					genRobotStructure["middle1R"].rotation.y = object["middle1RRy"]; 
+					genRobotStructure["middle1R"].rotation.z = object["middle1RRz"];
+					genRobotStructure["middle2R"].rotation.x = object["middle2RRx"]; 
+					genRobotStructure["middle2R"].rotation.y = object["middle2RRy"]; 
+					genRobotStructure["middle2R"].rotation.z = object["middle2RRz"];
+					genRobotStructure["palm1R"].rotation.x = object["palm1RRx"]; 
+					genRobotStructure["palm1R"].rotation.y = object["palm1RRy"]; 
+					genRobotStructure["palm1R"].rotation.z = object["palm1RRz"];
+					genRobotStructure["indexR"].rotation.x = object["indexRRx"]; 
+					genRobotStructure["indexR"].rotation.y = object["indexRRy"]; 
+					genRobotStructure["indexR"].rotation.z = object["indexRRz"];
+					genRobotStructure["index2R"].rotation.x = object["index2RRx"]; 
+					genRobotStructure["index2R"].rotation.y = object["index2RRy"]; 
+					genRobotStructure["index2R"].rotation.z = object["index2RRz"];
+					genRobotStructure["palm3R"].rotation.x = object["palm3RRx"]; 
+					genRobotStructure["palm3R"].rotation.y = object["palm3RRy"]; 
+					genRobotStructure["palm3R"].rotation.z = object["palm3RRz"];
+					genRobotStructure["ring1R"].rotation.x = object["ring1RRx"]; 
+					genRobotStructure["ring1R"].rotation.y = object["ring1RRy"]; 
+					genRobotStructure["ring1R"].rotation.z = object["ring1RRz"];
+					genRobotStructure["ring2R"].rotation.x = object["ring2RRx"]; 
+					genRobotStructure["ring2R"].rotation.y = object["ring2RRy"]; 
+					genRobotStructure["ring2R"].rotation.z = object["ring2RRz"];
+					genRobotStructure["shoulderL"].rotation.x = object["shoulderLRx"]; 
+					genRobotStructure["shoulderL"].rotation.y = object["shoulderLRy"]; 
+					genRobotStructure["shoulderL"].rotation.z = object["shoulderLRz"];
+					genRobotStructure["upperArmL"].rotation.x = object["upperArmLRx"]; 
+					genRobotStructure["upperArmL"].rotation.y = object["upperArmLRy"]; 
+					genRobotStructure["upperArmL"].rotation.z = object["upperArmLRz"];
+					genRobotStructure["lowerArmL"].rotation.x = object["lowerArmLRx"]; 
+					genRobotStructure["lowerArmL"].rotation.y = object["lowerArmLRy"]; 
+					genRobotStructure["lowerArmL"].rotation.z = object["lowerArmLRz"];
+					genRobotStructure["palm2L"].rotation.x = object["palm2LRx"]; 
+					genRobotStructure["palm2L"].rotation.y = object["palm2LRy"]; 
+					genRobotStructure["palm2L"].rotation.z = object["palm2LRz"];
+					genRobotStructure["middle1L"].rotation.x = object["middle1LRx"]; 
+					genRobotStructure["middle1L"].rotation.y = object["middle1LRy"]; 
+					genRobotStructure["middle1L"].rotation.z = object["middle1LRz"];
+					genRobotStructure["middle2L"].rotation.x = object["middle2LRx"]; 
+					genRobotStructure["middle2L"].rotation.y = object["middle2LRy"]; 
+					genRobotStructure["middle2L"].rotation.z = object["middle2LRz"];
+					genRobotStructure["thumbL"].rotation.x = object["thumbLRx"]; 
+					genRobotStructure["thumbL"].rotation.y = object["thumbLRy"]; 
+					genRobotStructure["thumbL"].rotation.z = object["thumbLRz"];
+					genRobotStructure["thumb2L"].rotation.x = object["thumb2LRx"]; 
+					genRobotStructure["thumb2L"].rotation.y = object["thumb2LRy"]; 
+					genRobotStructure["thumb2L"].rotation.z = object["thumb2LRz"];
+					genRobotStructure["palm1L"].rotation.x = object["palm1LRx"]; 
+					genRobotStructure["palm1L"].rotation.y = object["palm1LRy"]; 
+					genRobotStructure["palm1L"].rotation.z = object["palm1LRz"];
+					genRobotStructure["indexL"].rotation.x = object["indexLRx"]; 
+					genRobotStructure["indexL"].rotation.y = object["indexLRy"]; 
+					genRobotStructure["indexL"].rotation.z = object["indexLRz"];
+					genRobotStructure["index2L"].rotation.x = object["index2LRx"]; 
+					genRobotStructure["index2L"].rotation.y = object["index2LRy"]; 
+					genRobotStructure["index2L"].rotation.z = object["index2LRz"];
+					genRobotStructure["palm3L"].rotation.x = object["palm3LRx"]; 
+					genRobotStructure["palm3L"].rotation.y = object["palm3LRy"]; 
+					genRobotStructure["palm3L"].rotation.z = object["palm3LRz"];
+					genRobotStructure["ring1L"].rotation.x = object["ring1LRx"]; 
+					genRobotStructure["ring1L"].rotation.y = object["ring1LRy"]; 
+					genRobotStructure["ring1L"].rotation.z = object["ring1LRz"];
+					genRobotStructure["ring2L"].rotation.x = object["ring2LRx"]; 
+					genRobotStructure["ring2L"].rotation.y = object["ring2LRy"]; 
+					genRobotStructure["ring2L"].rotation.z = object["ring2LRz"];
+					genRobotStructure["poleTargetL"].rotation.x = object["poleTargetLRx"]; 
+					genRobotStructure["poleTargetL"].rotation.y = object["poleTargetLRy"]; 
+					genRobotStructure["poleTargetL"].rotation.z = object["poleTargetLRz"];
+					genRobotStructure["footR"].rotation.x = object["footRRx"]; 
+					genRobotStructure["footR"].rotation.y = object["footRRy"]; 
+					genRobotStructure["footR"].rotation.z = object["footRRz"];
+					genRobotStructure["poleTargetR"].rotation.x = object["poleTargetRRx"]; 
+					genRobotStructure["poleTargetR"].rotation.y = object["poleTargetRRy"]; 
+					genRobotStructure["poleTargetR"].rotation.z = object["poleTargetRRz"];
+				};
 			}
 
 			for(var i=0; i<positions.length; i++){
@@ -598,7 +735,286 @@
 				world.addBody(genRobotBody);
 				genRobotBody.quaternion.setFromEuler(0, 0, 0);
 				var genRobotStructure = populateRobotStructure(genRobotModel);
-				var genRobot = {"mesh" : genRobotMesh, "body" : genRobotBody, "model": robotModelParent, "structure": genRobotStructure};
+				var tweens = {};
+				//console.log('"rootJointRx" : ' + genRobotStructure["rootJoint"].rotation.x.toFixed(4) + ',\n"rootJointRy" : ' + genRobotStructure["rootJoint"].rotation.y.toFixed(4) + ',\n"rootJointRz" : ' +genRobotStructure["rootJoint"].rotation.z.toFixed(4) + ',\n"boneRx" : ' + genRobotStructure["bone"].rotation.x.toFixed(4) + ',\n"boneRy" : ' + genRobotStructure["bone"].rotation.y.toFixed(4) + ',\n"boneRz" : ' +genRobotStructure["bone"].rotation.z.toFixed(4) + ',\n"footLRx" : ' + genRobotStructure["footL"].rotation.x.toFixed(4) + ',\n"footLRy" : ' + genRobotStructure["footL"].rotation.y.toFixed(4) + ',\n"footLRz" : ' +genRobotStructure["footL"].rotation.z.toFixed(4) + ',\n"bodyRx" : ' + genRobotStructure["body"].rotation.x.toFixed(4) + ',\n"bodyRy" : ' + genRobotStructure["body"].rotation.y.toFixed(4) + ',\n"bodyRz" : ' +genRobotStructure["body"].rotation.z.toFixed(4) + ',\n"upperLegLRx" : ' + genRobotStructure["upperLegL"].rotation.x.toFixed(4) + ',\n"upperLegLRy" : ' + genRobotStructure["upperLegL"].rotation.y.toFixed(4) + ',\n"upperLegLRz" : ' +genRobotStructure["upperLegL"].rotation.z.toFixed(4) + ',\n"lowerLegLRx" : ' + genRobotStructure["lowerLegL"].rotation.x.toFixed(4) + ',\n"lowerLegLRy" : ' + genRobotStructure["lowerLegL"].rotation.y.toFixed(4) + ',\n"lowerLegLRz" : ' +genRobotStructure["lowerLegL"].rotation.z.toFixed(4) + ',\n"upperLegRRx" : ' + genRobotStructure["upperLegR"].rotation.x.toFixed(4) + ',\n"upperLegRRy" : ' + genRobotStructure["upperLegR"].rotation.y.toFixed(4) + ',\n"upperLegRRz" : ' +genRobotStructure["upperLegR"].rotation.z.toFixed(4) + ',\n"lowerLegRRx" : ' + genRobotStructure["lowerLegR"].rotation.x.toFixed(4) + ',\n"lowerLegRRy" : ' + genRobotStructure["lowerLegR"].rotation.y.toFixed(4) + ',\n"lowerLegRRz" : ' +genRobotStructure["lowerLegR"].rotation.z.toFixed(4) + ',\n"hipsRx" : ' + genRobotStructure["hips"].rotation.x.toFixed(4) + ',\n"hipsRy" : ' + genRobotStructure["hips"].rotation.y.toFixed(4) + ',\n"hipsRz" : ' +genRobotStructure["hips"].rotation.z.toFixed(4) + ',\n"abdomenRx" : ' + genRobotStructure["abdomen"].rotation.x.toFixed(4) + ',\n"abdomenRy" : ' + genRobotStructure["abdomen"].rotation.y.toFixed(4) + ',\n"abdomenRz" : ' +genRobotStructure["abdomen"].rotation.z.toFixed(4) + ',\n"torsoRx" : ' + genRobotStructure["torso"].rotation.x.toFixed(4) + ',\n"torsoRy" : ' + genRobotStructure["torso"].rotation.y.toFixed(4) + ',\n"torsoRz" : ' +genRobotStructure["torso"].rotation.z.toFixed(4) + ',\n"neckRx" : ' + genRobotStructure["neck"].rotation.x.toFixed(4) + ',\n"neckRy" : ' + genRobotStructure["neck"].rotation.y.toFixed(4) + ',\n"neckRz" : ' +genRobotStructure["neck"].rotation.z.toFixed(4) + ',\n"headRx" : ' + genRobotStructure["head"].rotation.x.toFixed(4) + ',\n"headRy" : ' + genRobotStructure["head"].rotation.y.toFixed(4) + ',\n"headRz" : ' +genRobotStructure["head"].rotation.z.toFixed(4) + ',\n"shoulderRRx" : ' + genRobotStructure["shoulderR"].rotation.x.toFixed(4) + ',\n"shoulderRRy" : ' + genRobotStructure["shoulderR"].rotation.y.toFixed(4) + ',\n"shoulderRRz" : ' +genRobotStructure["shoulderR"].rotation.z.toFixed(4) + ',\n"upperArmRRx" : ' + genRobotStructure["upperArmR"].rotation.x.toFixed(4) + ',\n"upperArmRRy" : ' + genRobotStructure["upperArmR"].rotation.y.toFixed(4) + ',\n"upperArmRRz" : ' +genRobotStructure["upperArmR"].rotation.z.toFixed(4) + ',\n"lowerArmRRx" : ' + genRobotStructure["lowerArmR"].rotation.x.toFixed(4) + ',\n"lowerArmRRy" : ' + genRobotStructure["lowerArmR"].rotation.y.toFixed(4) + ',\n"lowerArmRRz" : ' +genRobotStructure["lowerArmR"].rotation.z.toFixed(4) + ',\n"thumbRRx" : ' + genRobotStructure["thumbR"].rotation.x.toFixed(4) + ',\n"thumbRRy" : ' + genRobotStructure["thumbR"].rotation.y.toFixed(4) + ',\n"thumbRRz" : ' +genRobotStructure["thumbR"].rotation.z.toFixed(4) + ',\n"thumb2RRx" : ' + genRobotStructure["thumb2R"].rotation.x.toFixed(4) + ',\n"thumb2RRy" : ' + genRobotStructure["thumb2R"].rotation.y.toFixed(4) + ',\n"thumb2RRz" : ' +genRobotStructure["thumb2R"].rotation.z.toFixed(4) + ',\n"palm2RRx" : ' + genRobotStructure["palm2R"].rotation.x.toFixed(4) + ',\n"palm2RRy" : ' + genRobotStructure["palm2R"].rotation.y.toFixed(4) + ',\n"palm2RRz" : ' +genRobotStructure["palm2R"].rotation.z.toFixed(4) + ',\n"middle1RRx" : ' + genRobotStructure["middle1R"].rotation.x.toFixed(4) + ',\n"middle1RRy" : ' + genRobotStructure["middle1R"].rotation.y.toFixed(4) + ',\n"middle1RRz" : ' +genRobotStructure["middle1R"].rotation.z.toFixed(4) + ',\n"middle2RRx" : ' + genRobotStructure["middle2R"].rotation.x.toFixed(4) + ',\n"middle2RRy" : ' + genRobotStructure["middle2R"].rotation.y.toFixed(4) + ',\n"middle2RRz" : ' +genRobotStructure["middle2R"].rotation.z.toFixed(4) + ',\n"palm1RRx" : ' + genRobotStructure["palm1R"].rotation.x.toFixed(4) + ',\n"palm1RRy" : ' + genRobotStructure["palm1R"].rotation.y.toFixed(4) + ',\n"palm1RRz" : ' +genRobotStructure["palm1R"].rotation.z.toFixed(4) + ',\n"indexRRx" : ' + genRobotStructure["indexR"].rotation.x.toFixed(4) + ',\n"indexRRy" : ' + genRobotStructure["indexR"].rotation.y.toFixed(4) + ',\n"indexRRz" : ' +genRobotStructure["indexR"].rotation.z.toFixed(4) + ',\n"index2RRx" : ' + genRobotStructure["index2R"].rotation.x.toFixed(4) + ',\n"index2RRy" : ' + genRobotStructure["index2R"].rotation.y.toFixed(4) + ',\n"index2RRz" : ' +genRobotStructure["index2R"].rotation.z.toFixed(4) + ',\n"palm3RRx" : ' + genRobotStructure["palm3R"].rotation.x.toFixed(4) + ',\n"palm3RRy" : ' + genRobotStructure["palm3R"].rotation.y.toFixed(4) + ',\n"palm3RRz" : ' +genRobotStructure["palm3R"].rotation.z.toFixed(4) + ',\n"ring1RRx" : ' + genRobotStructure["ring1R"].rotation.x.toFixed(4) + ',\n"ring1RRy" : ' + genRobotStructure["ring1R"].rotation.y.toFixed(4) + ',\n"ring1RRz" : ' +genRobotStructure["ring1R"].rotation.z.toFixed(4) + ',\n"ring2RRx" : ' + genRobotStructure["ring2R"].rotation.x.toFixed(4) + ',\n"ring2RRy" : ' + genRobotStructure["ring2R"].rotation.y.toFixed(4) + ',\n"ring2RRz" : ' +genRobotStructure["ring2R"].rotation.z.toFixed(4) + ',\n"shoulderLRx" : ' + genRobotStructure["shoulderL"].rotation.x.toFixed(4) + ',\n"shoulderLRy" : ' + genRobotStructure["shoulderL"].rotation.y.toFixed(4) + ',\n"shoulderLRz" : ' +genRobotStructure["shoulderL"].rotation.z.toFixed(4) + ',\n"upperArmLRx" : ' + genRobotStructure["upperArmL"].rotation.x.toFixed(4) + ',\n"upperArmLRy" : ' + genRobotStructure["upperArmL"].rotation.y.toFixed(4) + ',\n"upperArmLRz" : ' +genRobotStructure["upperArmL"].rotation.z.toFixed(4) + ',\n"lowerArmLRx" : ' + genRobotStructure["lowerArmL"].rotation.x.toFixed(4) + ',\n"lowerArmLRy" : ' + genRobotStructure["lowerArmL"].rotation.y.toFixed(4) + ',\n"lowerArmLRz" : ' +genRobotStructure["lowerArmL"].rotation.z.toFixed(4) + ',\n"palm2LRx" : ' + genRobotStructure["palm2L"].rotation.x.toFixed(4) + ',\n"palm2LRy" : ' + genRobotStructure["palm2L"].rotation.y.toFixed(4) + ',\n"palm2LRz" : ' +genRobotStructure["palm2L"].rotation.z.toFixed(4) + ',\n"middle1LRx" : ' + genRobotStructure["middle1L"].rotation.x.toFixed(4) + ',\n"middle1LRy" : ' + genRobotStructure["middle1L"].rotation.y.toFixed(4) + ',\n"middle1LRz" : ' +genRobotStructure["middle1L"].rotation.z.toFixed(4) + ',\n"middle2LRx" : ' + genRobotStructure["middle2L"].rotation.x.toFixed(4) + ',\n"middle2LRy" : ' + genRobotStructure["middle2L"].rotation.y.toFixed(4) + ',\n"middle2LRz" : ' +genRobotStructure["middle2L"].rotation.z.toFixed(4) + ',\n"thumbLRx" : ' + genRobotStructure["thumbL"].rotation.x.toFixed(4) + ',\n"thumbLRy" : ' + genRobotStructure["thumbL"].rotation.y.toFixed(4) + ',\n"thumbLRz" : ' +genRobotStructure["thumbL"].rotation.z.toFixed(4) + ',\n"thumb2LRx" : ' + genRobotStructure["thumb2L"].rotation.x.toFixed(4) + ',\n"thumb2LRy" : ' + genRobotStructure["thumb2L"].rotation.y.toFixed(4) + ',\n"thumb2LRz" : ' +genRobotStructure["thumb2L"].rotation.z.toFixed(4) + ',\n"palm1LRx" : ' + genRobotStructure["palm1L"].rotation.x.toFixed(4) + ',\n"palm1LRy" : ' + genRobotStructure["palm1L"].rotation.y.toFixed(4) + ',\n"palm1LRz" : ' +genRobotStructure["palm1L"].rotation.z.toFixed(4) + ',\n"indexLRx" : ' + genRobotStructure["indexL"].rotation.x.toFixed(4) + ',\n"indexLRy" : ' + genRobotStructure["indexL"].rotation.y.toFixed(4) + ',\n"indexLRz" : ' +genRobotStructure["indexL"].rotation.z.toFixed(4) + ',\n"index2LRx" : ' + genRobotStructure["index2L"].rotation.x.toFixed(4) + ',\n"index2LRy" : ' + genRobotStructure["index2L"].rotation.y.toFixed(4) + ',\n"index2LRz" : ' +genRobotStructure["index2L"].rotation.z.toFixed(4) + ',\n"palm3LRx" : ' + genRobotStructure["palm3L"].rotation.x.toFixed(4) + ',\n"palm3LRy" : ' + genRobotStructure["palm3L"].rotation.y.toFixed(4) + ',\n"palm3LRz" : ' +genRobotStructure["palm3L"].rotation.z.toFixed(4) + ',\n"ring1LRx" : ' + genRobotStructure["ring1L"].rotation.x.toFixed(4) + ',\n"ring1LRy" : ' + genRobotStructure["ring1L"].rotation.y.toFixed(4) + ',\n"ring1LRz" : ' +genRobotStructure["ring1L"].rotation.z.toFixed(4) + ',\n"ring2LRx" : ' + genRobotStructure["ring2L"].rotation.x.toFixed(4) + ',\n"ring2LRy" : ' + genRobotStructure["ring2L"].rotation.y.toFixed(4) + ',\n"ring2LRz" : ' +genRobotStructure["ring2L"].rotation.z.toFixed(4) + ',\n"poleTargetLRx" : ' + genRobotStructure["poleTargetL"].rotation.x.toFixed(4) + ',\n"poleTargetLRy" : ' + genRobotStructure["poleTargetL"].rotation.y.toFixed(4) + ',\n"poleTargetLRz" : ' +genRobotStructure["poleTargetL"].rotation.z.toFixed(4) + ',\n"footRRx" : ' + genRobotStructure["footR"].rotation.x.toFixed(4) + ',\n"footRRy" : ' + genRobotStructure["footR"].rotation.y.toFixed(4) + ',\n"footRRz" : ' +genRobotStructure["footR"].rotation.z.toFixed(4) + ',\n"poleTargetRRx" : ' + genRobotStructure["poleTargetR"].rotation.x.toFixed(4) + ',\n"poleTargetRRy" : ' + genRobotStructure["poleTargetR"].rotation.y.toFixed(4) + ',\n"poleTargetRRz" : ' +genRobotStructure["poleTargetR"].rotation.z.toFixed(4));
+
+				var initialRotations = {
+					"rootJointRx" : genRobotStructure["rootJoint"].rotation.x, 
+					"rootJointRy" : genRobotStructure["rootJoint"].rotation.y, 
+					"rootJointRz" :genRobotStructure["rootJoint"].rotation.z,
+					"boneRx" : genRobotStructure["bone"].rotation.x, 
+					"boneRy" : genRobotStructure["bone"].rotation.y, 
+					"boneRz" :genRobotStructure["bone"].rotation.z,
+					"footLRx" : genRobotStructure["footL"].rotation.x, 
+					"footLRy" : genRobotStructure["footL"].rotation.y, 
+					"footLRz" :genRobotStructure["footL"].rotation.z,
+					"bodyRx" : genRobotStructure["body"].rotation.x, 
+					"bodyRy" : genRobotStructure["body"].rotation.y, 
+					"bodyRz" :genRobotStructure["body"].rotation.z,
+					"upperLegLRx" : genRobotStructure["upperLegL"].rotation.x, 
+					"upperLegLRy" : genRobotStructure["upperLegL"].rotation.y, 
+					"upperLegLRz" :genRobotStructure["upperLegL"].rotation.z,
+					"lowerLegLRx" : genRobotStructure["lowerLegL"].rotation.x, 
+					"lowerLegLRy" : genRobotStructure["lowerLegL"].rotation.y, 
+					"lowerLegLRz" :genRobotStructure["lowerLegL"].rotation.z,
+					"upperLegRRx" : genRobotStructure["upperLegR"].rotation.x, 
+					"upperLegRRy" : genRobotStructure["upperLegR"].rotation.y, 
+					"upperLegRRz" :genRobotStructure["upperLegR"].rotation.z,
+					"lowerLegRRx" : genRobotStructure["lowerLegR"].rotation.x, 
+					"lowerLegRRy" : genRobotStructure["lowerLegR"].rotation.y, 
+					"lowerLegRRz" :genRobotStructure["lowerLegR"].rotation.z,
+					"hipsRx" : genRobotStructure["hips"].rotation.x, 
+					"hipsRy" : genRobotStructure["hips"].rotation.y, 
+					"hipsRz" :genRobotStructure["hips"].rotation.z,
+					"abdomenRx" : genRobotStructure["abdomen"].rotation.x, 
+					"abdomenRy" : genRobotStructure["abdomen"].rotation.y, 
+					"abdomenRz" :genRobotStructure["abdomen"].rotation.z,
+					"torsoRx" : genRobotStructure["torso"].rotation.x, 
+					"torsoRy" : genRobotStructure["torso"].rotation.y, 
+					"torsoRz" :genRobotStructure["torso"].rotation.z,
+					"neckRx" : genRobotStructure["neck"].rotation.x, 
+					"neckRy" : genRobotStructure["neck"].rotation.y, 
+					"neckRz" :genRobotStructure["neck"].rotation.z,
+					"headRx" : genRobotStructure["head"].rotation.x, 
+					"headRy" : genRobotStructure["head"].rotation.y, 
+					"headRz" :genRobotStructure["head"].rotation.z,
+					"shoulderRRx" : genRobotStructure["shoulderR"].rotation.x, 
+					"shoulderRRy" : genRobotStructure["shoulderR"].rotation.y, 
+					"shoulderRRz" :genRobotStructure["shoulderR"].rotation.z,
+					"upperArmRRx" : genRobotStructure["upperArmR"].rotation.x, 
+					"upperArmRRy" : genRobotStructure["upperArmR"].rotation.y, 
+					"upperArmRRz" :genRobotStructure["upperArmR"].rotation.z,
+					"lowerArmRRx" : genRobotStructure["lowerArmR"].rotation.x, 
+					"lowerArmRRy" : genRobotStructure["lowerArmR"].rotation.y, 
+					"lowerArmRRz" :genRobotStructure["lowerArmR"].rotation.z,
+					"thumbRRx" : genRobotStructure["thumbR"].rotation.x, 
+					"thumbRRy" : genRobotStructure["thumbR"].rotation.y, 
+					"thumbRRz" :genRobotStructure["thumbR"].rotation.z,
+					"thumb2RRx" : genRobotStructure["thumb2R"].rotation.x, 
+					"thumb2RRy" : genRobotStructure["thumb2R"].rotation.y, 
+					"thumb2RRz" :genRobotStructure["thumb2R"].rotation.z,
+					"palm2RRx" : genRobotStructure["palm2R"].rotation.x, 
+					"palm2RRy" : genRobotStructure["palm2R"].rotation.y, 
+					"palm2RRz" :genRobotStructure["palm2R"].rotation.z,
+					"middle1RRx" : genRobotStructure["middle1R"].rotation.x, 
+					"middle1RRy" : genRobotStructure["middle1R"].rotation.y, 
+					"middle1RRz" :genRobotStructure["middle1R"].rotation.z,
+					"middle2RRx" : genRobotStructure["middle2R"].rotation.x, 
+					"middle2RRy" : genRobotStructure["middle2R"].rotation.y, 
+					"middle2RRz" :genRobotStructure["middle2R"].rotation.z,
+					"palm1RRx" : genRobotStructure["palm1R"].rotation.x, 
+					"palm1RRy" : genRobotStructure["palm1R"].rotation.y, 
+					"palm1RRz" :genRobotStructure["palm1R"].rotation.z,
+					"indexRRx" : genRobotStructure["indexR"].rotation.x, 
+					"indexRRy" : genRobotStructure["indexR"].rotation.y, 
+					"indexRRz" :genRobotStructure["indexR"].rotation.z,
+					"index2RRx" : genRobotStructure["index2R"].rotation.x, 
+					"index2RRy" : genRobotStructure["index2R"].rotation.y, 
+					"index2RRz" :genRobotStructure["index2R"].rotation.z,
+					"palm3RRx" : genRobotStructure["palm3R"].rotation.x, 
+					"palm3RRy" : genRobotStructure["palm3R"].rotation.y, 
+					"palm3RRz" :genRobotStructure["palm3R"].rotation.z,
+					"ring1RRx" : genRobotStructure["ring1R"].rotation.x, 
+					"ring1RRy" : genRobotStructure["ring1R"].rotation.y, 
+					"ring1RRz" :genRobotStructure["ring1R"].rotation.z,
+					"ring2RRx" : genRobotStructure["ring2R"].rotation.x, 
+					"ring2RRy" : genRobotStructure["ring2R"].rotation.y, 
+					"ring2RRz" :genRobotStructure["ring2R"].rotation.z,
+					"shoulderLRx" : genRobotStructure["shoulderL"].rotation.x, 
+					"shoulderLRy" : genRobotStructure["shoulderL"].rotation.y, 
+					"shoulderLRz" :genRobotStructure["shoulderL"].rotation.z,
+					"upperArmLRx" : genRobotStructure["upperArmL"].rotation.x, 
+					"upperArmLRy" : genRobotStructure["upperArmL"].rotation.y, 
+					"upperArmLRz" :genRobotStructure["upperArmL"].rotation.z,
+					"lowerArmLRx" : genRobotStructure["lowerArmL"].rotation.x, 
+					"lowerArmLRy" : genRobotStructure["lowerArmL"].rotation.y, 
+					"lowerArmLRz" :genRobotStructure["lowerArmL"].rotation.z,
+					"palm2LRx" : genRobotStructure["palm2L"].rotation.x, 
+					"palm2LRy" : genRobotStructure["palm2L"].rotation.y, 
+					"palm2LRz" :genRobotStructure["palm2L"].rotation.z,
+					"middle1LRx" : genRobotStructure["middle1L"].rotation.x, 
+					"middle1LRy" : genRobotStructure["middle1L"].rotation.y, 
+					"middle1LRz" :genRobotStructure["middle1L"].rotation.z,
+					"middle2LRx" : genRobotStructure["middle2L"].rotation.x, 
+					"middle2LRy" : genRobotStructure["middle2L"].rotation.y, 
+					"middle2LRz" :genRobotStructure["middle2L"].rotation.z,
+					"thumbLRx" : genRobotStructure["thumbL"].rotation.x, 
+					"thumbLRy" : genRobotStructure["thumbL"].rotation.y, 
+					"thumbLRz" :genRobotStructure["thumbL"].rotation.z,
+					"thumb2LRx" : genRobotStructure["thumb2L"].rotation.x, 
+					"thumb2LRy" : genRobotStructure["thumb2L"].rotation.y, 
+					"thumb2LRz" :genRobotStructure["thumb2L"].rotation.z,
+					"palm1LRx" : genRobotStructure["palm1L"].rotation.x, 
+					"palm1LRy" : genRobotStructure["palm1L"].rotation.y, 
+					"palm1LRz" :genRobotStructure["palm1L"].rotation.z,
+					"indexLRx" : genRobotStructure["indexL"].rotation.x, 
+					"indexLRy" : genRobotStructure["indexL"].rotation.y, 
+					"indexLRz" :genRobotStructure["indexL"].rotation.z,
+					"index2LRx" : genRobotStructure["index2L"].rotation.x, 
+					"index2LRy" : genRobotStructure["index2L"].rotation.y, 
+					"index2LRz" :genRobotStructure["index2L"].rotation.z,
+					"palm3LRx" : genRobotStructure["palm3L"].rotation.x, 
+					"palm3LRy" : genRobotStructure["palm3L"].rotation.y, 
+					"palm3LRz" :genRobotStructure["palm3L"].rotation.z,
+					"ring1LRx" : genRobotStructure["ring1L"].rotation.x, 
+					"ring1LRy" : genRobotStructure["ring1L"].rotation.y, 
+					"ring1LRz" :genRobotStructure["ring1L"].rotation.z,
+					"ring2LRx" : genRobotStructure["ring2L"].rotation.x, 
+					"ring2LRy" : genRobotStructure["ring2L"].rotation.y, 
+					"ring2LRz" :genRobotStructure["ring2L"].rotation.z,
+					"poleTargetLRx" : genRobotStructure["poleTargetL"].rotation.x, 
+					"poleTargetLRy" : genRobotStructure["poleTargetL"].rotation.y, 
+					"poleTargetLRz" :genRobotStructure["poleTargetL"].rotation.z,
+					"footRRx" : genRobotStructure["footR"].rotation.x, 
+					"footRRy" : genRobotStructure["footR"].rotation.y, 
+					"footRRz" :genRobotStructure["footR"].rotation.z,
+					"poleTargetRRx" : genRobotStructure["poleTargetR"].rotation.x, 
+					"poleTargetRRy" : genRobotStructure["poleTargetR"].rotation.y, 
+					"poleTargetRRz" :genRobotStructure["poleTargetR"].rotation.z
+				};
+
+				var updateFunction = createUpdateFunction(genRobotStructure);
+
+				var idleEnemy = new TWEEN.Tween(initialRotations).to({
+					"rootJointRx" : 0.0000,
+					"rootJointRy" : 0.0000,
+					"rootJointRz" : 0.0000,
+					"boneRx" : 1.5708,
+					"boneRy" : 0.0000,
+					"boneRz" : -0.0000,
+					"footLRx" : -1.5384,
+					"footLRy" : 0.0000,
+					"footLRz" : 3.1416,
+					"bodyRx" : 0.2855,
+					"bodyRy" : 0.0000,
+					"bodyRz" : -0.0000,
+					"upperLegLRx" : 2.7895,
+					"upperLegLRy" : -0.1734,
+					"upperLegLRz" : -0.0254,
+					"lowerLegLRx" : 0.2121,
+					"lowerLegLRy" : 0.0000,
+					"lowerLegLRz" : -0.0000,
+					"upperLegRRx" : 2.7889,
+					"upperLegRRy" : 0.2823,
+					"upperLegRRz" : 0.0356,
+					"lowerLegRRx" : 0.2121,
+					"lowerLegRRy" : -0.0000,
+					"lowerLegRRz" : 0.0000,
+					"hipsRx" : -0.2385,
+					"hipsRy" : -0.0000,
+					"hipsRz" : -0.0000,
+					"abdomenRx" : 0.2308,
+					"abdomenRy" : 0.0000,
+					"abdomenRz" : 0.0000,
+					"torsoRx" : 0.1166,
+					"torsoRy" : -0.0000,
+					"torsoRz" : 0.0000,
+					"neckRx" : -0.0860,
+					"neckRy" : -0.0308,
+					"neckRz" : 0.0553,
+					"headRx" : -0.3351,
+					"headRy" : 0.0193,
+					"headRz" : 0.0262,
+					"shoulderRRx" : -0.1090,
+					"shoulderRRy" : -0.0000,
+					"shoulderRRz" : 2.6864,
+					"upperArmRRx" : 2.0772,
+					"upperArmRRy" : 0.3936,
+					"upperArmRRz" : -1.8977,
+					"lowerArmRRx" : 1.6209,
+					"lowerArmRRy" : -0.5227,
+					"lowerArmRRz" : -2.9996,
+					"thumbRRx" : 2.8878,
+					"thumbRRy" : -0.9211,
+					"thumbRRz" : 1.3133,
+					"thumb2RRx" : -1.7178,
+					"thumb2RRy" : -0.6391,
+					"thumb2RRz" : -2.9502,
+					"palm2RRx" : -0.0222,
+					"palm2RRy" : -0.1657,
+					"palm2RRz" : 0.6589,
+					"middle1RRx" : -0.0636,
+					"middle1RRy" : -0.0635,
+					"middle1RRz" : 1.1049,
+					"middle2RRx" : 0.0997,
+					"middle2RRy" : -0.0320,
+					"middle2RRz" : 1.0613,
+					"palm1RRx" : -1.7964,
+					"palm1RRy" : 0.8086,
+					"palm1RRz" : 2.0645,
+					"indexRRx" : -1.9069,
+					"indexRRy" : -1.0366,
+					"indexRRz" : -0.9294,
+					"index2RRx" : -0.0585,
+					"index2RRy" : -0.0646,
+					"index2RRz" : 1.1100,
+					"palm3RRx" : 2.1885,
+					"palm3RRy" : -0.5323,
+					"palm3RRz" : 2.5953,
+					"ring1RRx" : 2.0308,
+					"ring1RRy" : 0.9081,
+					"ring1RRz" : -0.9431,
+					"ring2RRx" : 0.2315,
+					"ring2RRy" : 0.1636,
+					"ring2RRz" : 0.8729,
+					"shoulderLRx" : -0.1090,
+					"shoulderLRy" : -0.0000,
+					"shoulderLRz" : -2.7180,
+					"upperArmLRx" : 1.7087,
+					"upperArmLRy" : -0.4337,
+					"upperArmLRz" : 2.0614,
+					"lowerArmLRx" : 1.4986,
+					"lowerArmLRy" : -0.4114,
+					"lowerArmLRz" : -3.1196,
+					"palm2LRx" : -0.0025,
+					"palm2LRy" : 0.0133,
+					"palm2LRz" : -0.6631,
+					"middle1LRx" : 0.0190,
+					"middle1LRy" : 0.0446,
+					"middle1LRz" : -1.1705,
+					"middle2LRx" : -0.0532,
+					"middle2LRy" : 0.0547,
+					"middle2LRz" : -1.5498,
+					"thumbLRx" : -3.0654,
+					"thumbLRy" : 0.5048,
+					"thumbLRz" : -1.4522,
+					"thumb2LRx" : -1.4232,
+					"thumb2LRy" : -0.9182,
+					"thumb2LRz" : -2.8564,
+					"palm1LRx" : 0.7827,
+					"palm1LRy" : 0.3751,
+					"palm1LRz" : -0.6223,
+					"indexLRx" : -0.5316,
+					"indexLRy" : -0.6584,
+					"indexLRz" : -1.5806,
+					"index2LRx" : -0.0866,
+					"index2LRy" : 0.0334,
+					"index2LRz" : -1.5514,
+					"palm3LRx" : -0.9059,
+					"palm3LRy" : -0.4760,
+					"palm3LRz" : -0.6485,
+					"ring1LRx" : 0.7377,
+					"ring1LRy" : 0.7843,
+					"ring1LRz" : -1.7830,
+					"ring2LRx" : -0.0866,
+					"ring2LRy" : 0.0334,
+					"ring2LRz" : -1.5514,
+					"poleTargetLRx" : 0.0000,
+					"poleTargetLRy" : 0.0000,
+					"poleTargetLRz" : -0.0000,
+					"footRRx" : -1.5384,
+					"footRRy" : 0.0000,
+					"footRRz" : 3.1416,
+					"poleTargetRRx" : 0.0000,
+					"poleTargetRRy" : 0.0000,
+					"poleTargetRRz" : -0.0000
+				}, 500);
+
+				idleEnemy.onUpdate(updateFunction);
+				tweens["idle"] = idleEnemy;
+
+				
+				var genRobot = {"mesh" : genRobotMesh, "body" : genRobotBody, "model": robotModelParent, "state": "IDLE", "tweens": tweens};
 				robots.push(genRobot);
 
 				genRobotBody.addEventListener("collide", robotColliderEvent(genRobot));
@@ -637,8 +1053,8 @@
 			populateArcherStructure();
 
 			changePlayerState("Idle");
-			archerStructure["rightUpperArm"].rotation.z += Math.PI/2.3;
-			archerStructure["leftUpperArm"].rotation.z -= Math.PI/2.3;
+			archerStructure["rightArm"].rotation.z += Math.PI/2.3;
+			archerStructure["leftArm"].rotation.z -= Math.PI/2.3;
 			archerStructure["rightHandPinky2"].rotation.z = Math.PI/3;
 			archerStructure["rightHandPinky3"].rotation.z = Math.PI/3; 
 			archerStructure["rightHandPinky4"].rotation.z = Math.PI/3; 
@@ -733,18 +1149,18 @@
 			level3Unlock6.easing(TWEEN.Easing.Bounce.Out);
 			
 			var startRotations ={"rightShoulderRx": archerStructure["rightShoulder"].rotation.x,"rightShoulderRy": archerStructure["rightShoulder"].rotation.y,"rightShoulderRz": archerStructure["rightShoulder"].rotation.z, 
-								"rightUpperArmRx": archerStructure["rightUpperArm"].rotation.x,"rightUpperArmRy": archerStructure["rightUpperArm"].rotation.y,"rightUpperArmRz": archerStructure["rightUpperArm"].rotation.z, 
-								"rightLowerArmRx": archerStructure["rightLowerArm"].rotation.x,"rightLowerArmRy": archerStructure["rightLowerArm"].rotation.y,"rightLowerArmRz": archerStructure["rightLowerArm"].rotation.z, 
+								"rightArmRx": archerStructure["rightArm"].rotation.x,"rightArmRy": archerStructure["rightArm"].rotation.y,"rightArmRz": archerStructure["rightArm"].rotation.z, 
+								"rightForeArmRx": archerStructure["rightForeArm"].rotation.x,"rightForeArmRy": archerStructure["rightForeArm"].rotation.y,"rightForeArmRz": archerStructure["rightForeArm"].rotation.z, 
 								"rightHandRx": archerStructure["rightHand"].rotation.x,"rightHandRy": archerStructure["rightHand"].rotation.y,"rightHandRz": archerStructure["rightHand"].rotation.z, 
 								"leftShoulderRx": archerStructure["leftShoulder"].rotation.x,"leftShoulderRy": archerStructure["leftShoulder"].rotation.y,"leftShoulderRz": archerStructure["leftShoulder"].rotation.z, 
-								"leftUpperArmRx": archerStructure["leftUpperArm"].rotation.x,"leftUpperArmRy": archerStructure["leftUpperArm"].rotation.y,"leftUpperArmRz": archerStructure["leftUpperArm"].rotation.z, 
-								"leftLowerArmRx": archerStructure["leftLowerArm"].rotation.x,"leftLowerArmRy": archerStructure["leftLowerArm"].rotation.y,"leftLowerArmRz": archerStructure["leftLowerArm"].rotation.z, 
+								"leftArmRx": archerStructure["leftArm"].rotation.x,"leftArmRy": archerStructure["leftArm"].rotation.y,"leftArmRz": archerStructure["leftArm"].rotation.z, 
+								"leftForeArmRx": archerStructure["leftForeArm"].rotation.x,"leftForeArmRy": archerStructure["leftForeArm"].rotation.y,"leftForeArmRz": archerStructure["leftForeArm"].rotation.z, 
 								"leftHandRx": archerStructure["leftHand"].rotation.x,"leftHandRy": archerStructure["leftHand"].rotation.y,"leftHandRz": archerStructure["leftHand"].rotation.z, 
-								"rightUpperLegRx": archerStructure["rightUpperLeg"].rotation.x,"rightUpperLegRy": archerStructure["rightUpperLeg"].rotation.y,"rightUpperLegRz": archerStructure["rightUpperLeg"].rotation.z, 
-								"rightLowerLegRx": archerStructure["rightLowerLeg"].rotation.x,"rightLowerLegRy": archerStructure["rightLowerLeg"].rotation.y,"rightLowerLegRz": archerStructure["rightLowerLeg"].rotation.z, 
+								"rightUpLegRx": archerStructure["rightUpLeg"].rotation.x,"rightUpLegRy": archerStructure["rightUpLeg"].rotation.y,"rightUpLegRz": archerStructure["rightUpLeg"].rotation.z, 
+								"rightLegRx": archerStructure["rightLeg"].rotation.x,"rightLegRy": archerStructure["rightLeg"].rotation.y,"rightLegRz": archerStructure["rightLeg"].rotation.z, 
 								"rightFootRx": archerStructure["rightFoot"].rotation.x,"rightFootRy": archerStructure["rightFoot"].rotation.y,"rightFootRz": archerStructure["rightFoot"].rotation.z, 
-								"leftUpperLegRx": archerStructure["leftUpperLeg"].rotation.x,"leftUpperLegRy": archerStructure["leftUpperLeg"].rotation.y,"leftUpperLegRz": archerStructure["leftUpperLeg"].rotation.z, 
-								"leftLowerLegRx": archerStructure["leftLowerLeg"].rotation.x,"leftLowerLegRy": archerStructure["leftLowerLeg"].rotation.y,"leftLowerLegRz": archerStructure["leftLowerLeg"].rotation.z, 
+								"leftUpLegRx": archerStructure["leftUpLeg"].rotation.x,"leftUpLegRy": archerStructure["leftUpLeg"].rotation.y,"leftUpLegRz": archerStructure["leftUpLeg"].rotation.z, 
+								"leftLegRx": archerStructure["leftLeg"].rotation.x,"leftLegRy": archerStructure["leftLeg"].rotation.y,"leftLegRz": archerStructure["leftLeg"].rotation.z, 
 								"leftFootRx": archerStructure["leftFoot"].rotation.x,"leftFootRy": archerStructure["leftFoot"].rotation.y,"leftFootRz": archerStructure["leftFoot"].rotation.z, 
 								"neckRx": archerStructure["neck"].rotation.x,"neckRy": archerStructure["neck"].rotation.y,"neckRz": archerStructure["neck"].rotation.z, 
 								"headRx": archerStructure["head"].rotation.x,"headRy": archerStructure["head"].rotation.y,"headRz": archerStructure["head"].rotation.z, 
@@ -790,12 +1206,12 @@
 				//If the player is not shooting then you can move the upper part of the body
 				if(canShoot){
 					archerStructure["rightShoulder"].rotation.x = object["rightShoulderRx"];archerStructure["rightShoulder"].rotation.y = object["rightShoulderRy"];archerStructure["rightShoulder"].rotation.z = object["rightShoulderRz"]; 
-					archerStructure["rightUpperArm"].rotation.x = object["rightUpperArmRx"];archerStructure["rightUpperArm"].rotation.y = object["rightUpperArmRy"];archerStructure["rightUpperArm"].rotation.z = object["rightUpperArmRz"]; 
-					archerStructure["rightLowerArm"].rotation.x = object["rightLowerArmRx"];archerStructure["rightLowerArm"].rotation.y = object["rightLowerArmRy"];archerStructure["rightLowerArm"].rotation.z = object["rightLowerArmRz"]; 
+					archerStructure["rightArm"].rotation.x = object["rightArmRx"];archerStructure["rightArm"].rotation.y = object["rightArmRy"];archerStructure["rightArm"].rotation.z = object["rightArmRz"]; 
+					archerStructure["rightForeArm"].rotation.x = object["rightForeArmRx"];archerStructure["rightForeArm"].rotation.y = object["rightForeArmRy"];archerStructure["rightForeArm"].rotation.z = object["rightForeArmRz"]; 
 					archerStructure["rightHand"].rotation.x = object["rightHandRx"];archerStructure["rightHand"].rotation.y = object["rightHandRy"];archerStructure["rightHand"].rotation.z = object["rightHandRz"]; 
 					archerStructure["leftShoulder"].rotation.x = object["leftShoulderRx"];archerStructure["leftShoulder"].rotation.y = object["leftShoulderRy"];archerStructure["leftShoulder"].rotation.z = object["leftShoulderRz"]; 
-					archerStructure["leftUpperArm"].rotation.x = object["leftUpperArmRx"];archerStructure["leftUpperArm"].rotation.y = object["leftUpperArmRy"];archerStructure["leftUpperArm"].rotation.z = object["leftUpperArmRz"]; 
-					archerStructure["leftLowerArm"].rotation.x = object["leftLowerArmRx"];archerStructure["leftLowerArm"].rotation.y = object["leftLowerArmRy"];archerStructure["leftLowerArm"].rotation.z = object["leftLowerArmRz"]; 
+					archerStructure["leftArm"].rotation.x = object["leftArmRx"];archerStructure["leftArm"].rotation.y = object["leftArmRy"];archerStructure["leftArm"].rotation.z = object["leftArmRz"]; 
+					archerStructure["leftForeArm"].rotation.x = object["leftForeArmRx"];archerStructure["leftForeArm"].rotation.y = object["leftForeArmRy"];archerStructure["leftForeArm"].rotation.z = object["leftForeArmRz"]; 
 					archerStructure["leftHand"].rotation.x = object["leftHandRx"];archerStructure["leftHand"].rotation.y = object["leftHandRy"];archerStructure["leftHand"].rotation.z = object["leftHandRz"]; 
 					archerStructure["neck"].rotation.x = object["neckRx"];archerStructure["neck"].rotation.y = object["neckRy"];archerStructure["neck"].rotation.z = object["neckRz"]; 
 					archerStructure["head"].rotation.x = object["headRx"];archerStructure["head"].rotation.y = object["headRy"];archerStructure["head"].rotation.z = object["headRz"]; 
@@ -830,22 +1246,22 @@
 					archerStructure["leftHandThumb3"].rotation.y = object["leftHandThumb3Ry"];archerStructure["leftHandThumb3"].rotation.z = object["leftHandThumb3Rz"]; 
 					archerStructure["leftHandThumb4"].rotation.y = object["leftHandThumb4Ry"];archerStructure["leftHandThumb4"].rotation.z = object["leftHandThumb4Rz"]; 	
 				}			
-				archerStructure["rightUpperLeg"].rotation.x = object["rightUpperLegRx"];archerStructure["rightUpperLeg"].rotation.y = object["rightUpperLegRy"];archerStructure["rightUpperLeg"].rotation.z = object["rightUpperLegRz"]; 
-				archerStructure["rightLowerLeg"].rotation.x = object["rightLowerLegRx"];archerStructure["rightLowerLeg"].rotation.y = object["rightLowerLegRy"];archerStructure["rightLowerLeg"].rotation.z = object["rightLowerLegRz"]; 
+				archerStructure["rightUpLeg"].rotation.x = object["rightUpLegRx"];archerStructure["rightUpLeg"].rotation.y = object["rightUpLegRy"];archerStructure["rightUpLeg"].rotation.z = object["rightUpLegRz"]; 
+				archerStructure["rightLeg"].rotation.x = object["rightLegRx"];archerStructure["rightLeg"].rotation.y = object["rightLegRy"];archerStructure["rightLeg"].rotation.z = object["rightLegRz"]; 
 				archerStructure["rightFoot"].rotation.x = object["rightFootRx"];archerStructure["rightFoot"].rotation.y = object["rightFootRy"];archerStructure["rightFoot"].rotation.z = object["rightFootRz"]; 
-				archerStructure["leftUpperLeg"].rotation.x = object["leftUpperLegRx"];archerStructure["leftUpperLeg"].rotation.y = object["leftUpperLegRy"];archerStructure["leftUpperLeg"].rotation.z = object["leftUpperLegRz"]; 
-				archerStructure["leftLowerLeg"].rotation.x = object["leftLowerLegRx"];archerStructure["leftLowerLeg"].rotation.y = object["leftLowerLegRy"];archerStructure["leftLowerLeg"].rotation.z = object["leftLowerLegRz"]; 
+				archerStructure["leftUpLeg"].rotation.x = object["leftUpLegRx"];archerStructure["leftUpLeg"].rotation.y = object["leftUpLegRy"];archerStructure["leftUpLeg"].rotation.z = object["leftUpLegRz"]; 
+				archerStructure["leftLeg"].rotation.x = object["leftLegRx"];archerStructure["leftLeg"].rotation.y = object["leftLegRy"];archerStructure["leftLeg"].rotation.z = object["leftLegRz"]; 
 				archerStructure["leftFoot"].rotation.x = object["leftFootRx"];archerStructure["leftFoot"].rotation.y = object["leftFootRy"];archerStructure["leftFoot"].rotation.z = object["leftFootRz"]; 
 			};
 
 			const updateFunctionUpper = function (object, elapsedTime) {
 				archerStructure["rightShoulder"].rotation.x = object["rightShoulderRx"];archerStructure["rightShoulder"].rotation.y = object["rightShoulderRy"];archerStructure["rightShoulder"].rotation.z = object["rightShoulderRz"]; 
-				archerStructure["rightUpperArm"].rotation.x = object["rightUpperArmRx"];archerStructure["rightUpperArm"].rotation.y = object["rightUpperArmRy"];archerStructure["rightUpperArm"].rotation.z = object["rightUpperArmRz"]; 
-				archerStructure["rightLowerArm"].rotation.x = object["rightLowerArmRx"];archerStructure["rightLowerArm"].rotation.y = object["rightLowerArmRy"];archerStructure["rightLowerArm"].rotation.z = object["rightLowerArmRz"]; 
+				archerStructure["rightArm"].rotation.x = object["rightArmRx"];archerStructure["rightArm"].rotation.y = object["rightArmRy"];archerStructure["rightArm"].rotation.z = object["rightArmRz"]; 
+				archerStructure["rightForeArm"].rotation.x = object["rightForeArmRx"];archerStructure["rightForeArm"].rotation.y = object["rightForeArmRy"];archerStructure["rightForeArm"].rotation.z = object["rightForeArmRz"]; 
 				archerStructure["rightHand"].rotation.x = object["rightHandRx"];archerStructure["rightHand"].rotation.y = object["rightHandRy"];archerStructure["rightHand"].rotation.z = object["rightHandRz"]; 
 				archerStructure["leftShoulder"].rotation.x = object["leftShoulderRx"];archerStructure["leftShoulder"].rotation.y = object["leftShoulderRy"];archerStructure["leftShoulder"].rotation.z = object["leftShoulderRz"]; 
-				archerStructure["leftUpperArm"].rotation.x = object["leftUpperArmRx"];archerStructure["leftUpperArm"].rotation.y = object["leftUpperArmRy"];archerStructure["leftUpperArm"].rotation.z = object["leftUpperArmRz"]; 
-				archerStructure["leftLowerArm"].rotation.x = object["leftLowerArmRx"];archerStructure["leftLowerArm"].rotation.y = object["leftLowerArmRy"];archerStructure["leftLowerArm"].rotation.z = object["leftLowerArmRz"]; 
+				archerStructure["leftArm"].rotation.x = object["leftArmRx"];archerStructure["leftArm"].rotation.y = object["leftArmRy"];archerStructure["leftArm"].rotation.z = object["leftArmRz"]; 
+				archerStructure["leftForeArm"].rotation.x = object["leftForeArmRx"];archerStructure["leftForeArm"].rotation.y = object["leftForeArmRy"];archerStructure["leftForeArm"].rotation.z = object["leftForeArmRz"]; 
 				archerStructure["leftHand"].rotation.x = object["leftHandRx"];archerStructure["leftHand"].rotation.y = object["leftHandRy"];archerStructure["leftHand"].rotation.z = object["leftHandRz"]; 
 				archerStructure["neck"].rotation.x = object["neckRx"];archerStructure["neck"].rotation.y = object["neckRy"];archerStructure["neck"].rotation.z = object["neckRz"]; 
 				archerStructure["head"].rotation.x = object["headRx"];archerStructure["head"].rotation.y = object["headRy"];archerStructure["head"].rotation.z = object["headRz"]; 
@@ -882,18 +1298,18 @@
 			};
 
 			idle = new TWEEN.Tween(startRotations).to({"rightShoulderRx": -0.0000,"rightShoulderRy": -0.0000,"rightShoulderRz": -0.0000, 
-														"rightUpperArmRx": 0.0000,"rightUpperArmRy": 0.0000,"rightUpperArmRz": 1.3659, 
-														"rightLowerArmRx": -0.0000,"rightLowerArmRy": -0.0000,"rightLowerArmRz": 0.0000, 
+														"rightArmRx": 0.0000,"rightArmRy": 0.0000,"rightArmRz": 1.3659, 
+														"rightForeArmRx": -0.0000,"rightForeArmRy": -0.0000,"rightForeArmRz": 0.0000, 
 														"rightHandRx": 0.0005,"rightHandRy": 0.0000,"rightHandRz": -0.0000, 
 														"leftShoulderRx": -0.0000,"leftShoulderRy": -0.0000,"leftShoulderRz": 0.0000, 
-														"leftUpperArmRx": 0.0000,"leftUpperArmRy": -0.0000,"leftUpperArmRz": -1.3659, 
-														"leftLowerArmRx": -0.0000,"leftLowerArmRy": -0.0000,"leftLowerArmRz": -0.0000, 
+														"leftArmRx": 0.0000,"leftArmRy": -0.0000,"leftArmRz": -1.3659, 
+														"leftForeArmRx": -0.0000,"leftForeArmRy": -0.0000,"leftForeArmRz": -0.0000, 
 														"leftHandRx": 0.0005,"leftHandRy": -0.0000,"leftHandRz": 0.0000, 
-														"rightUpperLegRx": -0.0010,"rightUpperLegRy": 0.0000,"rightUpperLegRz": -0.0001, 
-														"rightLowerLegRx": 0.0020,"rightLowerLegRy": 0.0000,"rightLowerLegRz": -0.0000, 
+														"rightUpLegRx": -0.0010,"rightUpLegRy": 0.0000,"rightUpLegRz": -0.0001, 
+														"rightLegRx": 0.0020,"rightLegRy": 0.0000,"rightLegRz": -0.0000, 
 														"rightFootRx": -0.0010,"rightFootRy": -0.0000,"rightFootRz": 0.0001, 
-														"leftUpperLegRx": -0.0010,"leftUpperLegRy": 0.0000,"leftUpperLegRz": -0.0001, 
-														"leftLowerLegRx": 0.0021,"leftLowerLegRy": 0.0000,"leftLowerLegRz": 0.0000, 
+														"leftUpLegRx": -0.0010,"leftUpLegRy": 0.0000,"leftUpLegRz": -0.0001, 
+														"leftLegRx": 0.0021,"leftLegRy": 0.0000,"leftLegRz": 0.0000, 
 														"leftFootRx": -0.0010,"leftFootRy": -0.0000,"leftFootRz": 0.0001, 
 														"neckRx": -0.0000,"neckRy": -0.0000,"neckRz": -0.0000, 
 														"headRx": 0.0000,"headRy": 0.0000,"headRz": -0.0000,
@@ -937,18 +1353,18 @@
 			
 													
 			jumpA = new TWEEN.Tween(startRotations).to({"rightShoulderRx": Math.PI/2,"rightShoulderRy": -0.0000,"rightShoulderRz": -0.0000, 
-														"rightUpperArmRx": 0,"rightUpperArmRy": 0.0000,"rightUpperArmRz": 1.3659, 
-														"rightLowerArmRx": 0,"rightLowerArmRy": Math.PI/2,"rightLowerArmRz": 0.0000, 
+														"rightArmRx": 0,"rightArmRy": 0.0000,"rightArmRz": 1.3659, 
+														"rightForeArmRx": 0,"rightForeArmRy": Math.PI/2,"rightForeArmRz": 0.0000, 
 														"rightHandRx": 0.0005,"rightHandRy": 0.0000,"rightHandRz": -0.0000, 
 														"leftShoulderRx": Math.PI/2,"leftShoulderRy": -0.0000,"leftShoulderRz": 0.0000, 
-														"leftUpperArmRx": 0,"leftUpperArmRy": -0.0000,"leftUpperArmRz": -1.3659, 
-														"leftLowerArmRx": 0,"leftLowerArmRy": -Math.PI/2,"leftLowerArmRz": -0.0000, 
+														"leftArmRx": 0,"leftArmRy": -0.0000,"leftArmRz": -1.3659, 
+														"leftForeArmRx": 0,"leftForeArmRy": -Math.PI/2,"leftForeArmRz": -0.0000, 
 														"leftHandRx": 0.0005,"leftHandRy": -0.0000,"leftHandRz": 0.0000, 
-														"rightUpperLegRx": -Math.PI/3,"rightUpperLegRy": 0.0000,"rightUpperLegRz": -0.0001, 
-														"rightLowerLegRx": Math.PI/4,"rightLowerLegRy": 0.0000,"rightLowerLegRz": -0.0000, 
+														"rightUpLegRx": -Math.PI/3,"rightUpLegRy": 0.0000,"rightUpLegRz": -0.0001, 
+														"rightLegRx": Math.PI/4,"rightLegRy": 0.0000,"rightLegRz": -0.0000, 
 														"rightFootRx": -0.0010,"rightFootRy": -0.0000,"rightFootRz": 0.0001, 
-														"leftUpperLegRx": Math.PI/3,"leftUpperLegRy": 0.0000,"leftUpperLegRz": -0.0001, 
-														"leftLowerLegRx": Math.PI/9,"leftLowerLegRy": 0.0000,"leftLowerLegRz": 0.0000, 
+														"leftUpLegRx": Math.PI/3,"leftUpLegRy": 0.0000,"leftUpLegRz": -0.0001, 
+														"leftLegRx": Math.PI/9,"leftLegRy": 0.0000,"leftLegRz": 0.0000, 
 														"leftFootRx": -0.0010,"leftFootRy": -0.0000,"leftFootRz": 0.0001, 
 														"neckRx": -0.0000,"neckRy": -0.0000,"neckRz": -0.0000, 
 														"headRx": 0.0000,"headRy": 0.0000,"headRz": -0.0000,
@@ -990,18 +1406,18 @@
 														"leftHandThumb4Ry": 0.7854}, 800);
 			
 			jumpB = new TWEEN.Tween(startRotations).to({"rightShoulderRx": Math.PI/2,"rightShoulderRy": -0.0000,"rightShoulderRz": -0.0000, 
-														"rightUpperArmRx": 0,"rightUpperArmRy": 0.0000,"rightUpperArmRz": 1.3659, 
-														"rightLowerArmRx": 0,"rightLowerArmRy": Math.PI/2,"rightLowerArmRz": 0.0000, 
+														"rightArmRx": 0,"rightArmRy": 0.0000,"rightArmRz": 1.3659, 
+														"rightForeArmRx": 0,"rightForeArmRy": Math.PI/2,"rightForeArmRz": 0.0000, 
 														"rightHandRx": 0.0005,"rightHandRy": 0.0000,"rightHandRz": -0.0000, 
 														"leftShoulderRx": Math.PI/2,"leftShoulderRy": -0.0000,"leftShoulderRz": 0.0000, 
-														"leftUpperArmRx": 0,"leftUpperArmRy": -0.0000,"leftUpperArmRz": -1.3659, 
-														"leftLowerArmRx": 0,"leftLowerArmRy": -Math.PI/2,"leftLowerArmRz": -0.0000, 
+														"leftArmRx": 0,"leftArmRy": -0.0000,"leftArmRz": -1.3659, 
+														"leftForeArmRx": 0,"leftForeArmRy": -Math.PI/2,"leftForeArmRz": -0.0000, 
 														"leftHandRx": 0.0005,"leftHandRy": -0.0000,"leftHandRz": 0.0000, 
-														"rightUpperLegRx": -Math.PI/5,"rightUpperLegRy": 0.0000,"rightUpperLegRz": -0.0001, 
-														"rightLowerLegRx": Math.PI/9,"rightLowerLegRy": 0.0000,"rightLowerLegRz": -0.0000, 
+														"rightUpLegRx": -Math.PI/5,"rightUpLegRy": 0.0000,"rightUpLegRz": -0.0001, 
+														"rightLegRx": Math.PI/9,"rightLegRy": 0.0000,"rightLegRz": -0.0000, 
 														"rightFootRx": -0.0010,"rightFootRy": -0.0000,"rightFootRz": 0.0001, 
-														"leftUpperLegRx": Math.PI/5,"leftUpperLegRy": 0.0000,"leftUpperLegRz": -0.0001, 
-														"leftLowerLegRx": Math.PI/9,"leftLowerLegRy": 0.0000,"leftLowerLegRz": 0.0000, 
+														"leftUpLegRx": Math.PI/5,"leftUpLegRy": 0.0000,"leftUpLegRz": -0.0001, 
+														"leftLegRx": Math.PI/9,"leftLegRy": 0.0000,"leftLegRz": 0.0000, 
 														"leftFootRx": -0.0010,"leftFootRy": -0.0000,"leftFootRz": 0.0001, 
 														"neckRx": -0.0000,"neckRy": -0.0000,"neckRz": -0.0000, 
 														"headRx": 0.0000,"headRy": 0.0000,"headRz": -0.0000,
@@ -1043,18 +1459,18 @@
 														"leftHandThumb4Ry": 0.7854}, 800);
 
 			walkA = new TWEEN.Tween(startRotations).to({"rightShoulderRx": Math.PI/9,"rightShoulderRy": -0.0000,"rightShoulderRz": -0.0000, 
-														"rightUpperArmRx": 0,"rightUpperArmRy": 0.0000,"rightUpperArmRz": 1.3659, 
-														"rightLowerArmRx": 0,"rightLowerArmRy": Math.PI/9,"rightLowerArmRz": 0.0000, 
+														"rightArmRx": 0,"rightArmRy": 0.0000,"rightArmRz": 1.3659, 
+														"rightForeArmRx": 0,"rightForeArmRy": Math.PI/9,"rightForeArmRz": 0.0000, 
 														"rightHandRx": 0.0005,"rightHandRy": 0.0000,"rightHandRz": -0.0000, 
 														"leftShoulderRx": -Math.PI/9,"leftShoulderRy": -0.0000,"leftShoulderRz": 0.0000, 
-														"leftUpperArmRx": 0,"leftUpperArmRy": -0.0000,"leftUpperArmRz": -1.3659, 
-														"leftLowerArmRx": 0,"leftLowerArmRy": -Math.PI/9,"leftLowerArmRz": -0.0000, 
+														"leftArmRx": 0,"leftArmRy": -0.0000,"leftArmRz": -1.3659, 
+														"leftForeArmRx": 0,"leftForeArmRy": -Math.PI/9,"leftForeArmRz": -0.0000, 
 														"leftHandRx": 0.0005,"leftHandRy": -0.0000,"leftHandRz": 0.0000, 
-														"rightUpperLegRx": Math.PI/5,"rightUpperLegRy": 0.0000,"rightUpperLegRz": -0.0001, 
-														"rightLowerLegRx": Math.PI/9,"rightLowerLegRy": 0.0000,"rightLowerLegRz": -0.0000, 
+														"rightUpLegRx": Math.PI/5,"rightUpLegRy": 0.0000,"rightUpLegRz": -0.0001, 
+														"rightLegRx": Math.PI/9,"rightLegRy": 0.0000,"rightLegRz": -0.0000, 
 														"rightFootRx": -0.0010,"rightFootRy": -0.0000,"rightFootRz": 0.0001, 
-														"leftUpperLegRx": -Math.PI/5,"leftUpperLegRy": 0.0000,"leftUpperLegRz": -0.0001, 
-														"leftLowerLegRx": Math.PI/9,"leftLowerLegRy": 0.0000,"leftLowerLegRz": 0.0000, 
+														"leftUpLegRx": -Math.PI/5,"leftUpLegRy": 0.0000,"leftUpLegRz": -0.0001, 
+														"leftLegRx": Math.PI/9,"leftLegRy": 0.0000,"leftLegRz": 0.0000, 
 														"leftFootRx": -0.0010,"leftFootRy": -0.0000,"leftFootRz": 0.0001, 
 														"neckRx": -0.0000,"neckRy": -0.0000,"neckRz": -0.0000, 
 														"headRx": 0.0000,"headRy": 0.0000,"headRz": -0.0000,
@@ -1096,18 +1512,18 @@
 														"leftHandThumb4Ry": 0.7854}, 400);
 			
 			walkB = new TWEEN.Tween(startRotations).to({"rightShoulderRx": -Math.PI/9,"rightShoulderRy": -0.0000,"rightShoulderRz": -0.0000, 
-														"rightUpperArmRx": 0,"rightUpperArmRy": 0.0000,"rightUpperArmRz": 1.3659, 
-														"rightLowerArmRx": 0,"rightLowerArmRy": Math.PI/9,"rightLowerArmRz": 0.0000, 
+														"rightArmRx": 0,"rightArmRy": 0.0000,"rightArmRz": 1.3659, 
+														"rightForeArmRx": 0,"rightForeArmRy": Math.PI/9,"rightForeArmRz": 0.0000, 
 														"rightHandRx": 0.0005,"rightHandRy": 0.0000,"rightHandRz": -0.0000, 
 														"leftShoulderRx": Math.PI/9,"leftShoulderRy": -0.0000,"leftShoulderRz": 0.0000, 
-														"leftUpperArmRx": 0,"leftUpperArmRy": -0.0000,"leftUpperArmRz": -1.3659, 
-														"leftLowerArmRx": 0,"leftLowerArmRy": -Math.PI/9,"leftLowerArmRz": -0.0000, 
+														"leftArmRx": 0,"leftArmRy": -0.0000,"leftArmRz": -1.3659, 
+														"leftForeArmRx": 0,"leftForeArmRy": -Math.PI/9,"leftForeArmRz": -0.0000, 
 														"leftHandRx": 0.0005,"leftHandRy": -0.0000,"leftHandRz": 0.0000, 
-														"rightUpperLegRx": -Math.PI/3,"rightUpperLegRy": 0.0000,"rightUpperLegRz": -0.0001, 
-														"rightLowerLegRx": Math.PI/4,"rightLowerLegRy": 0.0000,"rightLowerLegRz": -0.0000, 
+														"rightUpLegRx": -Math.PI/3,"rightUpLegRy": 0.0000,"rightUpLegRz": -0.0001, 
+														"rightLegRx": Math.PI/4,"rightLegRy": 0.0000,"rightLegRz": -0.0000, 
 														"rightFootRx": -0.0010,"rightFootRy": -0.0000,"rightFootRz": 0.0001, 
-														"leftUpperLegRx": Math.PI/3,"leftUpperLegRy": 0.0000,"leftUpperLegRz": -0.0001, 
-														"leftLowerLegRx": Math.PI/9,"leftLowerLegRy": 0.0000,"leftLowerLegRz": 0.0000, 
+														"leftUpLegRx": Math.PI/3,"leftUpLegRy": 0.0000,"leftUpLegRz": -0.0001, 
+														"leftLegRx": Math.PI/9,"leftLegRy": 0.0000,"leftLegRz": 0.0000, 
 														"leftFootRx": -0.0010,"leftFootRy": -0.0000,"leftFootRz": 0.0001, 
 														"neckRx": -0.0000,"neckRy": -0.0000,"neckRz": -0.0000, 
 														"headRx": 0.0000,"headRy": 0.0000,"headRz": -0.0000,
@@ -1150,18 +1566,18 @@
 
 
 			runA = new TWEEN.Tween(startRotations).to({"rightShoulderRx": Math.PI/4,"rightShoulderRy": -0.0000,"rightShoulderRz": -0.0000, 
-														"rightUpperArmRx": 0,"rightUpperArmRy": 0.0000,"rightUpperArmRz": 1.3659, 
-														"rightLowerArmRx": 0,"rightLowerArmRy": Math.PI/4,"rightLowerArmRz": 0.0000, 
+														"rightArmRx": 0,"rightArmRy": 0.0000,"rightArmRz": 1.3659, 
+														"rightForeArmRx": 0,"rightForeArmRy": Math.PI/4,"rightForeArmRz": 0.0000, 
 														"rightHandRx": 0.0005,"rightHandRy": 0.0000,"rightHandRz": -0.0000, 
 														"leftShoulderRx": -Math.PI/4,"leftShoulderRy": -0.0000,"leftShoulderRz": 0.0000, 
-														"leftUpperArmRx": 0,"leftUpperArmRy": -0.0000,"leftUpperArmRz": -1.3659, 
-														"leftLowerArmRx": 0,"leftLowerArmRy": -Math.PI/4,"leftLowerArmRz": -0.0000, 
+														"leftArmRx": 0,"leftArmRy": -0.0000,"leftArmRz": -1.3659, 
+														"leftForeArmRx": 0,"leftForeArmRy": -Math.PI/4,"leftForeArmRz": -0.0000, 
 														"leftHandRx": 0.0005,"leftHandRy": -0.0000,"leftHandRz": 0.0000, 
-														"rightUpperLegRx": Math.PI/3,"rightUpperLegRy": 0.0000,"rightUpperLegRz": -0.0001, 
-														"rightLowerLegRx": Math.PI/9,"rightLowerLegRy": 0.0000,"rightLowerLegRz": -0.0000, 
+														"rightUpLegRx": Math.PI/3,"rightUpLegRy": 0.0000,"rightUpLegRz": -0.0001, 
+														"rightLegRx": Math.PI/9,"rightLegRy": 0.0000,"rightLegRz": -0.0000, 
 														"rightFootRx": -0.0010,"rightFootRy": -0.0000,"rightFootRz": 0.0001, 
-														"leftUpperLegRx": -Math.PI/3,"leftUpperLegRy": 0.0000,"leftUpperLegRz": -0.0001, 
-														"leftLowerLegRx": Math.PI/9,"leftLowerLegRy": 0.0000,"leftLowerLegRz": 0.0000, 
+														"leftUpLegRx": -Math.PI/3,"leftUpLegRy": 0.0000,"leftUpLegRz": -0.0001, 
+														"leftLegRx": Math.PI/9,"leftLegRy": 0.0000,"leftLegRz": 0.0000, 
 														"leftFootRx": -0.0010,"leftFootRy": -0.0000,"leftFootRz": 0.0001, 
 														"neckRx": -0.0000,"neckRy": -0.0000,"neckRz": -0.0000, 
 														"headRx": 0.0000,"headRy": 0.0000,"headRz": -0.0000,
@@ -1203,18 +1619,18 @@
 														"leftHandThumb4Ry": 0.7854}, 400);
 			
 			runB = new TWEEN.Tween(startRotations).to({"rightShoulderRx": -Math.PI/4,"rightShoulderRy": -0.0000,"rightShoulderRz": -0.0000, 
-														"rightUpperArmRx": 0,"rightUpperArmRy": 0.0000,"rightUpperArmRz": 1.3659, 
-														"rightLowerArmRx": 0,"rightLowerArmRy": Math.PI/4,"rightLowerArmRz": 0.0000, 
+														"rightArmRx": 0,"rightArmRy": 0.0000,"rightArmRz": 1.3659, 
+														"rightForeArmRx": 0,"rightForeArmRy": Math.PI/4,"rightForeArmRz": 0.0000, 
 														"rightHandRx": 0.0005,"rightHandRy": 0.0000,"rightHandRz": -0.0000, 
 														"leftShoulderRx": Math.PI/4,"leftShoulderRy": -0.0000,"leftShoulderRz": 0.0000, 
-														"leftUpperArmRx": 0,"leftUpperArmRy": -0.0000,"leftUpperArmRz": -1.3659, 
-														"leftLowerArmRx": 0,"leftLowerArmRy": -Math.PI/4,"leftLowerArmRz": -0.0000, 
+														"leftArmRx": 0,"leftArmRy": -0.0000,"leftArmRz": -1.3659, 
+														"leftForeArmRx": 0,"leftForeArmRy": -Math.PI/4,"leftForeArmRz": -0.0000, 
 														"leftHandRx": 0.0005,"leftHandRy": -0.0000,"leftHandRz": 0.0000, 
-														"rightUpperLegRx": -Math.PI/3,"rightUpperLegRy": 0.0000,"rightUpperLegRz": -0.0001, 
-														"rightLowerLegRx": Math.PI/9,"rightLowerLegRy": 0.0000,"rightLowerLegRz": -0.0000, 
+														"rightUpLegRx": -Math.PI/3,"rightUpLegRy": 0.0000,"rightUpLegRz": -0.0001, 
+														"rightLegRx": Math.PI/9,"rightLegRy": 0.0000,"rightLegRz": -0.0000, 
 														"rightFootRx": -0.0010,"rightFootRy": -0.0000,"rightFootRz": 0.0001, 
-														"leftUpperLegRx": Math.PI/3,"leftUpperLegRy": 0.0000,"leftUpperLegRz": -0.0001, 
-														"leftLowerLegRx": Math.PI/9,"leftLowerLegRy": 0.0000,"leftLowerLegRz": 0.0000, 
+														"leftUpLegRx": Math.PI/3,"leftUpLegRy": 0.0000,"leftUpLegRz": -0.0001, 
+														"leftLegRx": Math.PI/9,"leftLegRy": 0.0000,"leftLegRz": 0.0000, 
 														"leftFootRx": -0.0010,"leftFootRy": -0.0000,"leftFootRz": 0.0001, 
 														"neckRx": -0.0000,"neckRy": -0.0000,"neckRz": -0.0000, 
 														"headRx": 0.0000,"headRy": 0.0000,"headRz": -0.0000,
@@ -1256,18 +1672,18 @@
 														"leftHandThumb4Ry": 0.7854}, 400).onComplete(() => runA.start());
 
 			shootA = new TWEEN.Tween(startRotations).to({"rightShoulderRx": -Math.PI/2,"rightShoulderRy": -0.0000,"rightShoulderRz": Math.PI/9, 
-														"rightUpperArmRx": 0,"rightUpperArmRy": 0.0000,"rightUpperArmRz": 1.3659, 
-														"rightLowerArmRx": 0,"rightLowerArmRy": 0,"rightLowerArmRz": 0.0000, 
+														"rightArmRx": 0,"rightArmRy": 0.0000,"rightArmRz": 1.3659, 
+														"rightForeArmRx": 0,"rightForeArmRy": 0,"rightForeArmRz": 0.0000, 
 														"rightHandRx": 0.0005,"rightHandRy": 0.0000,"rightHandRz": -0.0000, 
 														"leftShoulderRx": -Math.PI/2,"leftShoulderRy": -0.0000,"leftShoulderRz": -Math.PI/6, 
-														"leftUpperArmRx": 0,"leftUpperArmRy": -0.0000,"leftUpperArmRz": -1.3659, 
-														"leftLowerArmRx": 0,"leftLowerArmRy": 0,"leftLowerArmRz": -0.0000, 
+														"leftArmRx": 0,"leftArmRy": -0.0000,"leftArmRz": -1.3659, 
+														"leftForeArmRx": 0,"leftForeArmRy": 0,"leftForeArmRz": -0.0000, 
 														"leftHandRx": 0,"leftHandRy": -0.0000,"leftHandRz": Math.PI/10, 
-														"rightUpperLegRx": -0,"rightUpperLegRy": 0.0000,"rightUpperLegRz": -0.0001, 
-														"rightLowerLegRx": 0,"rightLowerLegRy": 0.0000,"rightLowerLegRz": -0.0000, 
+														"rightUpLegRx": -0,"rightUpLegRy": 0.0000,"rightUpLegRz": -0.0001, 
+														"rightLegRx": 0,"rightLegRy": 0.0000,"rightLegRz": -0.0000, 
 														"rightFootRx": -0.0010,"rightFootRy": -0.0000,"rightFootRz": 0.0001, 
-														"leftUpperLegRx": 0,"leftUpperLegRy": 0.0000,"leftUpperLegRz": -0.0001, 
-														"leftLowerLegRx": 0,"leftLowerLegRy": 0.0000,"leftLowerLegRz": 0.0000, 
+														"leftUpLegRx": 0,"leftUpLegRy": 0.0000,"leftUpLegRz": -0.0001, 
+														"leftLegRx": 0,"leftLegRy": 0.0000,"leftLegRz": 0.0000, 
 														"leftFootRx": -0.0010,"leftFootRy": -0.0000,"leftFootRz": 0.0001, 
 														"neckRx": -0.0000,"neckRy": -0.0000,"neckRz": -0.0000, 
 														"headRx": 0.0000,"headRy": 0.0000,"headRz": -0.0000,
@@ -1314,18 +1730,18 @@
 														});
 
 			shootB = new TWEEN.Tween(startRotations).to({"rightShoulderRx": -Math.PI/2,"rightShoulderRy": -0.0000,"rightShoulderRz": Math.PI/8, 
-														"rightUpperArmRx": Math.PI/2,"rightUpperArmRy": 0.0000,"rightUpperArmRz": 1.3659, 
-														"rightLowerArmRx": 0,"rightLowerArmRy": Math.PI/2,"rightLowerArmRz": 0.0000, 
+														"rightArmRx": Math.PI/2,"rightArmRy": 0.0000,"rightArmRz": 1.3659, 
+														"rightForeArmRx": 0,"rightForeArmRy": Math.PI/2,"rightForeArmRz": 0.0000, 
 														"rightHandRx": 0.0005,"rightHandRy": 0.0000,"rightHandRz": -0.0000, 
 														"leftShoulderRx": -Math.PI/2,"leftShoulderRy": -0.0000,"leftShoulderRz": -Math.PI/6, 
-														"leftUpperArmRx": 0,"leftUpperArmRy": -0.0000,"leftUpperArmRz": -1.3659, 
-														"leftLowerArmRx": 0,"leftLowerArmRy": 0,"leftLowerArmRz": -0.0000, 
+														"leftArmRx": 0,"leftArmRy": -0.0000,"leftArmRz": -1.3659, 
+														"leftForeArmRx": 0,"leftForeArmRy": 0,"leftForeArmRz": -0.0000, 
 														"leftHandRx": 0.0005,"leftHandRy": -0.0000,"leftHandRz": Math.PI/10, 
-														"rightUpperLegRx": -0,"rightUpperLegRy": 0.0000,"rightUpperLegRz": -0.0001, 
-														"rightLowerLegRx": 0,"rightLowerLegRy": 0.0000,"rightLowerLegRz": -0.0000, 
+														"rightUpLegRx": -0,"rightUpLegRy": 0.0000,"rightUpLegRz": -0.0001, 
+														"rightLegRx": 0,"rightLegRy": 0.0000,"rightLegRz": -0.0000, 
 														"rightFootRx": -0.0010,"rightFootRy": -0.0000,"rightFootRz": 0.0001, 
-														"leftUpperLegRx": 0,"leftUpperLegRy": 0.0000,"leftUpperLegRz": -0.0001, 
-														"leftLowerLegRx": 0,"leftLowerLegRy": 0.0000,"leftLowerLegRz": 0.0000, 
+														"leftUpLegRx": 0,"leftUpLegRy": 0.0000,"leftUpLegRz": -0.0001, 
+														"leftLegRx": 0,"leftLegRy": 0.0000,"leftLegRz": 0.0000, 
 														"leftFootRx": -0.0010,"leftFootRy": -0.0000,"leftFootRz": 0.0001, 
 														"neckRx": -0.0000,"neckRy": -0.0000,"neckRz": -0.0000, 
 														"headRx": 0.0000,"headRy": 0.0000,"headRz": -0.0000,
@@ -1370,18 +1786,18 @@
 														});
 
 			shootC = new TWEEN.Tween(startRotations).to({"rightShoulderRx": -0.0000,"rightShoulderRy": -0.0000,"rightShoulderRz": -0.0000, 
-														"rightUpperArmRx": 0.0000,"rightUpperArmRy": 0.0000,"rightUpperArmRz": 1.3659, 
-														"rightLowerArmRx": -0.0000,"rightLowerArmRy": -0.0000,"rightLowerArmRz": 0.0000, 
+														"rightArmRx": 0.0000,"rightArmRy": 0.0000,"rightArmRz": 1.3659, 
+														"rightForeArmRx": -0.0000,"rightForeArmRy": -0.0000,"rightForeArmRz": 0.0000, 
 														"rightHandRx": 0.0005,"rightHandRy": 0.0000,"rightHandRz": -0.0000, 
 														"leftShoulderRx": -0.0000,"leftShoulderRy": -0.0000,"leftShoulderRz": 0.0000, 
-														"leftUpperArmRx": 0.0000,"leftUpperArmRy": -0.0000,"leftUpperArmRz": -1.3659, 
-														"leftLowerArmRx": -0.0000,"leftLowerArmRy": -0.0000,"leftLowerArmRz": -0.0000, 
+														"leftArmRx": 0.0000,"leftArmRy": -0.0000,"leftArmRz": -1.3659, 
+														"leftForeArmRx": -0.0000,"leftForeArmRy": -0.0000,"leftForeArmRz": -0.0000, 
 														"leftHandRx": 0.0005,"leftHandRy": -0.0000,"leftHandRz": 0.0000, 
-														"rightUpperLegRx": -0.0010,"rightUpperLegRy": 0.0000,"rightUpperLegRz": -0.0001, 
-														"rightLowerLegRx": 0.0020,"rightLowerLegRy": 0.0000,"rightLowerLegRz": -0.0000, 
+														"rightUpLegRx": -0.0010,"rightUpLegRy": 0.0000,"rightUpLegRz": -0.0001, 
+														"rightLegRx": 0.0020,"rightLegRy": 0.0000,"rightLegRz": -0.0000, 
 														"rightFootRx": -0.0010,"rightFootRy": -0.0000,"rightFootRz": 0.0001, 
-														"leftUpperLegRx": -0.0010,"leftUpperLegRy": 0.0000,"leftUpperLegRz": -0.0001, 
-														"leftLowerLegRx": 0.0021,"leftLowerLegRy": 0.0000,"leftLowerLegRz": 0.0000, 
+														"leftUpLegRx": -0.0010,"leftUpLegRy": 0.0000,"leftUpLegRz": -0.0001, 
+														"leftLegRx": 0.0021,"leftLegRy": 0.0000,"leftLegRz": 0.0000, 
 														"leftFootRx": -0.0010,"leftFootRy": -0.0000,"leftFootRz": 0.0001, 
 														"neckRx": -0.0000,"neckRy": -0.0000,"neckRz": -0.0000, 
 														"headRx": 0.0000,"headRy": 0.0000,"headRz": -0.0000,
@@ -1753,6 +2169,7 @@
 
 
 				playerAnimate(time.getDelta());
+				enemiesAnimate();
 
 				if(groundMesh && groundPlatModelParent){
 					groundMesh.position.copy(groundBody.position);
@@ -1832,7 +2249,7 @@
 
 				robots.forEach(element => {
 					element["mesh"].position.copy(element["body"].position);
-					element["mesh"].quaternion.copy(element["body"].quaternion);
+					element["body"].quaternion.copy(element["mesh"].quaternion);
 					element["model"].position.copy(element["body"].position);
 					element["model"].quaternion.copy(element["body"].quaternion);
 				});
@@ -1855,121 +2272,73 @@
 
 		//Set elements of archer useful for animations
 		function populateArcherStructure(){
-			archerStructure["rightShoulder"] = archerModel.getObjectByName('RightShoulder_52');
-			archerStructure["rightUpperArm"] = archerModel.getObjectByName('RightArm_51');
-			archerStructure["rightLowerArm"] = archerModel.getObjectByName('RightForeArm_50');
-			archerStructure["rightHand"] = archerModel.getObjectByName('RightHand_49');
-			archerStructure["leftShoulder"] = archerModel.getObjectByName('LeftShoulder_28');
-			archerStructure["leftUpperArm"] = archerModel.getObjectByName('LeftArm_27');
-			archerStructure["leftLowerArm"] = archerModel.getObjectByName('LeftForeArm_26');
-			archerStructure["leftHand"] = archerModel.getObjectByName('LeftHand_25');
-			archerStructure["rightUpperLeg"] = archerModel.getObjectByName('RightUpLeg_65');
-			archerStructure["rightLowerLeg"] = archerModel.getObjectByName('RightLeg_64');
-			archerStructure["rightFoot"] = archerModel.getObjectByName('RightFoot_63');
-			archerStructure["leftUpperLeg"] = archerModel.getObjectByName('LeftUpLeg_60');
-			archerStructure["leftLowerLeg"] = archerModel.getObjectByName('LeftLeg_59');
-			archerStructure["leftFoot"] = archerModel.getObjectByName('LeftFoot_58');
-			archerStructure["neck"] = archerModel.getObjectByName('Neck_4');
-			archerStructure["head"] = archerModel.getObjectByName('Head_3');
-			archerStructure["rightHandPinky2"] = archerModel.getObjectByName('RightHandPinky2_31');
-			archerStructure["rightHandPinky3"] = archerModel.getObjectByName('RightHandPinky3_30');
-			archerStructure["rightHandPinky4"] = archerModel.getObjectByName('RightHandPinky4_29');
-			archerStructure["rightHandRing2"] = archerModel.getObjectByName('RightHandRing2_35');
-			archerStructure["rightHandRing3"] = archerModel.getObjectByName('RightHandRing3_34');
-			archerStructure["rightHandRing4"] = archerModel.getObjectByName('RightHandRing4_33');
-			archerStructure["rightHandMiddle2"] = archerModel.getObjectByName('RightHandMiddle2_39');
-			archerStructure["rightHandMiddle3"] = archerModel.getObjectByName('RightHandMiddle3_38');
-			archerStructure["rightHandMiddle4"] = archerModel.getObjectByName('RightHandMiddle4_37');
-			archerStructure["rightHandIndex2"] = archerModel.getObjectByName('RightHandIndex2_43');
-			archerStructure["rightHandIndex3"] = archerModel.getObjectByName('RightHandIndex3_42');
-			archerStructure["rightHandIndex4"] = archerModel.getObjectByName('RightHandIndex4_41');
-			archerStructure["rightHandThumb2"] = archerModel.getObjectByName('RightHandThumb2_47');
-			archerStructure["rightHandThumb3"] = archerModel.getObjectByName('RightHandThumb3_46');
-			archerStructure["rightHandThumb4"] = archerModel.getObjectByName('RightHandThumb4_45');
-			archerStructure["leftHandPinky2"] = archerModel.getObjectByName('LeftHandPinky2_23');
-			archerStructure["leftHandPinky3"] = archerModel.getObjectByName('LeftHandPinky3_22');
-			archerStructure["leftHandPinky4"] = archerModel.getObjectByName('LeftHandPinky4_21');
-			archerStructure["leftHandRing2"] = archerModel.getObjectByName('LeftHandRing2_19');
-			archerStructure["leftHandRing3"] = archerModel.getObjectByName('LeftHandRing3_18');
-			archerStructure["leftHandRing4"] = archerModel.getObjectByName('LeftHandRing4_17');
-			archerStructure["leftHandMiddle2"] = archerModel.getObjectByName('LeftHandMiddle2_15');
-			archerStructure["leftHandMiddle3"] = archerModel.getObjectByName('LeftHandMiddle3_14');
-			archerStructure["leftHandMiddle4"] = archerModel.getObjectByName('LeftHandMiddle4_13');
-			archerStructure["leftHandIndex2"] = archerModel.getObjectByName('LeftHandIndex2_11');
-			archerStructure["leftHandIndex3"] = archerModel.getObjectByName('LeftHandIndex3_10');
-			archerStructure["leftHandIndex4"] = archerModel.getObjectByName('LeftHandIndex4_9');
-			archerStructure["leftHandThumb2"] = archerModel.getObjectByName('LeftHandThumb2_7');
-			archerStructure["leftHandThumb3"] = archerModel.getObjectByName('LeftHandThumb3_6');
-			archerStructure["leftHandThumb4"] = archerModel.getObjectByName('LeftHandThumb4_5');
-
-
-			// archerStructure["hips"] = archerModel.getObjectByName("Hips_66")
-			// archerStructure["spine"] = archerModel.getObjectByName("Spine_55")
-			// archerStructure["spine1"] = archerModel.getObjectByName("Spine1_54")
-			// archerStructure["spine2"] = archerModel.getObjectByName("Spine2_53")
-			// archerStructure["neck"] = archerModel.getObjectByName("Neck_4")
-			// archerStructure["head"] = archerModel.getObjectByName("Head_3")
-			// archerStructure["rightEye"] = archerModel.getObjectByName("RightEye_0")
-			// archerStructure["leftEye"] = archerModel.getObjectByName("LeftEye_1")
-			// archerStructure["headTop_End"] = archerModel.getObjectByName("HeadTop_End_2")
-			// archerStructure["leftShoulder"] = archerModel.getObjectByName("LeftShoulder_28")
-			// archerStructure["leftArm"] = archerModel.getObjectByName("LeftArm_27")
-			// archerStructure["leftForeArm"] = archerModel.getObjectByName("LeftForeArm_26")
-			// archerStructure["leftHand"] = archerModel.getObjectByName("LeftHand_25")
-			// archerStructure["leftHandThumb1"] = archerModel.getObjectByName("LeftHandThumb1_8")
-			// archerStructure["leftHandThumb2"] = archerModel.getObjectByName("LeftHandThumb2_7")
-			// archerStructure["leftHandThumb3"] = archerModel.getObjectByName("LeftHandThumb3_6")
-			// archerStructure["leftHandThumb4"] = archerModel.getObjectByName("LeftHandThumb4_5")
-			// archerStructure["leftHandIndex1"] = archerModel.getObjectByName("LeftHandIndex1_12")
-			// archerStructure["leftHandIndex2"] = archerModel.getObjectByName("LeftHandIndex2_11")
-			// archerStructure["leftHandIndex3"] = archerModel.getObjectByName("LeftHandIndex3_10")
-			// archerStructure["leftHandIndex4"] = archerModel.getObjectByName("LeftHandIndex4_9")
-			// archerStructure["leftHandMiddle1"] = archerModel.getObjectByName("LeftHandMiddle1_16")
-			// archerStructure["leftHandMiddle2"] = archerModel.getObjectByName("LeftHandMiddle2_15")
-			// archerStructure["leftHandMiddle3"] = archerModel.getObjectByName("LeftHandMiddle3_14")
-			// archerStructure["leftHandMiddle4"] = archerModel.getObjectByName("LeftHandMiddle4_13")
-			// archerStructure["leftHandRing1"] = archerModel.getObjectByName("LeftHandRing1_20")
-			// archerStructure["leftHandRing2"] = archerModel.getObjectByName("LeftHandRing2_19")
-			// archerStructure["leftHandRing3"] = archerModel.getObjectByName("LeftHandRing3_18")
-			// archerStructure["leftHandRing4"] = archerModel.getObjectByName("LeftHandRing4_17")
-			// archerStructure["leftHandPinky1"] = archerModel.getObjectByName("LeftHandPinky1_24")
-			// archerStructure["leftHandPinky2"] = archerModel.getObjectByName("LeftHandPinky2_23")
-			// archerStructure["leftHandPinky3"] = archerModel.getObjectByName("LeftHandPinky3_22")
-			// archerStructure["leftHandPinky4"] = archerModel.getObjectByName("LeftHandPinky4_21")
-			// archerStructure["rightShoulder"] = archerModel.getObjectByName("RightShoulder_52")
-			// archerStructure["rightArm"] = archerModel.getObjectByName("RightArm_51")
-			// archerStructure["rightForeArm"] = archerModel.getObjectByName("RightForeArm_50")
-			// archerStructure["rightHand"] = archerModel.getObjectByName("RightHand_49")
-			// archerStructure["rightHandPinky1"] = archerModel.getObjectByName("RightHandPinky1_32")
-			// archerStructure["rightHandPinky2"] = archerModel.getObjectByName("RightHandPinky2_31")
-			// archerStructure["rightHandPinky3"] = archerModel.getObjectByName("RightHandPinky3_30")
-			// archerStructure["rightHandPinky4"] = archerModel.getObjectByName("RightHandPinky4_29")
-			// archerStructure["rightHandRing1"] = archerModel.getObjectByName("RightHandRing1_36")
-			// archerStructure["rightHandRing2"] = archerModel.getObjectByName("RightHandRing2_35")
-			// archerStructure["rightHandRing3"] = archerModel.getObjectByName("RightHandRing3_34")
-			// archerStructure["rightHandRing4"] = archerModel.getObjectByName("RightHandRing4_33")
-			// archerStructure["rightHandMiddle1"] = archerModel.getObjectByName("RightHandMiddle1_40")
-			// archerStructure["rightHandMiddle2"] = archerModel.getObjectByName("RightHandMiddle2_39")
-			// archerStructure["rightHandMiddle3"] = archerModel.getObjectByName("RightHandMiddle3_38")
-			// archerStructure["rightHandMiddle4"] = archerModel.getObjectByName("RightHandMiddle4_37")
-			// archerStructure["rightHandIndex1"] = archerModel.getObjectByName("RightHandIndex1_44")
-			// archerStructure["rightHandIndex2"] = archerModel.getObjectByName("RightHandIndex2_43")
-			// archerStructure["rightHandIndex3"] = archerModel.getObjectByName("RightHandIndex3_42")
-			// archerStructure["rightHandIndex4"] = archerModel.getObjectByName("RightHandIndex4_41")
-			// archerStructure["rightHandThumb1"] = archerModel.getObjectByName("RightHandThumb1_48")
-			// archerStructure["rightHandThumb2"] = archerModel.getObjectByName("RightHandThumb2_47")
-			// archerStructure["rightHandThumb3"] = archerModel.getObjectByName("RightHandThumb3_46")
-			// archerStructure["rightHandThumb4"] = archerModel.getObjectByName("RightHandThumb4_45")
-			// archerStructure["leftUpLeg"] = archerModel.getObjectByName("LeftUpLeg_60")
-			// archerStructure["leftLeg"] = archerModel.getObjectByName("LeftLeg_59")
-			// archerStructure["leftFoot"] = archerModel.getObjectByName("LeftFoot_58")
-			// archerStructure["leftToeBase"] = archerModel.getObjectByName("LeftToeBase_57")
-			// archerStructure["leftToe_End"] = archerModel.getObjectByName("LeftToe_End_56")
-			// archerStructure["rightUpLeg"] = archerModel.getObjectByName("RightUpLeg_65")
-			// archerStructure["rightLeg"] = archerModel.getObjectByName("RightLeg_64")
-			// archerStructure["rightFoot"] = archerModel.getObjectByName("RightFoot_63")
-			// archerStructure["rightToeBase"] = archerModel.getObjectByName("RightToeBase_62")
-			// archerStructure["rightToe_End"] = archerModel.getObjectByName("RightToe_End_61")
+			archerStructure["hips"] = archerModel.getObjectByName("Hips_66")
+			archerStructure["spine"] = archerModel.getObjectByName("Spine_55")
+			archerStructure["spine1"] = archerModel.getObjectByName("Spine1_54")
+			archerStructure["spine2"] = archerModel.getObjectByName("Spine2_53")
+			archerStructure["neck"] = archerModel.getObjectByName("Neck_4")
+			archerStructure["head"] = archerModel.getObjectByName("Head_3")
+			archerStructure["rightEye"] = archerModel.getObjectByName("RightEye_0")
+			archerStructure["leftEye"] = archerModel.getObjectByName("LeftEye_1")
+			archerStructure["headTop_End"] = archerModel.getObjectByName("HeadTop_End_2")
+			archerStructure["leftShoulder"] = archerModel.getObjectByName("LeftShoulder_28")
+			archerStructure["leftArm"] = archerModel.getObjectByName("LeftArm_27")
+			archerStructure["leftForeArm"] = archerModel.getObjectByName("LeftForeArm_26")
+			archerStructure["leftHand"] = archerModel.getObjectByName("LeftHand_25")
+			archerStructure["leftHandThumb1"] = archerModel.getObjectByName("LeftHandThumb1_8")
+			archerStructure["leftHandThumb2"] = archerModel.getObjectByName("LeftHandThumb2_7")
+			archerStructure["leftHandThumb3"] = archerModel.getObjectByName("LeftHandThumb3_6")
+			archerStructure["leftHandThumb4"] = archerModel.getObjectByName("LeftHandThumb4_5")
+			archerStructure["leftHandIndex1"] = archerModel.getObjectByName("LeftHandIndex1_12")
+			archerStructure["leftHandIndex2"] = archerModel.getObjectByName("LeftHandIndex2_11")
+			archerStructure["leftHandIndex3"] = archerModel.getObjectByName("LeftHandIndex3_10")
+			archerStructure["leftHandIndex4"] = archerModel.getObjectByName("LeftHandIndex4_9")
+			archerStructure["leftHandMiddle1"] = archerModel.getObjectByName("LeftHandMiddle1_16")
+			archerStructure["leftHandMiddle2"] = archerModel.getObjectByName("LeftHandMiddle2_15")
+			archerStructure["leftHandMiddle3"] = archerModel.getObjectByName("LeftHandMiddle3_14")
+			archerStructure["leftHandMiddle4"] = archerModel.getObjectByName("LeftHandMiddle4_13")
+			archerStructure["leftHandRing1"] = archerModel.getObjectByName("LeftHandRing1_20")
+			archerStructure["leftHandRing2"] = archerModel.getObjectByName("LeftHandRing2_19")
+			archerStructure["leftHandRing3"] = archerModel.getObjectByName("LeftHandRing3_18")
+			archerStructure["leftHandRing4"] = archerModel.getObjectByName("LeftHandRing4_17")
+			archerStructure["leftHandPinky1"] = archerModel.getObjectByName("LeftHandPinky1_24")
+			archerStructure["leftHandPinky2"] = archerModel.getObjectByName("LeftHandPinky2_23")
+			archerStructure["leftHandPinky3"] = archerModel.getObjectByName("LeftHandPinky3_22")
+			archerStructure["leftHandPinky4"] = archerModel.getObjectByName("LeftHandPinky4_21")
+			archerStructure["rightShoulder"] = archerModel.getObjectByName("RightShoulder_52")
+			archerStructure["rightArm"] = archerModel.getObjectByName("RightArm_51")
+			archerStructure["rightForeArm"] = archerModel.getObjectByName("RightForeArm_50")
+			archerStructure["rightHand"] = archerModel.getObjectByName("RightHand_49")
+			archerStructure["rightHandPinky1"] = archerModel.getObjectByName("RightHandPinky1_32")
+			archerStructure["rightHandPinky2"] = archerModel.getObjectByName("RightHandPinky2_31")
+			archerStructure["rightHandPinky3"] = archerModel.getObjectByName("RightHandPinky3_30")
+			archerStructure["rightHandPinky4"] = archerModel.getObjectByName("RightHandPinky4_29")
+			archerStructure["rightHandRing1"] = archerModel.getObjectByName("RightHandRing1_36")
+			archerStructure["rightHandRing2"] = archerModel.getObjectByName("RightHandRing2_35")
+			archerStructure["rightHandRing3"] = archerModel.getObjectByName("RightHandRing3_34")
+			archerStructure["rightHandRing4"] = archerModel.getObjectByName("RightHandRing4_33")
+			archerStructure["rightHandMiddle1"] = archerModel.getObjectByName("RightHandMiddle1_40")
+			archerStructure["rightHandMiddle2"] = archerModel.getObjectByName("RightHandMiddle2_39")
+			archerStructure["rightHandMiddle3"] = archerModel.getObjectByName("RightHandMiddle3_38")
+			archerStructure["rightHandMiddle4"] = archerModel.getObjectByName("RightHandMiddle4_37")
+			archerStructure["rightHandIndex1"] = archerModel.getObjectByName("RightHandIndex1_44")
+			archerStructure["rightHandIndex2"] = archerModel.getObjectByName("RightHandIndex2_43")
+			archerStructure["rightHandIndex3"] = archerModel.getObjectByName("RightHandIndex3_42")
+			archerStructure["rightHandIndex4"] = archerModel.getObjectByName("RightHandIndex4_41")
+			archerStructure["rightHandThumb1"] = archerModel.getObjectByName("RightHandThumb1_48")
+			archerStructure["rightHandThumb2"] = archerModel.getObjectByName("RightHandThumb2_47")
+			archerStructure["rightHandThumb3"] = archerModel.getObjectByName("RightHandThumb3_46")
+			archerStructure["rightHandThumb4"] = archerModel.getObjectByName("RightHandThumb4_45")
+			archerStructure["leftUpLeg"] = archerModel.getObjectByName("LeftUpLeg_60")
+			archerStructure["leftLeg"] = archerModel.getObjectByName("LeftLeg_59")
+			archerStructure["leftFoot"] = archerModel.getObjectByName("LeftFoot_58")
+			archerStructure["leftToeBase"] = archerModel.getObjectByName("LeftToeBase_57")
+			archerStructure["leftToe_End"] = archerModel.getObjectByName("LeftToe_End_56")
+			archerStructure["rightUpLeg"] = archerModel.getObjectByName("RightUpLeg_65")
+			archerStructure["rightLeg"] = archerModel.getObjectByName("RightLeg_64")
+			archerStructure["rightFoot"] = archerModel.getObjectByName("RightFoot_63")
+			archerStructure["rightToeBase"] = archerModel.getObjectByName("RightToeBase_62")
+			archerStructure["rightToe_End"] = archerModel.getObjectByName("RightToe_End_61")
 		};
 
 		function populateRobotStructure(genRobotModel){
@@ -2158,6 +2527,45 @@
 		changePlayerState();
 		};
 
+		function enemiesAnimate(){
+			robots.forEach(enemy => {
+				//Camera angle with respect to player (obtained through x and z displacements)
+				
+				var enemyPosition = enemy.body.position;
+				var archerPos = cubeBody.position;
+				var distance = new THREE.Vector3(); // create once an reuse it
+				
+				distance.subVectors( archerPos, enemyPosition );
+
+				if(distance.dot(distance) <  30){
+					
+					if(enemy.state != "RUNNING"){
+						//START TWEEN RUNNING
+						enemy.state = "RUNNING";
+					}
+
+					var dir = distance.normalize();
+					var desAngle = Math.atan2(
+						(enemyPosition.x - archerPos.x),
+						(enemyPosition.z - archerPos.z));
+		
+					//Desired final direction, that has to be reached slowly (using rotateTowards)
+					enemy.mesh.quaternion.rotateTowards((new THREE.Quaternion()).setFromAxisAngle(new THREE.Vector3(0,1,0), desAngle), 0.2);
+					var enemyVelocity = 5;
+					enemy.body.velocity.x = enemyVelocity * dir.x;
+					enemy.body.velocity.z = enemyVelocity * dir.z;
+
+				}
+				else{
+					if(enemy.state == "RUNNING"){
+						//STOP TWEEN RUNNING
+						//START TWEEN IDLE
+						enemy.state = "IDLE";
+					}
+				}
+			});
+		}
+		
 		function cameraMoveY(){
 			var moveYTween= new TWEEN.Tween({y : cameraTarget.y}).to({y : cubeBody.position.y + 2}, 800).onUpdate((object)=>{cameraTarget.y= object.y;});
 			moveYTween.easing(TWEEN.Easing.Quadratic.InOut);
