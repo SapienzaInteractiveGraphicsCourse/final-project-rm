@@ -222,6 +222,7 @@
 		var skyboxModel, mainPlatModel, groundPlatModelParent, level2PlatformModelParent, level3PlatformModelParent;
 		var pause_bg = document.getElementById("pause_bg");
 		var pause_fg = document.getElementById("pause_fg");
+		var justRepulsed = false;
 
 		//CANNON AND THREE SETUP
 		const world = new CANNON.World({
@@ -337,7 +338,7 @@
 
 		gltfLoader.load("gltf/arrow/scene.gltf", (gltf) => {
 			arrowModel = gltf.scene.getObjectByName("Sketchfab_Scene");
-			arrowModel.scale.setScalar( 0.01 );
+			arrowModel.scale.setScalar( 0.02 );
 
 			gltf.scene.traverse( function( node ) {
 				if (node.isMesh) { 
@@ -528,8 +529,24 @@
 			var robotModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 
 			robotModel.scale.setScalar( 1 );
+			var bone = gltf.scene.getObjectByName("Bone_74");
+			var leftFoot = gltf.scene.getObjectByName("FootL_2");
+			var leftLowerLeg = gltf.scene.getObjectByName("LowerLegL_5");
+			bone.remove(leftFoot)
+			leftLowerLeg.add(leftFoot);
+			var rightFoot = gltf.scene.getObjectByName("FootR_71");
+			var rightLowerLeg = gltf.scene.getObjectByName("LowerLegR_10");
+			bone.remove(rightFoot)
+			rightLowerLeg.add(rightFoot);
+			leftFoot.position.set(-0.000, 0.008, 0.000);
+			leftFoot.rotation.set(...[leftFoot.rotation.x - Math.PI,leftFoot.rotation.y,leftFoot.rotation.z]);
+			rightFoot.position.set(0.000, 0.008, 0.000);
+			rightFoot.rotation.set(...[rightFoot.rotation.x - Math.PI,rightFoot.rotation.y,rightFoot.rotation.z]);
 
-			
+
+
+			// console.log(dumpObject(robotModel).join('\n'));
+
 			gltf.scene.traverse( function( node ) {
 				if (node.isMesh) { 
 					node.castShadow = true;
@@ -540,9 +557,8 @@
 
 			var positions = [new CANNON.Vec3(5, 8.7, 117.5),
 						new CANNON.Vec3(-5, 8.7, 117.5),
-						new CANNON.Vec3(0, 8.7, 122.5),
-						new CANNON.Vec3(0, 3.2, 4)
-					];
+						new CANNON.Vec3(0, 8.7, 122.5)
+										];
 
 
 			//Function that returns the listener for the collision event of the robots (can't create the listener directly in the loop)
@@ -558,6 +574,20 @@
 						robots.filter(function(ele){ 
 							return ele != genRobot; 
 						});
+					}
+					else if((justRepulsed == false && genRobot["body"] && cubeBody) && ((e.contact.bi.id == genRobot["body"].id && e.contact.bj.id == cubeBody.id || (e.contact.bj.id == genRobot["body"].id && e.contact.bi.id == cubeBody.id)))){
+						justRepulsed = true;
+						//Must repulse after some time otherwise too many activations
+						setTimeout(function() {
+							justRepulsed = false;
+						},500);
+						var enemyRepulseVelocity = 150;
+						var impactDir = new THREE.Vector3();
+						impactDir.subVectors( cubeBody.position, genRobot["body"].position);
+						impactDir.normalize();
+						// console.log(impactDir)
+						cubeBody.velocity.x = enemyRepulseVelocity * impactDir.x;
+						cubeBody.velocity.z = enemyRepulseVelocity * impactDir.z;
 					}
 				} 
 			}
@@ -875,14 +905,14 @@
 
 				var updateFunction = createUpdateFunction(genRobotStructure);
 
-				var idleEnemy = new TWEEN.Tween(initialRotations).to({
+				var idleAEnemy = new TWEEN.Tween(initialRotations).to({
 					"rootJointRx" : 0.0000,
 					"rootJointRy" : 0.0000,
 					"rootJointRz" : 0.0000,
 					"boneRx" : 1.5708,
 					"boneRy" : 0.0000,
 					"boneRz" : -0.0000,
-					"footLRx" : -1.5384,
+					"footLRx" : -4.6799,
 					"footLRy" : 0.0000,
 					"footLRz" : 3.1416,
 					"bodyRx" : 0.2855,
@@ -907,6 +937,143 @@
 					"abdomenRy" : 0.0000,
 					"abdomenRz" : 0.0000,
 					"torsoRx" : 0.1166,
+					"torsoRy" : -0.0000,
+					"torsoRz" : 0.0000,
+					"neckRx" : -0.0860,
+					"neckRy" : -0.0308,
+					"neckRz" : 0.0553,
+					"headRx" : -0.3351,
+					"headRy" : 0.0193,
+					"headRz" : 0.0262,
+					"shoulderRRx" : -0.1090 + Math.PI /12,
+					"shoulderRRy" : -0.0000,
+					"shoulderRRz" : 2.6864,
+					"upperArmRRx" : 2.0772,
+					"upperArmRRy" : 0.3936,
+					"upperArmRRz" : -1.8977,
+					"lowerArmRRx" : 1.6209,
+					"lowerArmRRy" : -0.5227,
+					"lowerArmRRz" : -2.9996,
+					"thumbRRx" : 2.8878,
+					"thumbRRy" : -0.9211,
+					"thumbRRz" : 1.3133,
+					"thumb2RRx" : -1.7178,
+					"thumb2RRy" : -0.6391,
+					"thumb2RRz" : -2.9502,
+					"palm2RRx" : -0.0222,
+					"palm2RRy" : -0.1657,
+					"palm2RRz" : 0.6589,
+					"middle1RRx" : -0.0636,
+					"middle1RRy" : -0.0635,
+					"middle1RRz" : 1.1049,
+					"middle2RRx" : 0.0997,
+					"middle2RRy" : -0.0320,
+					"middle2RRz" : 1.0613,
+					"palm1RRx" : -1.7964,
+					"palm1RRy" : 0.8086,
+					"palm1RRz" : 2.0645,
+					"indexRRx" : -1.9069,
+					"indexRRy" : -1.0366,
+					"indexRRz" : -0.9294,
+					"index2RRx" : -0.0585,
+					"index2RRy" : -0.0646,
+					"index2RRz" : 1.1100,
+					"palm3RRx" : 2.1885,
+					"palm3RRy" : -0.5323,
+					"palm3RRz" : 2.5953,
+					"ring1RRx" : 2.0308,
+					"ring1RRy" : 0.9081,
+					"ring1RRz" : -0.9431,
+					"ring2RRx" : 0.2315,
+					"ring2RRy" : 0.1636,
+					"ring2RRz" : 0.8729,
+					"shoulderLRx" : -0.1090 + Math.PI /12,
+					"shoulderLRy" : -0.0000,
+					"shoulderLRz" : -2.7180,
+					"upperArmLRx" : 1.7087,
+					"upperArmLRy" : -0.4337,
+					"upperArmLRz" : 2.0614,
+					"lowerArmLRx" : 1.4986,
+					"lowerArmLRy" : -0.4114,
+					"lowerArmLRz" : -3.1196,
+					"palm2LRx" : -0.0025,
+					"palm2LRy" : 0.0133,
+					"palm2LRz" : -0.6631,
+					"middle1LRx" : 0.0190,
+					"middle1LRy" : 0.0446,
+					"middle1LRz" : -1.1705,
+					"middle2LRx" : -0.0532,
+					"middle2LRy" : 0.0547,
+					"middle2LRz" : -1.5498,
+					"thumbLRx" : -3.0654,
+					"thumbLRy" : 0.5048,
+					"thumbLRz" : -1.4522,
+					"thumb2LRx" : -1.4232,
+					"thumb2LRy" : -0.9182,
+					"thumb2LRz" : -2.8564,
+					"palm1LRx" : 0.7827,
+					"palm1LRy" : 0.3751,
+					"palm1LRz" : -0.6223,
+					"indexLRx" : -0.5316,
+					"indexLRy" : -0.6584,
+					"indexLRz" : -1.5806,
+					"index2LRx" : -0.0866,
+					"index2LRy" : 0.0334,
+					"index2LRz" : -1.5514,
+					"palm3LRx" : -0.9059,
+					"palm3LRy" : -0.4760,
+					"palm3LRz" : -0.6485,
+					"ring1LRx" : 0.7377,
+					"ring1LRy" : 0.7843,
+					"ring1LRz" : -1.7830,
+					"ring2LRx" : -0.0866,
+					"ring2LRy" : 0.0334,
+					"ring2LRz" : -1.5514,
+					"poleTargetLRx" : 0.0000,
+					"poleTargetLRy" : 0.0000,
+					"poleTargetLRz" : -0.0000,
+					"footRRx" : -4.6799 ,
+					"footRRy" : 0.0000,
+					"footRRz" : 3.1416,
+					"poleTargetRRx" : 0.0000,
+					"poleTargetRRy" : 0.0000,
+					"poleTargetRRz" : -0.0000
+				}, 500).onComplete(()=> {
+					idleBEnemy.start();
+				});
+
+				var idleBEnemy = new TWEEN.Tween(initialRotations).to({
+					"rootJointRx" : 0.0000,
+					"rootJointRy" : 0.0000,
+					"rootJointRz" : 0.0000,
+					"boneRx" : 1.5708,
+					"boneRy" : 0.0000,
+					"boneRz" : -0.0000,
+					"footLRx" : -4.6799,
+					"footLRy" : 0.0000,
+					"footLRz" : 3.1416,
+					"bodyRx" : 0.2855,
+					"bodyRy" : 0.0000,
+					"bodyRz" : -0.0000,
+					"upperLegLRx" : 2.7895,
+					"upperLegLRy" : -0.1734,
+					"upperLegLRz" : -0.0254,
+					"lowerLegLRx" : 0.2121,
+					"lowerLegLRy" : 0.0000,
+					"lowerLegLRz" : -0.0000,
+					"upperLegRRx" : 2.7889,
+					"upperLegRRy" : 0.2823,
+					"upperLegRRz" : 0.0356,
+					"lowerLegRRx" : 0.2121,
+					"lowerLegRRy" : -0.0000,
+					"lowerLegRRz" : 0.0000,
+					"hipsRx" : -0.2385,
+					"hipsRy" : -0.0000,
+					"hipsRz" : -0.0000,
+					"abdomenRx" : 0.2308,
+					"abdomenRy" : 0.0000,
+					"abdomenRz" : 0.0000,
+					"torsoRx" : 0.1166 + 0.02,
 					"torsoRy" : -0.0000,
 					"torsoRz" : 0.0000,
 					"neckRx" : -0.0860,
@@ -1002,20 +1169,302 @@
 					"poleTargetLRx" : 0.0000,
 					"poleTargetLRy" : 0.0000,
 					"poleTargetLRz" : -0.0000,
-					"footRRx" : -1.5384,
+					"footRRx" : -4.6799 ,
 					"footRRy" : 0.0000,
 					"footRRz" : 3.1416,
 					"poleTargetRRx" : 0.0000,
 					"poleTargetRRy" : 0.0000,
 					"poleTargetRRz" : -0.0000
-				}, 500);
+				}, 1000).repeat(Infinity).yoyo(true);
 
-				idleEnemy.onUpdate(updateFunction);
-				tweens["idle"] = idleEnemy;
+				idleAEnemy.onUpdate(updateFunction);
+				tweens["idleA"] = idleAEnemy;
+				idleBEnemy.onUpdate(updateFunction);
+				tweens["idleB"] = idleBEnemy;
 
+				var runAEnemy = new TWEEN.Tween(initialRotations).to({
+					"rootJointRx" : 0.0000,
+					"rootJointRy" : 0.0000,
+					"rootJointRz" : 0.0000,
+					"boneRx" : 1.5708,
+					"boneRy" : 0.0000,
+					"boneRz" : -0.0000,
+					"footLRx" : -4.6799,
+					"footLRy" : 0.0000,
+					"footLRz" : 3.1416,
+					"bodyRx" : 0.2855,
+					"bodyRy" : 0.0000,
+					"bodyRz" : -0.0000,
+					"upperLegLRx" : 2.7895 - Math.PI/3,
+					"upperLegLRy" : -0.1734,
+					"upperLegLRz" : -0.0254,
+					"lowerLegLRx" : 0.2121 + Math.PI/9,
+					"lowerLegLRy" : 0.0000,
+					"lowerLegLRz" : -0.0000,
+					"upperLegRRx" : 2.7889 + Math.PI/3,
+					"upperLegRRy" : 0.2823,
+					"upperLegRRz" : 0.0356,
+					"lowerLegRRx" : 0.2121 - Math.PI/9,
+					"lowerLegRRy" : -0.0000,
+					"lowerLegRRz" : 0.0000,
+					"hipsRx" : -0.2385,
+					"hipsRy" : -0.0000,
+					"hipsRz" : -0.0000,
+					"abdomenRx" : 0.2308,
+					"abdomenRy" : 0.0000,
+					"abdomenRz" : 0.0000,
+					"torsoRx" : 0.1166,
+					"torsoRy" : -0.0000,
+					"torsoRz" : 0.0000,
+					"neckRx" : -0.0860 + 0.02,
+					"neckRy" : -0.0308,
+					"neckRz" : 0.0553,
+					"headRx" : -0.3351,
+					"headRy" : 0.0193,
+					"headRz" : 0.0262,
+					"shoulderRRx" : -0.1090 + Math.PI/3,
+					"shoulderRRy" : -0.0000,
+					"shoulderRRz" : 2.6864 + Math.PI/4,
+					"upperArmRRx" : 2.0772,
+					"upperArmRRy" : 0.3936,
+					"upperArmRRz" : -1.8977,
+					"lowerArmRRx" : 1.6209,
+					"lowerArmRRy" : -0.5227,
+					"lowerArmRRz" : -2.9996,
+					"thumbRRx" : 2.8878,
+					"thumbRRy" : -0.9211,
+					"thumbRRz" : 1.3133,
+					"thumb2RRx" : -1.7178,
+					"thumb2RRy" : -0.6391,
+					"thumb2RRz" : -2.9502,
+					"palm2RRx" : -0.0222,
+					"palm2RRy" : -0.1657,
+					"palm2RRz" : 0.6589,
+					"middle1RRx" : -0.0636,
+					"middle1RRy" : -0.0635,
+					"middle1RRz" : 1.1049,
+					"middle2RRx" : 0.0997,
+					"middle2RRy" : -0.0320,
+					"middle2RRz" : 1.0613,
+					"palm1RRx" : -1.7964,
+					"palm1RRy" : 0.8086,
+					"palm1RRz" : 2.0645,
+					"indexRRx" : -1.9069,
+					"indexRRy" : -1.0366,
+					"indexRRz" : -0.9294,
+					"index2RRx" : -0.0585,
+					"index2RRy" : -0.0646,
+					"index2RRz" : 1.1100,
+					"palm3RRx" : 2.1885,
+					"palm3RRy" : -0.5323,
+					"palm3RRz" : 2.5953,
+					"ring1RRx" : 2.0308,
+					"ring1RRy" : 0.9081,
+					"ring1RRz" : -0.9431,
+					"ring2RRx" : 0.2315,
+					"ring2RRy" : 0.1636,
+					"ring2RRz" : 0.8729,
+					"shoulderLRx" : -0.1090 - Math.PI/3,
+					"shoulderLRy" : -0.0000,
+					"shoulderLRz" : -2.7180 - Math.PI/4,
+					"upperArmLRx" : 1.7087,
+					"upperArmLRy" : -0.4337,
+					"upperArmLRz" : 2.0614,
+					"lowerArmLRx" : 1.4986,
+					"lowerArmLRy" : -0.4114,
+					"lowerArmLRz" : -3.1196,
+					"palm2LRx" : -0.0025,
+					"palm2LRy" : 0.0133,
+					"palm2LRz" : -0.6631,
+					"middle1LRx" : 0.0190,
+					"middle1LRy" : 0.0446,
+					"middle1LRz" : -1.1705,
+					"middle2LRx" : -0.0532,
+					"middle2LRy" : 0.0547,
+					"middle2LRz" : -1.5498,
+					"thumbLRx" : -3.0654,
+					"thumbLRy" : 0.5048,
+					"thumbLRz" : -1.4522,
+					"thumb2LRx" : -1.4232,
+					"thumb2LRy" : -0.9182,
+					"thumb2LRz" : -2.8564,
+					"palm1LRx" : 0.7827,
+					"palm1LRy" : 0.3751,
+					"palm1LRz" : -0.6223,
+					"indexLRx" : -0.5316,
+					"indexLRy" : -0.6584,
+					"indexLRz" : -1.5806,
+					"index2LRx" : -0.0866,
+					"index2LRy" : 0.0334,
+					"index2LRz" : -1.5514,
+					"palm3LRx" : -0.9059,
+					"palm3LRy" : -0.4760,
+					"palm3LRz" : -0.6485,
+					"ring1LRx" : 0.7377,
+					"ring1LRy" : 0.7843,
+					"ring1LRz" : -1.7830,
+					"ring2LRx" : -0.0866,
+					"ring2LRy" : 0.0334,
+					"ring2LRz" : -1.5514,
+					"poleTargetLRx" : 0.0000,
+					"poleTargetLRy" : 0.0000,
+					"poleTargetLRz" : -0.0000,
+					"footRRx" : -4.6799,
+					"footRRy" : 0.0000,
+					"footRRz" : 3.1416,
+					"poleTargetRRx" : 0.0000,
+					"poleTargetRRy" : 0.0000,
+					"poleTargetRRz" : -0.0000
+				}, 250);
+
+				var runBEnemy= new TWEEN.Tween(initialRotations).to({
+					"rootJointRx" : 0.0000,
+					"rootJointRy" : 0.0000,
+					"rootJointRz" : 0.0000,
+					"boneRx" : 1.5708,
+					"boneRy" : 0.0000,
+					"boneRz" : -0.0000,
+					"footLRx" : -4.6799,
+					"footLRy" : 0.0000,
+					"footLRz" : 3.1416,
+					"bodyRx" : 0.2855,
+					"bodyRy" : 0.0000,
+					"bodyRz" : -0.0000,
+					"upperLegLRx" : 2.7895 + Math.PI/3,
+					"upperLegLRy" : -0.1734,
+					"upperLegLRz" : -0.0254,
+					"lowerLegLRx" : 0.2121 - Math.PI/9,
+					"lowerLegLRy" : 0.0000,
+					"lowerLegLRz" : -0.0000,
+					"upperLegRRx" : 2.7889 - Math.PI/3,
+					"upperLegRRy" : 0.2823,
+					"upperLegRRz" : 0.0356,
+					"lowerLegRRx" : 0.2121 + Math.PI/9,
+					"lowerLegRRy" : -0.0000,
+					"lowerLegRRz" : 0.0000,
+					"hipsRx" : -0.2385,
+					"hipsRy" : -0.0000,
+					"hipsRz" : -0.0000,
+					"abdomenRx" : 0.2308,
+					"abdomenRy" : 0.0000,
+					"abdomenRz" : 0.0000,
+					"torsoRx" : 0.1166,
+					"torsoRy" : -0.0000,
+					"torsoRz" : 0.0000,
+					"neckRx" : -0.0860 - 0.02,
+					"neckRy" : -0.0308,
+					"neckRz" : 0.0553,
+					"headRx" : -0.3351,
+					"headRy" : 0.0193,
+					"headRz" : 0.0262,
+					"shoulderRRx" : -0.1090 - Math.PI/3,
+					"shoulderRRy" : -0.0000,
+					"shoulderRRz" : 2.6864 + Math.PI/4,
+					"upperArmRRx" : 2.0772,
+					"upperArmRRy" : 0.3936,
+					"upperArmRRz" : -1.8977,
+					"lowerArmRRx" : 1.6209,
+					"lowerArmRRy" : -0.5227,
+					"lowerArmRRz" : -2.9996,
+					"thumbRRx" : 2.8878,
+					"thumbRRy" : -0.9211,
+					"thumbRRz" : 1.3133,
+					"thumb2RRx" : -1.7178,
+					"thumb2RRy" : -0.6391,
+					"thumb2RRz" : -2.9502,
+					"palm2RRx" : -0.0222,
+					"palm2RRy" : -0.1657,
+					"palm2RRz" : 0.6589,
+					"middle1RRx" : -0.0636,
+					"middle1RRy" : -0.0635,
+					"middle1RRz" : 1.1049,
+					"middle2RRx" : 0.0997,
+					"middle2RRy" : -0.0320,
+					"middle2RRz" : 1.0613,
+					"palm1RRx" : -1.7964,
+					"palm1RRy" : 0.8086,
+					"palm1RRz" : 2.0645,
+					"indexRRx" : -1.9069,
+					"indexRRy" : -1.0366,
+					"indexRRz" : -0.9294,
+					"index2RRx" : -0.0585,
+					"index2RRy" : -0.0646,
+					"index2RRz" : 1.1100,
+					"palm3RRx" : 2.1885,
+					"palm3RRy" : -0.5323,
+					"palm3RRz" : 2.5953,
+					"ring1RRx" : 2.0308,
+					"ring1RRy" : 0.9081,
+					"ring1RRz" : -0.9431,
+					"ring2RRx" : 0.2315,
+					"ring2RRy" : 0.1636,
+					"ring2RRz" : 0.8729,
+					"shoulderLRx" : -0.1090 + Math.PI/3,
+					"shoulderLRy" : -0.0000,
+					"shoulderLRz" : -2.7180 - Math.PI/4,
+					"upperArmLRx" : 1.7087,
+					"upperArmLRy" : -0.4337,
+					"upperArmLRz" : 2.0614,
+					"lowerArmLRx" : 1.4986,
+					"lowerArmLRy" : -0.4114,
+					"lowerArmLRz" : -3.1196,
+					"palm2LRx" : -0.0025,
+					"palm2LRy" : 0.0133,
+					"palm2LRz" : -0.6631,
+					"middle1LRx" : 0.0190,
+					"middle1LRy" : 0.0446,
+					"middle1LRz" : -1.1705,
+					"middle2LRx" : -0.0532,
+					"middle2LRy" : 0.0547,
+					"middle2LRz" : -1.5498,
+					"thumbLRx" : -3.0654,
+					"thumbLRy" : 0.5048,
+					"thumbLRz" : -1.4522,
+					"thumb2LRx" : -1.4232,
+					"thumb2LRy" : -0.9182,
+					"thumb2LRz" : -2.8564,
+					"palm1LRx" : 0.7827,
+					"palm1LRy" : 0.3751,
+					"palm1LRz" : -0.6223,
+					"indexLRx" : -0.5316,
+					"indexLRy" : -0.6584,
+					"indexLRz" : -1.5806,
+					"index2LRx" : -0.0866,
+					"index2LRy" : 0.0334,
+					"index2LRz" : -1.5514,
+					"palm3LRx" : -0.9059,
+					"palm3LRy" : -0.4760,
+					"palm3LRz" : -0.6485,
+					"ring1LRx" : 0.7377,
+					"ring1LRy" : 0.7843,
+					"ring1LRz" : -1.7830,
+					"ring2LRx" : -0.0866,
+					"ring2LRy" : 0.0334,
+					"ring2LRz" : -1.5514,
+					"poleTargetLRx" : 0.0000,
+					"poleTargetLRy" : 0.0000,
+					"poleTargetLRz" : -0.0000,
+					"footRRx" : -4.6799,
+					"footRRy" : 0.0000,
+					"footRRz" : 3.1416,
+					"poleTargetRRx" : 0.0000,
+					"poleTargetRRy" : 0.0000,
+					"poleTargetRRz" : -0.0000
+				}, 250).onComplete(() => {
+					runAEnemy.start();		
+				});
+
+				runAEnemy.onUpdate(updateFunction);
+				runBEnemy.onUpdate(updateFunction);
+				runAEnemy.chain(runBEnemy);
+
+				tweens["runA"] = runAEnemy;
+				tweens["runB"] = runBEnemy;
 				
 				var genRobot = {"mesh" : genRobotMesh, "body" : genRobotBody, "model": robotModelParent, "state": "IDLE", "tweens": tweens};
 				robots.push(genRobot);
+
+				idleAEnemy.start();
 
 				genRobotBody.addEventListener("collide", robotColliderEvent(genRobot));
 			}
@@ -2254,7 +2703,7 @@
 					element["model"].quaternion.copy(element["body"].quaternion);
 				});
 
-				if(cubeBody.position.y < -10){
+				if(cubeBody.position.y < -5){
 					gameOver();
 				}
 
@@ -2537,10 +2986,12 @@
 				
 				distance.subVectors( archerPos, enemyPosition );
 
-				if(distance.dot(distance) <  30){
+				if(distance.dot(distance) <  100){
 					
 					if(enemy.state != "RUNNING"){
-						//START TWEEN RUNNING
+						enemy.tweens.idleA.stop();
+						enemy.tweens.idleB.stop();
+						enemy.tweens.runA.start();
 						enemy.state = "RUNNING";
 					}
 
@@ -2558,8 +3009,9 @@
 				}
 				else{
 					if(enemy.state == "RUNNING"){
-						//STOP TWEEN RUNNING
-						//START TWEEN IDLE
+						enemy.tweens.runA.stop();
+						enemy.tweens.runB.stop();
+						enemy.tweens.idleA.start();
 						enemy.state = "IDLE";
 					}
 				}
