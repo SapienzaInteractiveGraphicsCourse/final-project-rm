@@ -578,7 +578,7 @@
 							world.removeBody(genRobot["body"]);
 						},0);
 						scene.remove(genRobot["mesh"]);
-						robots.filter(function(ele){ 
+						robots = robots.filter(function(ele){ 
 							return ele != genRobot; 
 						});
 					}
@@ -2451,7 +2451,7 @@
 			console.log("LEVEL 3");
 			rotatePlatFloatingTweens.forEach(element => {
 				element.stop();
-				rotatePlatFloatingTweens.filter(function(ele){ 
+				rotatePlatFloatingTweens = rotatePlatFloatingTweens.filter(function(ele){ 
 					return ele != element; 
 				});
 			});
@@ -2583,9 +2583,25 @@
 			if ( e.contact.ni.dot( new CANNON.Vec3( 0, 1, 0 ) ) > 0.5) playerState = "Idle";
 		});
 
+		function removeArrowByID(id){
+			arrows.forEach(element => {
+				if(element["can"].id == id){
+					scene.remove(element["model"]);
+					setTimeout(function() {
+						world.removeBody(element["can"]);
+					},0);
+					scene.remove(element["mesh"]);
+					arrows = arrows.filter(function(ele){ 
+						return ele != element; 
+					});
+				}
+			});
+		}
 		targetBody1.addEventListener("collide", function(e){
-			//We've to check if one of the arrows hit the target1
+			//We've to check if one of the arrows hits the target1
 			if (targetBody1 && (e.contact.bi.id == targetBody1.id || e.contact.bj.id == targetBody1.id)) {
+				removeArrowByID(e.contact.bi.id);
+				removeArrowByID(e.contact.bj.id);
 				target1hit=true;
 				scene.remove(targetModelParent1);
 				setTimeout(function() {
@@ -2597,8 +2613,10 @@
 		});
 
 		targetBody2.addEventListener("collide", function(e){
-			//We've to check if one of the arrows hit the target2
+			//We've to check if one of the arrows hits the target2
 			if (targetBody2 && (e.contact.bi.id == targetBody2.id || e.contact.bj.id == targetBody2.id)) {
+				removeArrowByID(e.contact.bi.id);
+				removeArrowByID(e.contact.bj.id);
 				target2hit=true;
 				scene.remove(targetModelParent2);
 				setTimeout(function() {
@@ -2610,8 +2628,10 @@
 		});
 
 		targetBody3.addEventListener("collide", function(e){
-			//We've to check if one of the arrows hit the target1
+			//We've to check if one of the arrows hits the target3
 			if (targetBody3 && (e.contact.bi.id == targetBody3.id || e.contact.bj.id == targetBody3.id)) {
+				removeArrowByID(e.contact.bi.id);
+				removeArrowByID(e.contact.bj.id);
 				target3hit=true;
 				scene.remove(targetModelParent3);
 				setTimeout(function() {
@@ -2623,8 +2643,10 @@
 		});
 
 		targetBody4.addEventListener("collide", function(e){
-			//We've to check if one of the arrows hit the target1
+			//We've to check if one of the arrows hits the target4
 			if (targetBody4 && (e.contact.bi.id == targetBody4.id || e.contact.bj.id == targetBody4.id)) {
+				removeArrowByID(e.contact.bi.id);
+				removeArrowByID(e.contact.bj.id);
 				target4hit=true;
 				scene.remove(targetModelParent4);
 				setTimeout(function() {
@@ -2723,6 +2745,17 @@
 					element["can"].quaternion.copy(element["model"].quaternion);
 					element["mesh"].quaternion.copy(element["model"].quaternion);
 
+					//Check if the arrow is falling down
+					if(element["can"].position.y < -5){
+							scene.remove(element["model"]);
+							setTimeout(function() {
+								world.removeBody(element["can"]);
+							},0);
+							scene.remove(element["mesh"]);
+							arrows = arrows.filter(function(ele){ 
+								return ele != element; 
+							});
+						}
 				});
 
 				obsPlat.forEach(element => {
@@ -2739,9 +2772,6 @@
 					element["model"].quaternion.copy(element["body"].quaternion);
 				});
 
-				if(cubeBody.position.y < -5){
-					gameOver();
-				}
 
 				// console.log(camera.position)
 
@@ -3009,6 +3039,10 @@
 			oldx =cubeBody.position.x;
 			oldz =cubeBody.position.z;
 
+		if(cubeBody.position.y < -5){
+				gameOver();
+			}
+
 		changePlayerState();
 		};
 
@@ -3051,6 +3085,18 @@
 						enemy.state = "IDLE";
 					}
 				// str += "Player "+(i++)+ "State: "+ enemy.state+ " | ";
+
+			//Check if the enemy is falling down
+			if(enemyPosition.y < -5){
+					scene.remove(enemy["model"]);
+					setTimeout(function() {
+						world.removeBody(enemy["body"]);
+					},0);
+					scene.remove(enemy["mesh"]);
+					robots = robots.filter(function(ele){ 
+						return ele != enemy; 
+					});
+				}
 			});
 			// console.log(str);
 		}
