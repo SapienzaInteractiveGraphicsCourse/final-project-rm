@@ -207,7 +207,7 @@
 		var archerStructure = {};
 		var canShoot=true;
 		var lastExecutedAnimation = "Idle";
-		var idle, runA, runB, jumpA, jumpB, walkA, walkB, shootA, shootB, shootC, targetMovement1, targetMovement2, targetMovement3, targetMovement4, level2Unlock, level3Unlock1, level3Unlock2, level3Unlock3, level3Unlock4, level3Unlock5, level3Unlock6;
+		var idle, idleB, runA, runB, jumpA, jumpB, walkA, walkB, shootA, shootB, shootC, targetMovement1, targetMovement2, targetMovement3, targetMovement4, level2Unlock, level3Unlock1, level3Unlock2, level3Unlock3, level3Unlock4, level3Unlock5, level3Unlock6;
 		var arrows =[];
 		var target1hit = false, target2hit = false, target3hit=false, target4hit=false;
 		var prevPlayerPosition;
@@ -1563,6 +1563,7 @@
 			// Object.keys(archerStructure).forEach(key => {
 			// out += ('archerStructure["'+ key + '"].rotation.x = ' + 'object["'+ key + 'Rx"]' +  ';' +'archerStructure["'+ key + '"].rotation.y = ' + 'object["'+ key + 'Ry"]' + ';' + 'archerStructure["'+ key + '"].rotation.z = ' + 'object["'+ key + 'Rz"]' +  '; \n');				
 			// });
+
 			
 			//TWEEN ANIMATIONS
 			//var groupPlayer = new TWEEN.Group();
@@ -1610,262 +1611,416 @@
 			level3Unlock6 = new TWEEN.Tween({y:0, x: 20}).to({y:4, x: 2.5}, 4000).onUpdate((object)=>{obsPlat[8]["body"].position.y= object.y;obsPlat[8]["body"].position.x= object.x;});
 			level3Unlock6.easing(TWEEN.Easing.Bounce.Out);
 			
-			var startRotations ={"rightShoulderRx": archerStructure["rightShoulder"].rotation.x,"rightShoulderRy": archerStructure["rightShoulder"].rotation.y,"rightShoulderRz": archerStructure["rightShoulder"].rotation.z, 
-								"rightArmRx": archerStructure["rightArm"].rotation.x,"rightArmRy": archerStructure["rightArm"].rotation.y,"rightArmRz": archerStructure["rightArm"].rotation.z, 
-								"rightForeArmRx": archerStructure["rightForeArm"].rotation.x,"rightForeArmRy": archerStructure["rightForeArm"].rotation.y,"rightForeArmRz": archerStructure["rightForeArm"].rotation.z, 
-								"rightHandRx": archerStructure["rightHand"].rotation.x,"rightHandRy": archerStructure["rightHand"].rotation.y,"rightHandRz": archerStructure["rightHand"].rotation.z, 
-								"leftShoulderRx": archerStructure["leftShoulder"].rotation.x,"leftShoulderRy": archerStructure["leftShoulder"].rotation.y,"leftShoulderRz": archerStructure["leftShoulder"].rotation.z, 
-								"leftArmRx": archerStructure["leftArm"].rotation.x,"leftArmRy": archerStructure["leftArm"].rotation.y,"leftArmRz": archerStructure["leftArm"].rotation.z, 
-								"leftForeArmRx": archerStructure["leftForeArm"].rotation.x,"leftForeArmRy": archerStructure["leftForeArm"].rotation.y,"leftForeArmRz": archerStructure["leftForeArm"].rotation.z, 
-								"leftHandRx": archerStructure["leftHand"].rotation.x,"leftHandRy": archerStructure["leftHand"].rotation.y,"leftHandRz": archerStructure["leftHand"].rotation.z, 
-								"rightUpLegRx": archerStructure["rightUpLeg"].rotation.x,"rightUpLegRy": archerStructure["rightUpLeg"].rotation.y,"rightUpLegRz": archerStructure["rightUpLeg"].rotation.z, 
-								"rightLegRx": archerStructure["rightLeg"].rotation.x,"rightLegRy": archerStructure["rightLeg"].rotation.y,"rightLegRz": archerStructure["rightLeg"].rotation.z, 
-								"rightFootRx": archerStructure["rightFoot"].rotation.x,"rightFootRy": archerStructure["rightFoot"].rotation.y,"rightFootRz": archerStructure["rightFoot"].rotation.z, 
-								"leftUpLegRx": archerStructure["leftUpLeg"].rotation.x,"leftUpLegRy": archerStructure["leftUpLeg"].rotation.y,"leftUpLegRz": archerStructure["leftUpLeg"].rotation.z, 
-								"leftLegRx": archerStructure["leftLeg"].rotation.x,"leftLegRy": archerStructure["leftLeg"].rotation.y,"leftLegRz": archerStructure["leftLeg"].rotation.z, 
-								"leftFootRx": archerStructure["leftFoot"].rotation.x,"leftFootRy": archerStructure["leftFoot"].rotation.y,"leftFootRz": archerStructure["leftFoot"].rotation.z, 
-								"neckRx": archerStructure["neck"].rotation.x,"neckRy": archerStructure["neck"].rotation.y,"neckRz": archerStructure["neck"].rotation.z, 
-								"headRx": archerStructure["head"].rotation.x,"headRy": archerStructure["head"].rotation.y,"headRz": archerStructure["head"].rotation.z, 
-								"rightHandPinky2Rz": archerStructure["rightHandPinky2"].rotation.z, 
-								"rightHandPinky3Rz": archerStructure["rightHandPinky3"].rotation.z, 
-								"rightHandPinky4Rz": archerStructure["rightHandPinky4"].rotation.z, 
-								"rightHandRing2Rz": archerStructure["rightHandRing2"].rotation.z, 
-								"rightHandRing3Rz": archerStructure["rightHandRing3"].rotation.z, 
-								"rightHandRing4Rz": archerStructure["rightHandRing4"].rotation.z, 
-								"rightHandMiddle2Rz": archerStructure["rightHandMiddle2"].rotation.z, 
-								"rightHandMiddle3Rz": archerStructure["rightHandMiddle3"].rotation.z, 
-								"rightHandMiddle4Rz": archerStructure["rightHandMiddle4"].rotation.z, 
-								"rightHandIndex2Rz": archerStructure["rightHandIndex2"].rotation.z, 
-								"rightHandIndex3Rz": archerStructure["rightHandIndex3"].rotation.z, 
-								"rightHandIndex4Rz": archerStructure["rightHandIndex4"].rotation.z, 
-								"rightHandThumb2Rz": archerStructure["rightHandThumb2"].rotation.z, 
-								"rightHandThumb3Rz": archerStructure["rightHandThumb3"].rotation.z, 
-								"rightHandThumb4Rz": archerStructure["rightHandThumb4"].rotation.z,
-								"rightHandThumb2Ry": archerStructure["rightHandThumb2"].rotation.y,
-								"rightHandThumb3Ry": archerStructure["rightHandThumb3"].rotation.y,
-								"rightHandThumb4Ry": archerStructure["rightHandThumb4"].rotation.y, 
-								"leftHandPinky2Rz": archerStructure["leftHandPinky2"].rotation.z, 
-								"leftHandPinky3Rz": archerStructure["leftHandPinky3"].rotation.z, 
-								"leftHandPinky4Rz": archerStructure["leftHandPinky4"].rotation.z, 
-								"leftHandRing2Rz": archerStructure["leftHandRing2"].rotation.z, 
-								"leftHandRing3Rz": archerStructure["leftHandRing3"].rotation.z, 
-								"leftHandRing4Rz": archerStructure["leftHandRing4"].rotation.z, 
-								"leftHandMiddle2Rz": archerStructure["leftHandMiddle2"].rotation.z, 
-								"leftHandMiddle3Rz": archerStructure["leftHandMiddle3"].rotation.z, 
-								"leftHandMiddle4Rz": archerStructure["leftHandMiddle4"].rotation.z, 
-								"leftHandIndex2Rz": archerStructure["leftHandIndex2"].rotation.z, 
-								"leftHandIndex3Rz": archerStructure["leftHandIndex3"].rotation.z, 
-								"leftHandIndex4Rz": archerStructure["leftHandIndex4"].rotation.z, 
-								"leftHandThumb2Rz": archerStructure["leftHandThumb2"].rotation.z, 
-								"leftHandThumb3Rz": archerStructure["leftHandThumb3"].rotation.z, 
-								"leftHandThumb4Rz": archerStructure["leftHandThumb4"].rotation.z,
-								"leftHandThumb2Ry": archerStructure["leftHandThumb2"].rotation.y, 
-								"leftHandThumb3Ry": archerStructure["leftHandThumb3"].rotation.y, 
-								"leftHandThumb4Ry": archerStructure["leftHandThumb4"].rotation.y
+			var startRotations ={"hipsRx" : archerStructure["hips"].rotation.x, "hipsRy" : archerStructure["hips"].rotation.y, "hipsRz" : archerStructure["hips"].rotation.z,
+								"spineRx" : archerStructure["spine"].rotation.x, "spineRy" : archerStructure["spine"].rotation.y, "spineRz" : archerStructure["spine"].rotation.z,
+								"spine1Rx" : archerStructure["spine1"].rotation.x, "spine1Ry" : archerStructure["spine1"].rotation.y, "spine1Rz" : archerStructure["spine1"].rotation.z,
+								"spine2Rx" : archerStructure["spine2"].rotation.x, "spine2Ry" : archerStructure["spine2"].rotation.y, "spine2Rz" : archerStructure["spine2"].rotation.z,
+								"neckRx" : archerStructure["neck"].rotation.x, "neckRy" : archerStructure["neck"].rotation.y, "neckRz" : archerStructure["neck"].rotation.z,
+								"headRx" : archerStructure["head"].rotation.x, "headRy" : archerStructure["head"].rotation.y, "headRz" : archerStructure["head"].rotation.z,
+								"rightEyeRx" : archerStructure["rightEye"].rotation.x, "rightEyeRy" : archerStructure["rightEye"].rotation.y, "rightEyeRz" : archerStructure["rightEye"].rotation.z,
+								"leftEyeRx" : archerStructure["leftEye"].rotation.x, "leftEyeRy" : archerStructure["leftEye"].rotation.y, "leftEyeRz" : archerStructure["leftEye"].rotation.z,
+								"headTop_EndRx" : archerStructure["headTop_End"].rotation.x, "headTop_EndRy" : archerStructure["headTop_End"].rotation.y, "headTop_EndRz" : archerStructure["headTop_End"].rotation.z,
+								"leftShoulderRx" : archerStructure["leftShoulder"].rotation.x, "leftShoulderRy" : archerStructure["leftShoulder"].rotation.y, "leftShoulderRz" : archerStructure["leftShoulder"].rotation.z,
+								"leftArmRx" : archerStructure["leftArm"].rotation.x, "leftArmRy" : archerStructure["leftArm"].rotation.y, "leftArmRz" : archerStructure["leftArm"].rotation.z,
+								"leftForeArmRx" : archerStructure["leftForeArm"].rotation.x, "leftForeArmRy" : archerStructure["leftForeArm"].rotation.y, "leftForeArmRz" : archerStructure["leftForeArm"].rotation.z,
+								"leftHandRx" : archerStructure["leftHand"].rotation.x, "leftHandRy" : archerStructure["leftHand"].rotation.y, "leftHandRz" : archerStructure["leftHand"].rotation.z,
+								"leftHandThumb1Rx" : archerStructure["leftHandThumb1"].rotation.x, "leftHandThumb1Ry" : archerStructure["leftHandThumb1"].rotation.y, "leftHandThumb1Rz" : archerStructure["leftHandThumb1"].rotation.z,
+								"leftHandThumb2Rx" : archerStructure["leftHandThumb2"].rotation.x, "leftHandThumb2Ry" : archerStructure["leftHandThumb2"].rotation.y, "leftHandThumb2Rz" : archerStructure["leftHandThumb2"].rotation.z,
+								"leftHandThumb3Rx" : archerStructure["leftHandThumb3"].rotation.x, "leftHandThumb3Ry" : archerStructure["leftHandThumb3"].rotation.y, "leftHandThumb3Rz" : archerStructure["leftHandThumb3"].rotation.z,
+								"leftHandThumb4Rx" : archerStructure["leftHandThumb4"].rotation.x, "leftHandThumb4Ry" : archerStructure["leftHandThumb4"].rotation.y, "leftHandThumb4Rz" : archerStructure["leftHandThumb4"].rotation.z,
+								"leftHandIndex1Rx" : archerStructure["leftHandIndex1"].rotation.x, "leftHandIndex1Ry" : archerStructure["leftHandIndex1"].rotation.y, "leftHandIndex1Rz" : archerStructure["leftHandIndex1"].rotation.z,
+								"leftHandIndex2Rx" : archerStructure["leftHandIndex2"].rotation.x, "leftHandIndex2Ry" : archerStructure["leftHandIndex2"].rotation.y, "leftHandIndex2Rz" : archerStructure["leftHandIndex2"].rotation.z,
+								"leftHandIndex3Rx" : archerStructure["leftHandIndex3"].rotation.x, "leftHandIndex3Ry" : archerStructure["leftHandIndex3"].rotation.y, "leftHandIndex3Rz" : archerStructure["leftHandIndex3"].rotation.z,
+								"leftHandIndex4Rx" : archerStructure["leftHandIndex4"].rotation.x, "leftHandIndex4Ry" : archerStructure["leftHandIndex4"].rotation.y, "leftHandIndex4Rz" : archerStructure["leftHandIndex4"].rotation.z,
+								"leftHandMiddle1Rx" : archerStructure["leftHandMiddle1"].rotation.x, "leftHandMiddle1Ry" : archerStructure["leftHandMiddle1"].rotation.y, "leftHandMiddle1Rz" : archerStructure["leftHandMiddle1"].rotation.z,
+								"leftHandMiddle2Rx" : archerStructure["leftHandMiddle2"].rotation.x, "leftHandMiddle2Ry" : archerStructure["leftHandMiddle2"].rotation.y, "leftHandMiddle2Rz" : archerStructure["leftHandMiddle2"].rotation.z,
+								"leftHandMiddle3Rx" : archerStructure["leftHandMiddle3"].rotation.x, "leftHandMiddle3Ry" : archerStructure["leftHandMiddle3"].rotation.y, "leftHandMiddle3Rz" : archerStructure["leftHandMiddle3"].rotation.z,
+								"leftHandMiddle4Rx" : archerStructure["leftHandMiddle4"].rotation.x, "leftHandMiddle4Ry" : archerStructure["leftHandMiddle4"].rotation.y, "leftHandMiddle4Rz" : archerStructure["leftHandMiddle4"].rotation.z,
+								"leftHandRing1Rx" : archerStructure["leftHandRing1"].rotation.x, "leftHandRing1Ry" : archerStructure["leftHandRing1"].rotation.y, "leftHandRing1Rz" : archerStructure["leftHandRing1"].rotation.z,
+								"leftHandRing2Rx" : archerStructure["leftHandRing2"].rotation.x, "leftHandRing2Ry" : archerStructure["leftHandRing2"].rotation.y, "leftHandRing2Rz" : archerStructure["leftHandRing2"].rotation.z,
+								"leftHandRing3Rx" : archerStructure["leftHandRing3"].rotation.x, "leftHandRing3Ry" : archerStructure["leftHandRing3"].rotation.y, "leftHandRing3Rz" : archerStructure["leftHandRing3"].rotation.z,
+								"leftHandRing4Rx" : archerStructure["leftHandRing4"].rotation.x, "leftHandRing4Ry" : archerStructure["leftHandRing4"].rotation.y, "leftHandRing4Rz" : archerStructure["leftHandRing4"].rotation.z,
+								"leftHandPinky1Rx" : archerStructure["leftHandPinky1"].rotation.x, "leftHandPinky1Ry" : archerStructure["leftHandPinky1"].rotation.y, "leftHandPinky1Rz" : archerStructure["leftHandPinky1"].rotation.z,
+								"leftHandPinky2Rx" : archerStructure["leftHandPinky2"].rotation.x, "leftHandPinky2Ry" : archerStructure["leftHandPinky2"].rotation.y, "leftHandPinky2Rz" : archerStructure["leftHandPinky2"].rotation.z,
+								"leftHandPinky3Rx" : archerStructure["leftHandPinky3"].rotation.x, "leftHandPinky3Ry" : archerStructure["leftHandPinky3"].rotation.y, "leftHandPinky3Rz" : archerStructure["leftHandPinky3"].rotation.z,
+								"leftHandPinky4Rx" : archerStructure["leftHandPinky4"].rotation.x, "leftHandPinky4Ry" : archerStructure["leftHandPinky4"].rotation.y, "leftHandPinky4Rz" : archerStructure["leftHandPinky4"].rotation.z,
+								"rightShoulderRx" : archerStructure["rightShoulder"].rotation.x, "rightShoulderRy" : archerStructure["rightShoulder"].rotation.y, "rightShoulderRz" : archerStructure["rightShoulder"].rotation.z,
+								"rightArmRx" : archerStructure["rightArm"].rotation.x, "rightArmRy" : archerStructure["rightArm"].rotation.y, "rightArmRz" : archerStructure["rightArm"].rotation.z,
+								"rightForeArmRx" : archerStructure["rightForeArm"].rotation.x, "rightForeArmRy" : archerStructure["rightForeArm"].rotation.y, "rightForeArmRz" : archerStructure["rightForeArm"].rotation.z,
+								"rightHandRx" : archerStructure["rightHand"].rotation.x, "rightHandRy" : archerStructure["rightHand"].rotation.y, "rightHandRz" : archerStructure["rightHand"].rotation.z,
+								"rightHandPinky1Rx" : archerStructure["rightHandPinky1"].rotation.x, "rightHandPinky1Ry" : archerStructure["rightHandPinky1"].rotation.y, "rightHandPinky1Rz" : archerStructure["rightHandPinky1"].rotation.z,
+								"rightHandPinky2Rx" : archerStructure["rightHandPinky2"].rotation.x, "rightHandPinky2Ry" : archerStructure["rightHandPinky2"].rotation.y, "rightHandPinky2Rz" : archerStructure["rightHandPinky2"].rotation.z,
+								"rightHandPinky3Rx" : archerStructure["rightHandPinky3"].rotation.x, "rightHandPinky3Ry" : archerStructure["rightHandPinky3"].rotation.y, "rightHandPinky3Rz" : archerStructure["rightHandPinky3"].rotation.z,
+								"rightHandPinky4Rx" : archerStructure["rightHandPinky4"].rotation.x, "rightHandPinky4Ry" : archerStructure["rightHandPinky4"].rotation.y, "rightHandPinky4Rz" : archerStructure["rightHandPinky4"].rotation.z,
+								"rightHandRing1Rx" : archerStructure["rightHandRing1"].rotation.x, "rightHandRing1Ry" : archerStructure["rightHandRing1"].rotation.y, "rightHandRing1Rz" : archerStructure["rightHandRing1"].rotation.z,
+								"rightHandRing2Rx" : archerStructure["rightHandRing2"].rotation.x, "rightHandRing2Ry" : archerStructure["rightHandRing2"].rotation.y, "rightHandRing2Rz" : archerStructure["rightHandRing2"].rotation.z,
+								"rightHandRing3Rx" : archerStructure["rightHandRing3"].rotation.x, "rightHandRing3Ry" : archerStructure["rightHandRing3"].rotation.y, "rightHandRing3Rz" : archerStructure["rightHandRing3"].rotation.z,
+								"rightHandRing4Rx" : archerStructure["rightHandRing4"].rotation.x, "rightHandRing4Ry" : archerStructure["rightHandRing4"].rotation.y, "rightHandRing4Rz" : archerStructure["rightHandRing4"].rotation.z,
+								"rightHandMiddle1Rx" : archerStructure["rightHandMiddle1"].rotation.x, "rightHandMiddle1Ry" : archerStructure["rightHandMiddle1"].rotation.y, "rightHandMiddle1Rz" : archerStructure["rightHandMiddle1"].rotation.z,
+								"rightHandMiddle2Rx" : archerStructure["rightHandMiddle2"].rotation.x, "rightHandMiddle2Ry" : archerStructure["rightHandMiddle2"].rotation.y, "rightHandMiddle2Rz" : archerStructure["rightHandMiddle2"].rotation.z,
+								"rightHandMiddle3Rx" : archerStructure["rightHandMiddle3"].rotation.x, "rightHandMiddle3Ry" : archerStructure["rightHandMiddle3"].rotation.y, "rightHandMiddle3Rz" : archerStructure["rightHandMiddle3"].rotation.z,
+								"rightHandMiddle4Rx" : archerStructure["rightHandMiddle4"].rotation.x, "rightHandMiddle4Ry" : archerStructure["rightHandMiddle4"].rotation.y, "rightHandMiddle4Rz" : archerStructure["rightHandMiddle4"].rotation.z,
+								"rightHandIndex1Rx" : archerStructure["rightHandIndex1"].rotation.x, "rightHandIndex1Ry" : archerStructure["rightHandIndex1"].rotation.y, "rightHandIndex1Rz" : archerStructure["rightHandIndex1"].rotation.z,
+								"rightHandIndex2Rx" : archerStructure["rightHandIndex2"].rotation.x, "rightHandIndex2Ry" : archerStructure["rightHandIndex2"].rotation.y, "rightHandIndex2Rz" : archerStructure["rightHandIndex2"].rotation.z,
+								"rightHandIndex3Rx" : archerStructure["rightHandIndex3"].rotation.x, "rightHandIndex3Ry" : archerStructure["rightHandIndex3"].rotation.y, "rightHandIndex3Rz" : archerStructure["rightHandIndex3"].rotation.z,
+								"rightHandIndex4Rx" : archerStructure["rightHandIndex4"].rotation.x, "rightHandIndex4Ry" : archerStructure["rightHandIndex4"].rotation.y, "rightHandIndex4Rz" : archerStructure["rightHandIndex4"].rotation.z,
+								"rightHandThumb1Rx" : archerStructure["rightHandThumb1"].rotation.x, "rightHandThumb1Ry" : archerStructure["rightHandThumb1"].rotation.y, "rightHandThumb1Rz" : archerStructure["rightHandThumb1"].rotation.z,
+								"rightHandThumb2Rx" : archerStructure["rightHandThumb2"].rotation.x, "rightHandThumb2Ry" : archerStructure["rightHandThumb2"].rotation.y, "rightHandThumb2Rz" : archerStructure["rightHandThumb2"].rotation.z,
+								"rightHandThumb3Rx" : archerStructure["rightHandThumb3"].rotation.x, "rightHandThumb3Ry" : archerStructure["rightHandThumb3"].rotation.y, "rightHandThumb3Rz" : archerStructure["rightHandThumb3"].rotation.z,
+								"rightHandThumb4Rx" : archerStructure["rightHandThumb4"].rotation.x, "rightHandThumb4Ry" : archerStructure["rightHandThumb4"].rotation.y, "rightHandThumb4Rz" : archerStructure["rightHandThumb4"].rotation.z,
+								"leftUpLegRx" : archerStructure["leftUpLeg"].rotation.x, "leftUpLegRy" : archerStructure["leftUpLeg"].rotation.y, "leftUpLegRz" : archerStructure["leftUpLeg"].rotation.z,
+								"leftLegRx" : archerStructure["leftLeg"].rotation.x, "leftLegRy" : archerStructure["leftLeg"].rotation.y, "leftLegRz" : archerStructure["leftLeg"].rotation.z,
+								"leftFootRx" : archerStructure["leftFoot"].rotation.x, "leftFootRy" : archerStructure["leftFoot"].rotation.y, "leftFootRz" : archerStructure["leftFoot"].rotation.z,
+								"leftToeBaseRx" : archerStructure["leftToeBase"].rotation.x, "leftToeBaseRy" : archerStructure["leftToeBase"].rotation.y, "leftToeBaseRz" : archerStructure["leftToeBase"].rotation.z,
+								"leftToe_EndRx" : archerStructure["leftToe_End"].rotation.x, "leftToe_EndRy" : archerStructure["leftToe_End"].rotation.y, "leftToe_EndRz" : archerStructure["leftToe_End"].rotation.z,
+								"rightUpLegRx" : archerStructure["rightUpLeg"].rotation.x, "rightUpLegRy" : archerStructure["rightUpLeg"].rotation.y, "rightUpLegRz" : archerStructure["rightUpLeg"].rotation.z,
+								"rightLegRx" : archerStructure["rightLeg"].rotation.x, "rightLegRy" : archerStructure["rightLeg"].rotation.y, "rightLegRz" : archerStructure["rightLeg"].rotation.z,
+								"rightFootRx" : archerStructure["rightFoot"].rotation.x, "rightFootRy" : archerStructure["rightFoot"].rotation.y, "rightFootRz" : archerStructure["rightFoot"].rotation.z,
+								"rightToeBaseRx" : archerStructure["rightToeBase"].rotation.x, "rightToeBaseRy" : archerStructure["rightToeBase"].rotation.y, "rightToeBaseRz" : archerStructure["rightToeBase"].rotation.z,
+								"rightToe_EndRx" : archerStructure["rightToe_End"].rotation.x, "rightToe_EndRy" : archerStructure["rightToe_End"].rotation.y, "rightToe_EndRz" : archerStructure["rightToe_End"].rotation.z
 								};
 			
 			const updateFunction = function (object, elapsedTime) {
 				//If the player is not shooting then you can move the upper part of the body
 				if(canShoot){
-					archerStructure["rightShoulder"].rotation.x = object["rightShoulderRx"];archerStructure["rightShoulder"].rotation.y = object["rightShoulderRy"];archerStructure["rightShoulder"].rotation.z = object["rightShoulderRz"]; 
-					archerStructure["rightArm"].rotation.x = object["rightArmRx"];archerStructure["rightArm"].rotation.y = object["rightArmRy"];archerStructure["rightArm"].rotation.z = object["rightArmRz"]; 
-					archerStructure["rightForeArm"].rotation.x = object["rightForeArmRx"];archerStructure["rightForeArm"].rotation.y = object["rightForeArmRy"];archerStructure["rightForeArm"].rotation.z = object["rightForeArmRz"]; 
-					archerStructure["rightHand"].rotation.x = object["rightHandRx"];archerStructure["rightHand"].rotation.y = object["rightHandRy"];archerStructure["rightHand"].rotation.z = object["rightHandRz"]; 
-					archerStructure["leftShoulder"].rotation.x = object["leftShoulderRx"];archerStructure["leftShoulder"].rotation.y = object["leftShoulderRy"];archerStructure["leftShoulder"].rotation.z = object["leftShoulderRz"]; 
-					archerStructure["leftArm"].rotation.x = object["leftArmRx"];archerStructure["leftArm"].rotation.y = object["leftArmRy"];archerStructure["leftArm"].rotation.z = object["leftArmRz"]; 
-					archerStructure["leftForeArm"].rotation.x = object["leftForeArmRx"];archerStructure["leftForeArm"].rotation.y = object["leftForeArmRy"];archerStructure["leftForeArm"].rotation.z = object["leftForeArmRz"]; 
-					archerStructure["leftHand"].rotation.x = object["leftHandRx"];archerStructure["leftHand"].rotation.y = object["leftHandRy"];archerStructure["leftHand"].rotation.z = object["leftHandRz"]; 
-					archerStructure["neck"].rotation.x = object["neckRx"];archerStructure["neck"].rotation.y = object["neckRy"];archerStructure["neck"].rotation.z = object["neckRz"]; 
-					archerStructure["head"].rotation.x = object["headRx"];archerStructure["head"].rotation.y = object["headRy"];archerStructure["head"].rotation.z = object["headRz"]; 
-					archerStructure["rightHandPinky2"].rotation.z = object["rightHandPinky2Rz"]; 
-					archerStructure["rightHandPinky3"].rotation.z = object["rightHandPinky3Rz"]; 
-					archerStructure["rightHandPinky4"].rotation.z = object["rightHandPinky4Rz"]; 
-					archerStructure["rightHandRing2"].rotation.z = object["rightHandRing2Rz"]; 
-					archerStructure["rightHandRing3"].rotation.z = object["rightHandRing3Rz"]; 
-					archerStructure["rightHandRing4"].rotation.z = object["rightHandRing4Rz"]; 
-					archerStructure["rightHandMiddle2"].rotation.z = object["rightHandMiddle2Rz"]; 
-					archerStructure["rightHandMiddle3"].rotation.z = object["rightHandMiddle3Rz"]; 
-					archerStructure["rightHandMiddle4"].rotation.z = object["rightHandMiddle4Rz"]; 
-					archerStructure["rightHandIndex2"].rotation.z = object["rightHandIndex2Rz"]; 
-					archerStructure["rightHandIndex3"].rotation.z = object["rightHandIndex3Rz"]; 
-					archerStructure["rightHandIndex4"].rotation.z = object["rightHandIndex4Rz"]; 
-					archerStructure["rightHandThumb2"].rotation.y = object["rightHandThumb2Ry"];archerStructure["rightHandThumb2"].rotation.z = object["rightHandThumb2Rz"]; 
-					archerStructure["rightHandThumb3"].rotation.y = object["rightHandThumb3Ry"];archerStructure["rightHandThumb3"].rotation.z = object["rightHandThumb3Rz"]; 
-					archerStructure["rightHandThumb4"].rotation.y = object["rightHandThumb4Ry"];archerStructure["rightHandThumb4"].rotation.z = object["rightHandThumb4Rz"]; 
-					archerStructure["leftHandPinky2"].rotation.z = object["leftHandPinky2Rz"]; 
-					archerStructure["leftHandPinky3"].rotation.z = object["leftHandPinky3Rz"]; 
-					archerStructure["leftHandPinky4"].rotation.z = object["leftHandPinky4Rz"]; 
-					archerStructure["leftHandRing2"].rotation.z = object["leftHandRing2Rz"]; 
-					archerStructure["leftHandRing3"].rotation.z = object["leftHandRing3Rz"]; 
-					archerStructure["leftHandRing4"].rotation.z = object["leftHandRing4Rz"]; 
-					archerStructure["leftHandMiddle2"].rotation.z = object["leftHandMiddle2Rz"]; 
-					archerStructure["leftHandMiddle3"].rotation.z = object["leftHandMiddle3Rz"]; 
-					archerStructure["leftHandMiddle4"].rotation.z = object["leftHandMiddle4Rz"]; 
-					archerStructure["leftHandIndex2"].rotation.z = object["leftHandIndex2Rz"]; 
-					archerStructure["leftHandIndex3"].rotation.z = object["leftHandIndex3Rz"]; 
-					archerStructure["leftHandIndex4"].rotation.z = object["leftHandIndex4Rz"]; 
-					archerStructure["leftHandThumb2"].rotation.y = object["leftHandThumb2Ry"];archerStructure["leftHandThumb2"].rotation.z = object["leftHandThumb2Rz"]; 
-					archerStructure["leftHandThumb3"].rotation.y = object["leftHandThumb3Ry"];archerStructure["leftHandThumb3"].rotation.z = object["leftHandThumb3Rz"]; 
-					archerStructure["leftHandThumb4"].rotation.y = object["leftHandThumb4Ry"];archerStructure["leftHandThumb4"].rotation.z = object["leftHandThumb4Rz"]; 	
+					archerStructure["neck"].rotation.x = object["neckRx"];  archerStructure["neck"].rotation.y = object["neckRy"];  archerStructure["neck"].rotation.z = object["neckRz"];  
+					archerStructure["head"].rotation.x = object["headRx"];  archerStructure["head"].rotation.y = object["headRy"];  archerStructure["head"].rotation.z = object["headRz"];  
+					archerStructure["headTop_End"].rotation.x = object["headTop_EndRx"];  archerStructure["headTop_End"].rotation.y = object["headTop_EndRy"];  archerStructure["headTop_End"].rotation.z = object["headTop_EndRz"];  
+					archerStructure["leftShoulder"].rotation.x = object["leftShoulderRx"];  archerStructure["leftShoulder"].rotation.y = object["leftShoulderRy"];  archerStructure["leftShoulder"].rotation.z = object["leftShoulderRz"];  
+					archerStructure["leftArm"].rotation.x = object["leftArmRx"];  archerStructure["leftArm"].rotation.y = object["leftArmRy"];  archerStructure["leftArm"].rotation.z = object["leftArmRz"];  
+					archerStructure["leftForeArm"].rotation.x = object["leftForeArmRx"];  archerStructure["leftForeArm"].rotation.y = object["leftForeArmRy"];  archerStructure["leftForeArm"].rotation.z = object["leftForeArmRz"];  
+					archerStructure["leftHand"].rotation.x = object["leftHandRx"];  archerStructure["leftHand"].rotation.y = object["leftHandRy"];  archerStructure["leftHand"].rotation.z = object["leftHandRz"];  
+					archerStructure["leftHandThumb1"].rotation.x = object["leftHandThumb1Rx"];  archerStructure["leftHandThumb1"].rotation.y = object["leftHandThumb1Ry"];  archerStructure["leftHandThumb1"].rotation.z = object["leftHandThumb1Rz"];  
+					archerStructure["leftHandThumb2"].rotation.x = object["leftHandThumb2Rx"];  archerStructure["leftHandThumb2"].rotation.y = object["leftHandThumb2Ry"];  archerStructure["leftHandThumb2"].rotation.z = object["leftHandThumb2Rz"];  
+					archerStructure["leftHandThumb3"].rotation.x = object["leftHandThumb3Rx"];  archerStructure["leftHandThumb3"].rotation.y = object["leftHandThumb3Ry"];  archerStructure["leftHandThumb3"].rotation.z = object["leftHandThumb3Rz"];  
+					archerStructure["leftHandThumb4"].rotation.x = object["leftHandThumb4Rx"];  archerStructure["leftHandThumb4"].rotation.y = object["leftHandThumb4Ry"];  archerStructure["leftHandThumb4"].rotation.z = object["leftHandThumb4Rz"];  
+					archerStructure["leftHandIndex1"].rotation.x = object["leftHandIndex1Rx"];  archerStructure["leftHandIndex1"].rotation.y = object["leftHandIndex1Ry"];  archerStructure["leftHandIndex1"].rotation.z = object["leftHandIndex1Rz"];  
+					archerStructure["leftHandIndex2"].rotation.x = object["leftHandIndex2Rx"];  archerStructure["leftHandIndex2"].rotation.y = object["leftHandIndex2Ry"];  archerStructure["leftHandIndex2"].rotation.z = object["leftHandIndex2Rz"];  
+					archerStructure["leftHandIndex3"].rotation.x = object["leftHandIndex3Rx"];  archerStructure["leftHandIndex3"].rotation.y = object["leftHandIndex3Ry"];  archerStructure["leftHandIndex3"].rotation.z = object["leftHandIndex3Rz"];  
+					archerStructure["leftHandIndex4"].rotation.x = object["leftHandIndex4Rx"];  archerStructure["leftHandIndex4"].rotation.y = object["leftHandIndex4Ry"];  archerStructure["leftHandIndex4"].rotation.z = object["leftHandIndex4Rz"];  
+					archerStructure["leftHandMiddle1"].rotation.x = object["leftHandMiddle1Rx"];  archerStructure["leftHandMiddle1"].rotation.y = object["leftHandMiddle1Ry"];  archerStructure["leftHandMiddle1"].rotation.z = object["leftHandMiddle1Rz"];  
+					archerStructure["leftHandMiddle2"].rotation.x = object["leftHandMiddle2Rx"];  archerStructure["leftHandMiddle2"].rotation.y = object["leftHandMiddle2Ry"];  archerStructure["leftHandMiddle2"].rotation.z = object["leftHandMiddle2Rz"];  
+					archerStructure["leftHandMiddle3"].rotation.x = object["leftHandMiddle3Rx"];  archerStructure["leftHandMiddle3"].rotation.y = object["leftHandMiddle3Ry"];  archerStructure["leftHandMiddle3"].rotation.z = object["leftHandMiddle3Rz"];  
+					archerStructure["leftHandMiddle4"].rotation.x = object["leftHandMiddle4Rx"];  archerStructure["leftHandMiddle4"].rotation.y = object["leftHandMiddle4Ry"];  archerStructure["leftHandMiddle4"].rotation.z = object["leftHandMiddle4Rz"];  
+					archerStructure["leftHandRing1"].rotation.x = object["leftHandRing1Rx"];  archerStructure["leftHandRing1"].rotation.y = object["leftHandRing1Ry"];  archerStructure["leftHandRing1"].rotation.z = object["leftHandRing1Rz"];  
+					archerStructure["leftHandRing2"].rotation.x = object["leftHandRing2Rx"];  archerStructure["leftHandRing2"].rotation.y = object["leftHandRing2Ry"];  archerStructure["leftHandRing2"].rotation.z = object["leftHandRing2Rz"];  
+					archerStructure["leftHandRing3"].rotation.x = object["leftHandRing3Rx"];  archerStructure["leftHandRing3"].rotation.y = object["leftHandRing3Ry"];  archerStructure["leftHandRing3"].rotation.z = object["leftHandRing3Rz"];  
+					archerStructure["leftHandRing4"].rotation.x = object["leftHandRing4Rx"];  archerStructure["leftHandRing4"].rotation.y = object["leftHandRing4Ry"];  archerStructure["leftHandRing4"].rotation.z = object["leftHandRing4Rz"];  
+					archerStructure["leftHandPinky1"].rotation.x = object["leftHandPinky1Rx"];  archerStructure["leftHandPinky1"].rotation.y = object["leftHandPinky1Ry"];  archerStructure["leftHandPinky1"].rotation.z = object["leftHandPinky1Rz"];  
+					archerStructure["leftHandPinky2"].rotation.x = object["leftHandPinky2Rx"];  archerStructure["leftHandPinky2"].rotation.y = object["leftHandPinky2Ry"];  archerStructure["leftHandPinky2"].rotation.z = object["leftHandPinky2Rz"];  
+					archerStructure["leftHandPinky3"].rotation.x = object["leftHandPinky3Rx"];  archerStructure["leftHandPinky3"].rotation.y = object["leftHandPinky3Ry"];  archerStructure["leftHandPinky3"].rotation.z = object["leftHandPinky3Rz"];  
+					archerStructure["leftHandPinky4"].rotation.x = object["leftHandPinky4Rx"];  archerStructure["leftHandPinky4"].rotation.y = object["leftHandPinky4Ry"];  archerStructure["leftHandPinky4"].rotation.z = object["leftHandPinky4Rz"];  
+					archerStructure["rightShoulder"].rotation.x = object["rightShoulderRx"];  archerStructure["rightShoulder"].rotation.y = object["rightShoulderRy"];  archerStructure["rightShoulder"].rotation.z = object["rightShoulderRz"];  
+					archerStructure["rightArm"].rotation.x = object["rightArmRx"];  archerStructure["rightArm"].rotation.y = object["rightArmRy"];  archerStructure["rightArm"].rotation.z = object["rightArmRz"];  
+					archerStructure["rightForeArm"].rotation.x = object["rightForeArmRx"];  archerStructure["rightForeArm"].rotation.y = object["rightForeArmRy"];  archerStructure["rightForeArm"].rotation.z = object["rightForeArmRz"];  
+					archerStructure["rightHand"].rotation.x = object["rightHandRx"];  archerStructure["rightHand"].rotation.y = object["rightHandRy"];  archerStructure["rightHand"].rotation.z = object["rightHandRz"];  
+					archerStructure["rightHandPinky1"].rotation.x = object["rightHandPinky1Rx"];  archerStructure["rightHandPinky1"].rotation.y = object["rightHandPinky1Ry"];  archerStructure["rightHandPinky1"].rotation.z = object["rightHandPinky1Rz"];  
+					archerStructure["rightHandPinky2"].rotation.x = object["rightHandPinky2Rx"];  archerStructure["rightHandPinky2"].rotation.y = object["rightHandPinky2Ry"];  archerStructure["rightHandPinky2"].rotation.z = object["rightHandPinky2Rz"];  
+					archerStructure["rightHandPinky3"].rotation.x = object["rightHandPinky3Rx"];  archerStructure["rightHandPinky3"].rotation.y = object["rightHandPinky3Ry"];  archerStructure["rightHandPinky3"].rotation.z = object["rightHandPinky3Rz"];  
+					archerStructure["rightHandPinky4"].rotation.x = object["rightHandPinky4Rx"];  archerStructure["rightHandPinky4"].rotation.y = object["rightHandPinky4Ry"];  archerStructure["rightHandPinky4"].rotation.z = object["rightHandPinky4Rz"];  
+					archerStructure["rightHandRing1"].rotation.x = object["rightHandRing1Rx"];  archerStructure["rightHandRing1"].rotation.y = object["rightHandRing1Ry"];  archerStructure["rightHandRing1"].rotation.z = object["rightHandRing1Rz"];  
+					archerStructure["rightHandRing2"].rotation.x = object["rightHandRing2Rx"];  archerStructure["rightHandRing2"].rotation.y = object["rightHandRing2Ry"];  archerStructure["rightHandRing2"].rotation.z = object["rightHandRing2Rz"];  
+					archerStructure["rightHandRing3"].rotation.x = object["rightHandRing3Rx"];  archerStructure["rightHandRing3"].rotation.y = object["rightHandRing3Ry"];  archerStructure["rightHandRing3"].rotation.z = object["rightHandRing3Rz"];  
+					archerStructure["rightHandRing4"].rotation.x = object["rightHandRing4Rx"];  archerStructure["rightHandRing4"].rotation.y = object["rightHandRing4Ry"];  archerStructure["rightHandRing4"].rotation.z = object["rightHandRing4Rz"];  
+					archerStructure["rightHandMiddle1"].rotation.x = object["rightHandMiddle1Rx"];  archerStructure["rightHandMiddle1"].rotation.y = object["rightHandMiddle1Ry"];  archerStructure["rightHandMiddle1"].rotation.z = object["rightHandMiddle1Rz"];  
+					archerStructure["rightHandMiddle2"].rotation.x = object["rightHandMiddle2Rx"];  archerStructure["rightHandMiddle2"].rotation.y = object["rightHandMiddle2Ry"];  archerStructure["rightHandMiddle2"].rotation.z = object["rightHandMiddle2Rz"];  
+					archerStructure["rightHandMiddle3"].rotation.x = object["rightHandMiddle3Rx"];  archerStructure["rightHandMiddle3"].rotation.y = object["rightHandMiddle3Ry"];  archerStructure["rightHandMiddle3"].rotation.z = object["rightHandMiddle3Rz"];  
+					archerStructure["rightHandMiddle4"].rotation.x = object["rightHandMiddle4Rx"];  archerStructure["rightHandMiddle4"].rotation.y = object["rightHandMiddle4Ry"];  archerStructure["rightHandMiddle4"].rotation.z = object["rightHandMiddle4Rz"];  
+					archerStructure["rightHandIndex1"].rotation.x = object["rightHandIndex1Rx"];  archerStructure["rightHandIndex1"].rotation.y = object["rightHandIndex1Ry"];  archerStructure["rightHandIndex1"].rotation.z = object["rightHandIndex1Rz"];  
+					archerStructure["rightHandIndex2"].rotation.x = object["rightHandIndex2Rx"];  archerStructure["rightHandIndex2"].rotation.y = object["rightHandIndex2Ry"];  archerStructure["rightHandIndex2"].rotation.z = object["rightHandIndex2Rz"];  
+					archerStructure["rightHandIndex3"].rotation.x = object["rightHandIndex3Rx"];  archerStructure["rightHandIndex3"].rotation.y = object["rightHandIndex3Ry"];  archerStructure["rightHandIndex3"].rotation.z = object["rightHandIndex3Rz"];  
+					archerStructure["rightHandIndex4"].rotation.x = object["rightHandIndex4Rx"];  archerStructure["rightHandIndex4"].rotation.y = object["rightHandIndex4Ry"];  archerStructure["rightHandIndex4"].rotation.z = object["rightHandIndex4Rz"];  
+					archerStructure["rightHandThumb1"].rotation.x = object["rightHandThumb1Rx"];  archerStructure["rightHandThumb1"].rotation.y = object["rightHandThumb1Ry"];  archerStructure["rightHandThumb1"].rotation.z = object["rightHandThumb1Rz"];  
+					archerStructure["rightHandThumb2"].rotation.x = object["rightHandThumb2Rx"];  archerStructure["rightHandThumb2"].rotation.y = object["rightHandThumb2Ry"];  archerStructure["rightHandThumb2"].rotation.z = object["rightHandThumb2Rz"];  
+					archerStructure["rightHandThumb3"].rotation.x = object["rightHandThumb3Rx"];  archerStructure["rightHandThumb3"].rotation.y = object["rightHandThumb3Ry"];  archerStructure["rightHandThumb3"].rotation.z = object["rightHandThumb3Rz"];  
+					archerStructure["rightHandThumb4"].rotation.x = object["rightHandThumb4Rx"];  archerStructure["rightHandThumb4"].rotation.y = object["rightHandThumb4Ry"];  archerStructure["rightHandThumb4"].rotation.z = object["rightHandThumb4Rz"];   	
 				}			
-				archerStructure["rightUpLeg"].rotation.x = object["rightUpLegRx"];archerStructure["rightUpLeg"].rotation.y = object["rightUpLegRy"];archerStructure["rightUpLeg"].rotation.z = object["rightUpLegRz"]; 
-				archerStructure["rightLeg"].rotation.x = object["rightLegRx"];archerStructure["rightLeg"].rotation.y = object["rightLegRy"];archerStructure["rightLeg"].rotation.z = object["rightLegRz"]; 
-				archerStructure["rightFoot"].rotation.x = object["rightFootRx"];archerStructure["rightFoot"].rotation.y = object["rightFootRy"];archerStructure["rightFoot"].rotation.z = object["rightFootRz"]; 
-				archerStructure["leftUpLeg"].rotation.x = object["leftUpLegRx"];archerStructure["leftUpLeg"].rotation.y = object["leftUpLegRy"];archerStructure["leftUpLeg"].rotation.z = object["leftUpLegRz"]; 
-				archerStructure["leftLeg"].rotation.x = object["leftLegRx"];archerStructure["leftLeg"].rotation.y = object["leftLegRy"];archerStructure["leftLeg"].rotation.z = object["leftLegRz"]; 
-				archerStructure["leftFoot"].rotation.x = object["leftFootRx"];archerStructure["leftFoot"].rotation.y = object["leftFootRy"];archerStructure["leftFoot"].rotation.z = object["leftFootRz"]; 
+				archerStructure["hips"].rotation.x = object["hipsRx"];  archerStructure["hips"].rotation.y = object["hipsRy"];  archerStructure["hips"].rotation.z = object["hipsRz"];  
+				archerStructure["spine"].rotation.x = object["spineRx"];  archerStructure["spine"].rotation.y = object["spineRy"];  archerStructure["spine"].rotation.z = object["spineRz"];  
+				archerStructure["spine1"].rotation.x = object["spine1Rx"];  archerStructure["spine1"].rotation.y = object["spine1Ry"];  archerStructure["spine1"].rotation.z = object["spine1Rz"];  
+				archerStructure["spine2"].rotation.x = object["spine2Rx"];  archerStructure["spine2"].rotation.y = object["spine2Ry"];  archerStructure["spine2"].rotation.z = object["spine2Rz"];  
+				archerStructure["rightEye"].rotation.x = object["rightEyeRx"];  archerStructure["rightEye"].rotation.y = object["rightEyeRy"];  archerStructure["rightEye"].rotation.z = object["rightEyeRz"];  
+				archerStructure["leftEye"].rotation.x = object["leftEyeRx"];  archerStructure["leftEye"].rotation.y = object["leftEyeRy"];  archerStructure["leftEye"].rotation.z = object["leftEyeRz"];  
+				archerStructure["leftUpLeg"].rotation.x = object["leftUpLegRx"];  archerStructure["leftUpLeg"].rotation.y = object["leftUpLegRy"];  archerStructure["leftUpLeg"].rotation.z = object["leftUpLegRz"];  
+				archerStructure["leftLeg"].rotation.x = object["leftLegRx"];  archerStructure["leftLeg"].rotation.y = object["leftLegRy"];  archerStructure["leftLeg"].rotation.z = object["leftLegRz"];  
+				archerStructure["leftFoot"].rotation.x = object["leftFootRx"];  archerStructure["leftFoot"].rotation.y = object["leftFootRy"];  archerStructure["leftFoot"].rotation.z = object["leftFootRz"];  
+				archerStructure["leftToeBase"].rotation.x = object["leftToeBaseRx"];  archerStructure["leftToeBase"].rotation.y = object["leftToeBaseRy"];  archerStructure["leftToeBase"].rotation.z = object["leftToeBaseRz"];  
+				archerStructure["leftToe_End"].rotation.x = object["leftToe_EndRx"];  archerStructure["leftToe_End"].rotation.y = object["leftToe_EndRy"];  archerStructure["leftToe_End"].rotation.z = object["leftToe_EndRz"];  
+				archerStructure["rightUpLeg"].rotation.x = object["rightUpLegRx"];  archerStructure["rightUpLeg"].rotation.y = object["rightUpLegRy"];  archerStructure["rightUpLeg"].rotation.z = object["rightUpLegRz"];  
+				archerStructure["rightLeg"].rotation.x = object["rightLegRx"];  archerStructure["rightLeg"].rotation.y = object["rightLegRy"];  archerStructure["rightLeg"].rotation.z = object["rightLegRz"];  
+				archerStructure["rightFoot"].rotation.x = object["rightFootRx"];  archerStructure["rightFoot"].rotation.y = object["rightFootRy"];  archerStructure["rightFoot"].rotation.z = object["rightFootRz"];  
+				archerStructure["rightToeBase"].rotation.x = object["rightToeBaseRx"];  archerStructure["rightToeBase"].rotation.y = object["rightToeBaseRy"];  archerStructure["rightToeBase"].rotation.z = object["rightToeBaseRz"];  
+				archerStructure["rightToe_End"].rotation.x = object["rightToe_EndRx"];  archerStructure["rightToe_End"].rotation.y = object["rightToe_EndRy"];  archerStructure["rightToe_End"].rotation.z = object["rightToe_EndRz"]; 
 			};
 
 			const updateFunctionUpper = function (object, elapsedTime) {
-				archerStructure["rightShoulder"].rotation.x = object["rightShoulderRx"];archerStructure["rightShoulder"].rotation.y = object["rightShoulderRy"];archerStructure["rightShoulder"].rotation.z = object["rightShoulderRz"]; 
-				archerStructure["rightArm"].rotation.x = object["rightArmRx"];archerStructure["rightArm"].rotation.y = object["rightArmRy"];archerStructure["rightArm"].rotation.z = object["rightArmRz"]; 
-				archerStructure["rightForeArm"].rotation.x = object["rightForeArmRx"];archerStructure["rightForeArm"].rotation.y = object["rightForeArmRy"];archerStructure["rightForeArm"].rotation.z = object["rightForeArmRz"]; 
-				archerStructure["rightHand"].rotation.x = object["rightHandRx"];archerStructure["rightHand"].rotation.y = object["rightHandRy"];archerStructure["rightHand"].rotation.z = object["rightHandRz"]; 
-				archerStructure["leftShoulder"].rotation.x = object["leftShoulderRx"];archerStructure["leftShoulder"].rotation.y = object["leftShoulderRy"];archerStructure["leftShoulder"].rotation.z = object["leftShoulderRz"]; 
-				archerStructure["leftArm"].rotation.x = object["leftArmRx"];archerStructure["leftArm"].rotation.y = object["leftArmRy"];archerStructure["leftArm"].rotation.z = object["leftArmRz"]; 
-				archerStructure["leftForeArm"].rotation.x = object["leftForeArmRx"];archerStructure["leftForeArm"].rotation.y = object["leftForeArmRy"];archerStructure["leftForeArm"].rotation.z = object["leftForeArmRz"]; 
-				archerStructure["leftHand"].rotation.x = object["leftHandRx"];archerStructure["leftHand"].rotation.y = object["leftHandRy"];archerStructure["leftHand"].rotation.z = object["leftHandRz"]; 
-				archerStructure["neck"].rotation.x = object["neckRx"];archerStructure["neck"].rotation.y = object["neckRy"];archerStructure["neck"].rotation.z = object["neckRz"]; 
-				archerStructure["head"].rotation.x = object["headRx"];archerStructure["head"].rotation.y = object["headRy"];archerStructure["head"].rotation.z = object["headRz"]; 
-				archerStructure["rightHandPinky2"].rotation.z = object["rightHandPinky2Rz"]; 
-				archerStructure["rightHandPinky3"].rotation.z = object["rightHandPinky3Rz"]; 
-				archerStructure["rightHandPinky4"].rotation.z = object["rightHandPinky4Rz"]; 
-				archerStructure["rightHandRing2"].rotation.z = object["rightHandRing2Rz"]; 
-				archerStructure["rightHandRing3"].rotation.z = object["rightHandRing3Rz"]; 
-				archerStructure["rightHandRing4"].rotation.z = object["rightHandRing4Rz"]; 
-				archerStructure["rightHandMiddle2"].rotation.z = object["rightHandMiddle2Rz"]; 
-				archerStructure["rightHandMiddle3"].rotation.z = object["rightHandMiddle3Rz"]; 
-				archerStructure["rightHandMiddle4"].rotation.z = object["rightHandMiddle4Rz"]; 
-				archerStructure["rightHandIndex2"].rotation.z = object["rightHandIndex2Rz"]; 
-				archerStructure["rightHandIndex3"].rotation.z = object["rightHandIndex3Rz"]; 
-				archerStructure["rightHandIndex4"].rotation.z = object["rightHandIndex4Rz"]; 
-				archerStructure["rightHandThumb2"].rotation.y = object["rightHandThumb2Ry"];archerStructure["rightHandThumb2"].rotation.z = object["rightHandThumb2Rz"]; 
-				archerStructure["rightHandThumb3"].rotation.y = object["rightHandThumb3Ry"];archerStructure["rightHandThumb3"].rotation.z = object["rightHandThumb3Rz"]; 
-				archerStructure["rightHandThumb4"].rotation.y = object["rightHandThumb4Ry"];archerStructure["rightHandThumb4"].rotation.z = object["rightHandThumb4Rz"]; 
-				archerStructure["leftHandPinky2"].rotation.z = object["leftHandPinky2Rz"]; 
-				archerStructure["leftHandPinky3"].rotation.z = object["leftHandPinky3Rz"]; 
-				archerStructure["leftHandPinky4"].rotation.z = object["leftHandPinky4Rz"]; 
-				archerStructure["leftHandRing2"].rotation.z = object["leftHandRing2Rz"]; 
-				archerStructure["leftHandRing3"].rotation.z = object["leftHandRing3Rz"]; 
-				archerStructure["leftHandRing4"].rotation.z = object["leftHandRing4Rz"]; 
-				archerStructure["leftHandMiddle2"].rotation.z = object["leftHandMiddle2Rz"]; 
-				archerStructure["leftHandMiddle3"].rotation.z = object["leftHandMiddle3Rz"]; 
-				archerStructure["leftHandMiddle4"].rotation.z = object["leftHandMiddle4Rz"]; 
-				archerStructure["leftHandIndex2"].rotation.z = object["leftHandIndex2Rz"]; 
-				archerStructure["leftHandIndex3"].rotation.z = object["leftHandIndex3Rz"]; 
-				archerStructure["leftHandIndex4"].rotation.z = object["leftHandIndex4Rz"]; 
-				archerStructure["leftHandThumb2"].rotation.y = object["leftHandThumb2Ry"];archerStructure["leftHandThumb2"].rotation.z = object["leftHandThumb2Rz"]; 
-				archerStructure["leftHandThumb3"].rotation.y = object["leftHandThumb3Ry"];archerStructure["leftHandThumb3"].rotation.z = object["leftHandThumb3Rz"]; 
-				archerStructure["leftHandThumb4"].rotation.y = object["leftHandThumb4Ry"];archerStructure["leftHandThumb4"].rotation.z = object["leftHandThumb4Rz"]; 				
+				archerStructure["neck"].rotation.x = object["neckRx"];  archerStructure["neck"].rotation.y = object["neckRy"];  archerStructure["neck"].rotation.z = object["neckRz"];  
+				archerStructure["head"].rotation.x = object["headRx"];  archerStructure["head"].rotation.y = object["headRy"];  archerStructure["head"].rotation.z = object["headRz"];  
+				archerStructure["headTop_End"].rotation.x = object["headTop_EndRx"];  archerStructure["headTop_End"].rotation.y = object["headTop_EndRy"];  archerStructure["headTop_End"].rotation.z = object["headTop_EndRz"];  
+				archerStructure["leftShoulder"].rotation.x = object["leftShoulderRx"];  archerStructure["leftShoulder"].rotation.y = object["leftShoulderRy"];  archerStructure["leftShoulder"].rotation.z = object["leftShoulderRz"];  
+				archerStructure["leftArm"].rotation.x = object["leftArmRx"];  archerStructure["leftArm"].rotation.y = object["leftArmRy"];  archerStructure["leftArm"].rotation.z = object["leftArmRz"];  
+				archerStructure["leftForeArm"].rotation.x = object["leftForeArmRx"];  archerStructure["leftForeArm"].rotation.y = object["leftForeArmRy"];  archerStructure["leftForeArm"].rotation.z = object["leftForeArmRz"];  
+				archerStructure["leftHand"].rotation.x = object["leftHandRx"];  archerStructure["leftHand"].rotation.y = object["leftHandRy"];  archerStructure["leftHand"].rotation.z = object["leftHandRz"];  
+				archerStructure["leftHandThumb1"].rotation.x = object["leftHandThumb1Rx"];  archerStructure["leftHandThumb1"].rotation.y = object["leftHandThumb1Ry"];  archerStructure["leftHandThumb1"].rotation.z = object["leftHandThumb1Rz"];  
+				archerStructure["leftHandThumb2"].rotation.x = object["leftHandThumb2Rx"];  archerStructure["leftHandThumb2"].rotation.y = object["leftHandThumb2Ry"];  archerStructure["leftHandThumb2"].rotation.z = object["leftHandThumb2Rz"];  
+				archerStructure["leftHandThumb3"].rotation.x = object["leftHandThumb3Rx"];  archerStructure["leftHandThumb3"].rotation.y = object["leftHandThumb3Ry"];  archerStructure["leftHandThumb3"].rotation.z = object["leftHandThumb3Rz"];  
+				archerStructure["leftHandThumb4"].rotation.x = object["leftHandThumb4Rx"];  archerStructure["leftHandThumb4"].rotation.y = object["leftHandThumb4Ry"];  archerStructure["leftHandThumb4"].rotation.z = object["leftHandThumb4Rz"];  
+				archerStructure["leftHandIndex1"].rotation.x = object["leftHandIndex1Rx"];  archerStructure["leftHandIndex1"].rotation.y = object["leftHandIndex1Ry"];  archerStructure["leftHandIndex1"].rotation.z = object["leftHandIndex1Rz"];  
+				archerStructure["leftHandIndex2"].rotation.x = object["leftHandIndex2Rx"];  archerStructure["leftHandIndex2"].rotation.y = object["leftHandIndex2Ry"];  archerStructure["leftHandIndex2"].rotation.z = object["leftHandIndex2Rz"];  
+				archerStructure["leftHandIndex3"].rotation.x = object["leftHandIndex3Rx"];  archerStructure["leftHandIndex3"].rotation.y = object["leftHandIndex3Ry"];  archerStructure["leftHandIndex3"].rotation.z = object["leftHandIndex3Rz"];  
+				archerStructure["leftHandIndex4"].rotation.x = object["leftHandIndex4Rx"];  archerStructure["leftHandIndex4"].rotation.y = object["leftHandIndex4Ry"];  archerStructure["leftHandIndex4"].rotation.z = object["leftHandIndex4Rz"];  
+				archerStructure["leftHandMiddle1"].rotation.x = object["leftHandMiddle1Rx"];  archerStructure["leftHandMiddle1"].rotation.y = object["leftHandMiddle1Ry"];  archerStructure["leftHandMiddle1"].rotation.z = object["leftHandMiddle1Rz"];  
+				archerStructure["leftHandMiddle2"].rotation.x = object["leftHandMiddle2Rx"];  archerStructure["leftHandMiddle2"].rotation.y = object["leftHandMiddle2Ry"];  archerStructure["leftHandMiddle2"].rotation.z = object["leftHandMiddle2Rz"];  
+				archerStructure["leftHandMiddle3"].rotation.x = object["leftHandMiddle3Rx"];  archerStructure["leftHandMiddle3"].rotation.y = object["leftHandMiddle3Ry"];  archerStructure["leftHandMiddle3"].rotation.z = object["leftHandMiddle3Rz"];  
+				archerStructure["leftHandMiddle4"].rotation.x = object["leftHandMiddle4Rx"];  archerStructure["leftHandMiddle4"].rotation.y = object["leftHandMiddle4Ry"];  archerStructure["leftHandMiddle4"].rotation.z = object["leftHandMiddle4Rz"];  
+				archerStructure["leftHandRing1"].rotation.x = object["leftHandRing1Rx"];  archerStructure["leftHandRing1"].rotation.y = object["leftHandRing1Ry"];  archerStructure["leftHandRing1"].rotation.z = object["leftHandRing1Rz"];  
+				archerStructure["leftHandRing2"].rotation.x = object["leftHandRing2Rx"];  archerStructure["leftHandRing2"].rotation.y = object["leftHandRing2Ry"];  archerStructure["leftHandRing2"].rotation.z = object["leftHandRing2Rz"];  
+				archerStructure["leftHandRing3"].rotation.x = object["leftHandRing3Rx"];  archerStructure["leftHandRing3"].rotation.y = object["leftHandRing3Ry"];  archerStructure["leftHandRing3"].rotation.z = object["leftHandRing3Rz"];  
+				archerStructure["leftHandRing4"].rotation.x = object["leftHandRing4Rx"];  archerStructure["leftHandRing4"].rotation.y = object["leftHandRing4Ry"];  archerStructure["leftHandRing4"].rotation.z = object["leftHandRing4Rz"];  
+				archerStructure["leftHandPinky1"].rotation.x = object["leftHandPinky1Rx"];  archerStructure["leftHandPinky1"].rotation.y = object["leftHandPinky1Ry"];  archerStructure["leftHandPinky1"].rotation.z = object["leftHandPinky1Rz"];  
+				archerStructure["leftHandPinky2"].rotation.x = object["leftHandPinky2Rx"];  archerStructure["leftHandPinky2"].rotation.y = object["leftHandPinky2Ry"];  archerStructure["leftHandPinky2"].rotation.z = object["leftHandPinky2Rz"];  
+				archerStructure["leftHandPinky3"].rotation.x = object["leftHandPinky3Rx"];  archerStructure["leftHandPinky3"].rotation.y = object["leftHandPinky3Ry"];  archerStructure["leftHandPinky3"].rotation.z = object["leftHandPinky3Rz"];  
+				archerStructure["leftHandPinky4"].rotation.x = object["leftHandPinky4Rx"];  archerStructure["leftHandPinky4"].rotation.y = object["leftHandPinky4Ry"];  archerStructure["leftHandPinky4"].rotation.z = object["leftHandPinky4Rz"];  
+				archerStructure["rightShoulder"].rotation.x = object["rightShoulderRx"];  archerStructure["rightShoulder"].rotation.y = object["rightShoulderRy"];  archerStructure["rightShoulder"].rotation.z = object["rightShoulderRz"];  
+				archerStructure["rightArm"].rotation.x = object["rightArmRx"];  archerStructure["rightArm"].rotation.y = object["rightArmRy"];  archerStructure["rightArm"].rotation.z = object["rightArmRz"];  
+				archerStructure["rightForeArm"].rotation.x = object["rightForeArmRx"];  archerStructure["rightForeArm"].rotation.y = object["rightForeArmRy"];  archerStructure["rightForeArm"].rotation.z = object["rightForeArmRz"];  
+				archerStructure["rightHand"].rotation.x = object["rightHandRx"];  archerStructure["rightHand"].rotation.y = object["rightHandRy"];  archerStructure["rightHand"].rotation.z = object["rightHandRz"];  
+				archerStructure["rightHandPinky1"].rotation.x = object["rightHandPinky1Rx"];  archerStructure["rightHandPinky1"].rotation.y = object["rightHandPinky1Ry"];  archerStructure["rightHandPinky1"].rotation.z = object["rightHandPinky1Rz"];  
+				archerStructure["rightHandPinky2"].rotation.x = object["rightHandPinky2Rx"];  archerStructure["rightHandPinky2"].rotation.y = object["rightHandPinky2Ry"];  archerStructure["rightHandPinky2"].rotation.z = object["rightHandPinky2Rz"];  
+				archerStructure["rightHandPinky3"].rotation.x = object["rightHandPinky3Rx"];  archerStructure["rightHandPinky3"].rotation.y = object["rightHandPinky3Ry"];  archerStructure["rightHandPinky3"].rotation.z = object["rightHandPinky3Rz"];  
+				archerStructure["rightHandPinky4"].rotation.x = object["rightHandPinky4Rx"];  archerStructure["rightHandPinky4"].rotation.y = object["rightHandPinky4Ry"];  archerStructure["rightHandPinky4"].rotation.z = object["rightHandPinky4Rz"];  
+				archerStructure["rightHandRing1"].rotation.x = object["rightHandRing1Rx"];  archerStructure["rightHandRing1"].rotation.y = object["rightHandRing1Ry"];  archerStructure["rightHandRing1"].rotation.z = object["rightHandRing1Rz"];  
+				archerStructure["rightHandRing2"].rotation.x = object["rightHandRing2Rx"];  archerStructure["rightHandRing2"].rotation.y = object["rightHandRing2Ry"];  archerStructure["rightHandRing2"].rotation.z = object["rightHandRing2Rz"];  
+				archerStructure["rightHandRing3"].rotation.x = object["rightHandRing3Rx"];  archerStructure["rightHandRing3"].rotation.y = object["rightHandRing3Ry"];  archerStructure["rightHandRing3"].rotation.z = object["rightHandRing3Rz"];  
+				archerStructure["rightHandRing4"].rotation.x = object["rightHandRing4Rx"];  archerStructure["rightHandRing4"].rotation.y = object["rightHandRing4Ry"];  archerStructure["rightHandRing4"].rotation.z = object["rightHandRing4Rz"];  
+				archerStructure["rightHandMiddle1"].rotation.x = object["rightHandMiddle1Rx"];  archerStructure["rightHandMiddle1"].rotation.y = object["rightHandMiddle1Ry"];  archerStructure["rightHandMiddle1"].rotation.z = object["rightHandMiddle1Rz"];  
+				archerStructure["rightHandMiddle2"].rotation.x = object["rightHandMiddle2Rx"];  archerStructure["rightHandMiddle2"].rotation.y = object["rightHandMiddle2Ry"];  archerStructure["rightHandMiddle2"].rotation.z = object["rightHandMiddle2Rz"];  
+				archerStructure["rightHandMiddle3"].rotation.x = object["rightHandMiddle3Rx"];  archerStructure["rightHandMiddle3"].rotation.y = object["rightHandMiddle3Ry"];  archerStructure["rightHandMiddle3"].rotation.z = object["rightHandMiddle3Rz"];  
+				archerStructure["rightHandMiddle4"].rotation.x = object["rightHandMiddle4Rx"];  archerStructure["rightHandMiddle4"].rotation.y = object["rightHandMiddle4Ry"];  archerStructure["rightHandMiddle4"].rotation.z = object["rightHandMiddle4Rz"];  
+				archerStructure["rightHandIndex1"].rotation.x = object["rightHandIndex1Rx"];  archerStructure["rightHandIndex1"].rotation.y = object["rightHandIndex1Ry"];  archerStructure["rightHandIndex1"].rotation.z = object["rightHandIndex1Rz"];  
+				archerStructure["rightHandIndex2"].rotation.x = object["rightHandIndex2Rx"];  archerStructure["rightHandIndex2"].rotation.y = object["rightHandIndex2Ry"];  archerStructure["rightHandIndex2"].rotation.z = object["rightHandIndex2Rz"];  
+				archerStructure["rightHandIndex3"].rotation.x = object["rightHandIndex3Rx"];  archerStructure["rightHandIndex3"].rotation.y = object["rightHandIndex3Ry"];  archerStructure["rightHandIndex3"].rotation.z = object["rightHandIndex3Rz"];  
+				archerStructure["rightHandIndex4"].rotation.x = object["rightHandIndex4Rx"];  archerStructure["rightHandIndex4"].rotation.y = object["rightHandIndex4Ry"];  archerStructure["rightHandIndex4"].rotation.z = object["rightHandIndex4Rz"];  
+				archerStructure["rightHandThumb1"].rotation.x = object["rightHandThumb1Rx"];  archerStructure["rightHandThumb1"].rotation.y = object["rightHandThumb1Ry"];  archerStructure["rightHandThumb1"].rotation.z = object["rightHandThumb1Rz"];  
+				archerStructure["rightHandThumb2"].rotation.x = object["rightHandThumb2Rx"];  archerStructure["rightHandThumb2"].rotation.y = object["rightHandThumb2Ry"];  archerStructure["rightHandThumb2"].rotation.z = object["rightHandThumb2Rz"];  
+				archerStructure["rightHandThumb3"].rotation.x = object["rightHandThumb3Rx"];  archerStructure["rightHandThumb3"].rotation.y = object["rightHandThumb3Ry"];  archerStructure["rightHandThumb3"].rotation.z = object["rightHandThumb3Rz"];  
+				archerStructure["rightHandThumb4"].rotation.x = object["rightHandThumb4Rx"];  archerStructure["rightHandThumb4"].rotation.y = object["rightHandThumb4Ry"];  archerStructure["rightHandThumb4"].rotation.z = object["rightHandThumb4Rz"];   	
 			};
 
-			idle = new TWEEN.Tween(startRotations).to({"rightShoulderRx": -0.0000,"rightShoulderRy": -0.0000,"rightShoulderRz": -0.0000, 
-														"rightArmRx": 0.0000,"rightArmRy": 0.0000,"rightArmRz": 1.3659, 
-														"rightForeArmRx": -0.0000,"rightForeArmRy": -0.0000,"rightForeArmRz": 0.0000, 
-														"rightHandRx": 0.0005,"rightHandRy": 0.0000,"rightHandRz": -0.0000, 
-														"leftShoulderRx": -0.0000,"leftShoulderRy": -0.0000,"leftShoulderRz": 0.0000, 
-														"leftArmRx": 0.0000,"leftArmRy": -0.0000,"leftArmRz": -1.3659, 
-														"leftForeArmRx": -0.0000,"leftForeArmRy": -0.0000,"leftForeArmRz": -0.0000, 
-														"leftHandRx": 0.0005,"leftHandRy": -0.0000,"leftHandRz": 0.0000, 
-														"rightUpLegRx": -0.0010,"rightUpLegRy": 0.0000,"rightUpLegRz": -0.0001, 
-														"rightLegRx": 0.0020,"rightLegRy": 0.0000,"rightLegRz": -0.0000, 
-														"rightFootRx": -0.0010,"rightFootRy": -0.0000,"rightFootRz": 0.0001, 
-														"leftUpLegRx": -0.0010,"leftUpLegRy": 0.0000,"leftUpLegRz": -0.0001, 
-														"leftLegRx": 0.0021,"leftLegRy": 0.0000,"leftLegRz": 0.0000, 
-														"leftFootRx": -0.0010,"leftFootRy": -0.0000,"leftFootRz": 0.0001, 
-														"neckRx": -0.0000,"neckRy": -0.0000,"neckRz": -0.0000, 
-														"headRx": 0.0000,"headRy": 0.0000,"headRz": -0.0000,
-														"rightHandPinky2Rz": 1.0472, 
-														"rightHandPinky3Rz": 1.0472, 
-														"rightHandPinky4Rz": 1.0472, 
-														"rightHandRing2Rz": 1.0472, 
-														"rightHandRing3Rz": 1.0472, 
-														"rightHandRing4Rz": 1.0472, 
-														"rightHandMiddle2Rz": 1.0472, 
-														"rightHandMiddle3Rz": 1.0472, 
-														"rightHandMiddle4Rz": 1.0472, 
-														"rightHandIndex2Rz": 1.0472, 
-														"rightHandIndex3Rz": 1.0472, 
-														"rightHandIndex4Rz": 1.0472, 
-														"rightHandThumb2Rz": -0.2618, 
-														"rightHandThumb3Rz": -0.2618, 
-														"rightHandThumb4Rz": -0.2618,
-														"rightHandThumb2Ry": -0.7854, 
-														"rightHandThumb3Ry": -0.7854, 
-														"rightHandThumb4Ry": -0.7854, 
-														"leftHandPinky2Rz": -1.0472, 
-														"leftHandPinky3Rz": -1.0472, 
-														"leftHandPinky4Rz": -1.0472, 
-														"leftHandRing2Rz": -1.0472, 
-														"leftHandRing3Rz": -1.0472, 
-														"leftHandRing4Rz": -1.0472, 
-														"leftHandMiddle2Rz": -1.0472, 
-														"leftHandMiddle3Rz": -1.0472, 
-														"leftHandMiddle4Rz": -1.0472, 
-														"leftHandIndex2Rz": -1.0472, 
-														"leftHandIndex3Rz": -1.0472, 
-														"leftHandIndex4Rz": -1.0472, 
-														"leftHandThumb2Rz": 0.2618, 
-														"leftHandThumb3Rz": 0.2618, 
-														"leftHandThumb4Rz": 0.2618,
-														"leftHandThumb2Ry": 0.7854, 
-														"leftHandThumb3Ry": 0.7854, 
-														"leftHandThumb4Ry": 0.7854}, 1000);
+			idle = new TWEEN.Tween(startRotations).to({
+													"hipsRx" : -1.5708, "hipsRy" : -0.0000, "hipsRz" : 0.0000,
+													"spineRx" : 0.0000, "spineRy" : 0.0000, "spineRz" : -0.0000,
+													"spine1Rx" : 0.0000, "spine1Ry" : 0.0000, "spine1Rz" : -0.0000,
+													"spine2Rx" : 0.0000, "spine2Ry" : -0.0000, "spine2Rz" : -0.0000,
+													"neckRx" : -0.0000, "neckRy" : -0.0000, "neckRz" : -0.0000,
+													"headRx" : 0.0000, "headRy" : 0.0000, "headRz" : -0.0000,
+													"rightEyeRx" : -0.0000, "rightEyeRy" : 0.0000, "rightEyeRz" : -0.0000,
+													"leftEyeRx" : -0.0000, "leftEyeRy" : 0.0000, "leftEyeRz" : -0.0000,
+													"headTop_EndRx" : -0.0000, "headTop_EndRy" : 0.0000, "headTop_EndRz" : -0.0000,
+													"leftShoulderRx" : -0.0000, "leftShoulderRy" : -0.0000, "leftShoulderRz" : 0.0000,
+													"leftArmRx" : 0.0000, "leftArmRy" : -0.0000, "leftArmRz" : -1.3659,
+													"leftForeArmRx" : -0.0000, "leftForeArmRy" : -0.0000, "leftForeArmRz" : -0.0000,
+													"leftHandRx" : 0.0005, "leftHandRy" : -0.0000, "leftHandRz" : 0.0000,
+													"leftHandThumb1Rx" : -0.0002, "leftHandThumb1Ry" : -0.0002, "leftHandThumb1Rz" : 0.0002,
+													"leftHandThumb2Rx" : 0.0000, "leftHandThumb2Ry" : 0.7854, "leftHandThumb2Rz" : 0.2618,
+													"leftHandThumb3Rx" : -0.0000, "leftHandThumb3Ry" : 0.7854, "leftHandThumb3Rz" : 0.2618,
+													"leftHandThumb4Rx" : -0.0000, "leftHandThumb4Ry" : 0.7854, "leftHandThumb4Rz" : 0.2618,
+													"leftHandIndex1Rx" : 0.0000, "leftHandIndex1Ry" : -0.0000, "leftHandIndex1Rz" : -0.0000,
+													"leftHandIndex2Rx" : -0.0000, "leftHandIndex2Ry" : 0.0000, "leftHandIndex2Rz" : -1.0472,
+													"leftHandIndex3Rx" : -0.0000, "leftHandIndex3Ry" : -0.0000, "leftHandIndex3Rz" : -1.0472,
+													"leftHandIndex4Rx" : -0.0000, "leftHandIndex4Ry" : -0.0000, "leftHandIndex4Rz" : -1.0472,
+													"leftHandMiddle1Rx" : -0.0000, "leftHandMiddle1Ry" : 0.0000, "leftHandMiddle1Rz" : -0.0000,
+													"leftHandMiddle2Rx" : -0.0000, "leftHandMiddle2Ry" : 0.0000, "leftHandMiddle2Rz" : -1.0472,
+													"leftHandMiddle3Rx" : 0.0000, "leftHandMiddle3Ry" : 0.0000, "leftHandMiddle3Rz" : -1.0472,
+													"leftHandMiddle4Rx" : 0.0000, "leftHandMiddle4Ry" : 0.0000, "leftHandMiddle4Rz" : -1.0472,
+													"leftHandRing1Rx" : 0.0000, "leftHandRing1Ry" : 0.0000, "leftHandRing1Rz" : -0.0000,
+													"leftHandRing2Rx" : -0.0000, "leftHandRing2Ry" : -0.0000, "leftHandRing2Rz" : -1.0472,
+													"leftHandRing3Rx" : 0.0000, "leftHandRing3Ry" : 0.0000, "leftHandRing3Rz" : -1.0472,
+													"leftHandRing4Rx" : 0.0000, "leftHandRing4Ry" : -0.0000, "leftHandRing4Rz" : -1.0472,
+													"leftHandPinky1Rx" : 0.0000, "leftHandPinky1Ry" : 0.0000, "leftHandPinky1Rz" : 0.0000,
+													"leftHandPinky2Rx" : 0.0000, "leftHandPinky2Ry" : -0.0000, "leftHandPinky2Rz" : -1.0472,
+													"leftHandPinky3Rx" : -0.0000, "leftHandPinky3Ry" : 0.0000, "leftHandPinky3Rz" : -1.0472,
+													"leftHandPinky4Rx" : 0.0000, "leftHandPinky4Ry" : 0.0000, "leftHandPinky4Rz" : -1.0472,
+													"rightShoulderRx" : -0.0000, "rightShoulderRy" : -0.0000, "rightShoulderRz" : -0.0000,
+													"rightArmRx" : 0.0000, "rightArmRy" : 0.0000, "rightArmRz" : 1.3659,
+													"rightForeArmRx" : -0.0000, "rightForeArmRy" : -0.0000, "rightForeArmRz" : 0.0000,
+													"rightHandRx" : 0.0005, "rightHandRy" : 0.0000, "rightHandRz" : -0.0000,
+													"rightHandPinky1Rx" : 0.0000, "rightHandPinky1Ry" : -0.0000, "rightHandPinky1Rz" : -0.0000,
+													"rightHandPinky2Rx" : 0.0000, "rightHandPinky2Ry" : 0.0000, "rightHandPinky2Rz" : 1.0472,
+													"rightHandPinky3Rx" : -0.0000, "rightHandPinky3Ry" : -0.0000, "rightHandPinky3Rz" : 1.0472,
+													"rightHandPinky4Rx" : -0.0000, "rightHandPinky4Ry" : 0.0000, "rightHandPinky4Rz" : 1.0472,
+													"rightHandRing1Rx" : 0.0000, "rightHandRing1Ry" : -0.0000, "rightHandRing1Rz" : 0.0000,
+													"rightHandRing2Rx" : -0.0000, "rightHandRing2Ry" : 0.0000, "rightHandRing2Rz" : 1.0472,
+													"rightHandRing3Rx" : 0.0000, "rightHandRing3Ry" : -0.0000, "rightHandRing3Rz" : 1.0472,
+													"rightHandRing4Rx" : 0.0000, "rightHandRing4Ry" : -0.0000, "rightHandRing4Rz" : 1.0472,
+													"rightHandMiddle1Rx" : -0.0000, "rightHandMiddle1Ry" : -0.0000, "rightHandMiddle1Rz" : 0.0000,
+													"rightHandMiddle2Rx" : -0.0000, "rightHandMiddle2Ry" : -0.0000, "rightHandMiddle2Rz" : 1.0472,
+													"rightHandMiddle3Rx" : 0.0000, "rightHandMiddle3Ry" : -0.0000, "rightHandMiddle3Rz" : 1.0472,
+													"rightHandMiddle4Rx" : 0.0000, "rightHandMiddle4Ry" : 0.0000, "rightHandMiddle4Rz" : 1.0472,
+													"rightHandIndex1Rx" : -0.0000, "rightHandIndex1Ry" : 0.0000, "rightHandIndex1Rz" : 0.0000,
+													"rightHandIndex2Rx" : -0.0000, "rightHandIndex2Ry" : -0.0000, "rightHandIndex2Rz" : 1.0472,
+													"rightHandIndex3Rx" : 0.0000, "rightHandIndex3Ry" : 0.0000, "rightHandIndex3Rz" : 1.0472,
+													"rightHandIndex4Rx" : 0.0000, "rightHandIndex4Ry" : 0.0000, "rightHandIndex4Rz" : 1.0472,
+													"rightHandThumb1Rx" : -0.0002, "rightHandThumb1Ry" : 0.0002, "rightHandThumb1Rz" : -0.0002,
+													"rightHandThumb2Rx" : 0.0000, "rightHandThumb2Ry" : -0.7854, "rightHandThumb2Rz" : -0.2618,
+													"rightHandThumb3Rx" : 0.0000, "rightHandThumb3Ry" : -0.7854, "rightHandThumb3Rz" : -0.2618,
+													"rightHandThumb4Rx" : 0.0000, "rightHandThumb4Ry" : -0.7854, "rightHandThumb4Rz" : -0.2618,
+													"leftUpLegRx" : -0.0010, "leftUpLegRy" : 0.0000, "leftUpLegRz" : -0.0001,
+													"leftLegRx" : 0.0021, "leftLegRy" : 0.0000, "leftLegRz" : 0.0000,
+													"leftFootRx" : -0.0010, "leftFootRy" : -0.0000, "leftFootRz" : 0.0001,
+													"leftToeBaseRx" : 0.0000, "leftToeBaseRy" : -0.0000, "leftToeBaseRz" : -0.0000,
+													"leftToe_EndRx" : -0.0000, "leftToe_EndRy" : 0.0000, "leftToe_EndRz" : 0.0000,
+													"rightUpLegRx" : -0.0010, "rightUpLegRy" : 0.0000, "rightUpLegRz" : -0.0001,
+													"rightLegRx" : 0.0020, "rightLegRy" : 0.0000, "rightLegRz" : -0.0000,
+													"rightFootRx" : -0.0010, "rightFootRy" : -0.0000, "rightFootRz" : 0.0001,
+													"rightToeBaseRx" : 0.0000, "rightToeBaseRy" : -0.0000, "rightToeBaseRz" : -0.0000,
+													"rightToe_EndRx" : 0.0000, "rightToe_EndRy" : -0.0000, "rightToe_EndRz" : -0.0000
+													}, 1000);
+			
+														idleB = new TWEEN.Tween(startRotations).to({
+															"hipsRx" : -1.5708, "hipsRy" : -0.0000, "hipsRz" : 0.0000,
+															"spineRx" : 0.0000, "spineRy" : 0.0000, "spineRz" : -0.0000,
+															"spine1Rx" : 0.0000, "spine1Ry" : 0.0000, "spine1Rz" : -0.0000,
+															"spine2Rx" : 0.0000, "spine2Ry" : -0.0000, "spine2Rz" : -0.0000,
+															"neckRx" : -0.0000 + 0.04, "neckRy" : -0.0000, "neckRz" : -0.0000,
+															"headRx" : 0.0000, "headRy" : 0.0000, "headRz" : -0.0000,
+															"rightEyeRx" : -0.0000, "rightEyeRy" : 0.0000, "rightEyeRz" : -0.0000,
+															"leftEyeRx" : -0.0000, "leftEyeRy" : 0.0000, "leftEyeRz" : -0.0000,
+															"headTop_EndRx" : -0.0000, "headTop_EndRy" : 0.0000, "headTop_EndRz" : -0.0000,
+															"leftShoulderRx" : -0.0000 + 0.04, "leftShoulderRy" : -0.0000, "leftShoulderRz" : 0.0000,
+															"leftArmRx" : 0.0000, "leftArmRy" : -0.0000, "leftArmRz" : -1.3659,
+															"leftForeArmRx" : -0.0000, "leftForeArmRy" : -0.0000, "leftForeArmRz" : -0.0000,
+															"leftHandRx" : 0.0005, "leftHandRy" : -0.0000, "leftHandRz" : 0.0000,
+															"leftHandThumb1Rx" : -0.0002, "leftHandThumb1Ry" : -0.0002, "leftHandThumb1Rz" : 0.0002,
+															"leftHandThumb2Rx" : 0.0000, "leftHandThumb2Ry" : 0.7854, "leftHandThumb2Rz" : 0.2618,
+															"leftHandThumb3Rx" : -0.0000, "leftHandThumb3Ry" : 0.7854, "leftHandThumb3Rz" : 0.2618,
+															"leftHandThumb4Rx" : -0.0000, "leftHandThumb4Ry" : 0.7854, "leftHandThumb4Rz" : 0.2618,
+															"leftHandIndex1Rx" : 0.0000, "leftHandIndex1Ry" : -0.0000, "leftHandIndex1Rz" : -0.0000,
+															"leftHandIndex2Rx" : -0.0000, "leftHandIndex2Ry" : 0.0000, "leftHandIndex2Rz" : -1.0472,
+															"leftHandIndex3Rx" : -0.0000, "leftHandIndex3Ry" : -0.0000, "leftHandIndex3Rz" : -1.0472,
+															"leftHandIndex4Rx" : -0.0000, "leftHandIndex4Ry" : -0.0000, "leftHandIndex4Rz" : -1.0472,
+															"leftHandMiddle1Rx" : -0.0000, "leftHandMiddle1Ry" : 0.0000, "leftHandMiddle1Rz" : -0.0000,
+															"leftHandMiddle2Rx" : -0.0000, "leftHandMiddle2Ry" : 0.0000, "leftHandMiddle2Rz" : -1.0472,
+															"leftHandMiddle3Rx" : 0.0000, "leftHandMiddle3Ry" : 0.0000, "leftHandMiddle3Rz" : -1.0472,
+															"leftHandMiddle4Rx" : 0.0000, "leftHandMiddle4Ry" : 0.0000, "leftHandMiddle4Rz" : -1.0472,
+															"leftHandRing1Rx" : 0.0000, "leftHandRing1Ry" : 0.0000, "leftHandRing1Rz" : -0.0000,
+															"leftHandRing2Rx" : -0.0000, "leftHandRing2Ry" : -0.0000, "leftHandRing2Rz" : -1.0472,
+															"leftHandRing3Rx" : 0.0000, "leftHandRing3Ry" : 0.0000, "leftHandRing3Rz" : -1.0472,
+															"leftHandRing4Rx" : 0.0000, "leftHandRing4Ry" : -0.0000, "leftHandRing4Rz" : -1.0472,
+															"leftHandPinky1Rx" : 0.0000, "leftHandPinky1Ry" : 0.0000, "leftHandPinky1Rz" : 0.0000,
+															"leftHandPinky2Rx" : 0.0000, "leftHandPinky2Ry" : -0.0000, "leftHandPinky2Rz" : -1.0472,
+															"leftHandPinky3Rx" : -0.0000, "leftHandPinky3Ry" : 0.0000, "leftHandPinky3Rz" : -1.0472,
+															"leftHandPinky4Rx" : 0.0000, "leftHandPinky4Ry" : 0.0000, "leftHandPinky4Rz" : -1.0472,
+															"rightShoulderRx" : -0.0000 + 0.04, "rightShoulderRy" : -0.0000, "rightShoulderRz" : -0.0000,
+															"rightArmRx" : 0.0000, "rightArmRy" : 0.0000, "rightArmRz" : 1.3659,
+															"rightForeArmRx" : -0.0000, "rightForeArmRy" : -0.0000, "rightForeArmRz" : 0.0000,
+															"rightHandRx" : 0.0005, "rightHandRy" : 0.0000, "rightHandRz" : -0.0000,
+															"rightHandPinky1Rx" : 0.0000, "rightHandPinky1Ry" : -0.0000, "rightHandPinky1Rz" : -0.0000,
+															"rightHandPinky2Rx" : 0.0000, "rightHandPinky2Ry" : 0.0000, "rightHandPinky2Rz" : 1.0472,
+															"rightHandPinky3Rx" : -0.0000, "rightHandPinky3Ry" : -0.0000, "rightHandPinky3Rz" : 1.0472,
+															"rightHandPinky4Rx" : -0.0000, "rightHandPinky4Ry" : 0.0000, "rightHandPinky4Rz" : 1.0472,
+															"rightHandRing1Rx" : 0.0000, "rightHandRing1Ry" : -0.0000, "rightHandRing1Rz" : 0.0000,
+															"rightHandRing2Rx" : -0.0000, "rightHandRing2Ry" : 0.0000, "rightHandRing2Rz" : 1.0472,
+															"rightHandRing3Rx" : 0.0000, "rightHandRing3Ry" : -0.0000, "rightHandRing3Rz" : 1.0472,
+															"rightHandRing4Rx" : 0.0000, "rightHandRing4Ry" : -0.0000, "rightHandRing4Rz" : 1.0472,
+															"rightHandMiddle1Rx" : -0.0000, "rightHandMiddle1Ry" : -0.0000, "rightHandMiddle1Rz" : 0.0000,
+															"rightHandMiddle2Rx" : -0.0000, "rightHandMiddle2Ry" : -0.0000, "rightHandMiddle2Rz" : 1.0472,
+															"rightHandMiddle3Rx" : 0.0000, "rightHandMiddle3Ry" : -0.0000, "rightHandMiddle3Rz" : 1.0472,
+															"rightHandMiddle4Rx" : 0.0000, "rightHandMiddle4Ry" : 0.0000, "rightHandMiddle4Rz" : 1.0472,
+															"rightHandIndex1Rx" : -0.0000, "rightHandIndex1Ry" : 0.0000, "rightHandIndex1Rz" : 0.0000,
+															"rightHandIndex2Rx" : -0.0000, "rightHandIndex2Ry" : -0.0000, "rightHandIndex2Rz" : 1.0472,
+															"rightHandIndex3Rx" : 0.0000, "rightHandIndex3Ry" : 0.0000, "rightHandIndex3Rz" : 1.0472,
+															"rightHandIndex4Rx" : 0.0000, "rightHandIndex4Ry" : 0.0000, "rightHandIndex4Rz" : 1.0472,
+															"rightHandThumb1Rx" : -0.0002, "rightHandThumb1Ry" : 0.0002, "rightHandThumb1Rz" : -0.0002,
+															"rightHandThumb2Rx" : 0.0000, "rightHandThumb2Ry" : -0.7854, "rightHandThumb2Rz" : -0.2618,
+															"rightHandThumb3Rx" : 0.0000, "rightHandThumb3Ry" : -0.7854, "rightHandThumb3Rz" : -0.2618,
+															"rightHandThumb4Rx" : 0.0000, "rightHandThumb4Ry" : -0.7854, "rightHandThumb4Rz" : -0.2618,
+															"leftUpLegRx" : -0.0010, "leftUpLegRy" : 0.0000, "leftUpLegRz" : -0.0001,
+															"leftLegRx" : 0.0021, "leftLegRy" : 0.0000, "leftLegRz" : 0.0000,
+															"leftFootRx" : -0.0010, "leftFootRy" : -0.0000, "leftFootRz" : 0.0001,
+															"leftToeBaseRx" : 0.0000, "leftToeBaseRy" : -0.0000, "leftToeBaseRz" : -0.0000,
+															"leftToe_EndRx" : -0.0000, "leftToe_EndRy" : 0.0000, "leftToe_EndRz" : 0.0000,
+															"rightUpLegRx" : -0.0010, "rightUpLegRy" : 0.0000, "rightUpLegRz" : -0.0001,
+															"rightLegRx" : 0.0020, "rightLegRy" : 0.0000, "rightLegRz" : -0.0000,
+															"rightFootRx" : -0.0010, "rightFootRy" : -0.0000, "rightFootRz" : 0.0001,
+															"rightToeBaseRx" : 0.0000, "rightToeBaseRy" : -0.0000, "rightToeBaseRz" : -0.0000,
+															"rightToe_EndRx" : 0.0000, "rightToe_EndRy" : -0.0000, "rightToe_EndRz" : -0.0000
+														}, 1000).repeat(Infinity).yoyo(true);
+
+			idle.onComplete(()=>{
+				idleB.start();
+			});
 			
 			
 													
-			jumpA = new TWEEN.Tween(startRotations).to({"rightShoulderRx": Math.PI/2,"rightShoulderRy": -0.0000,"rightShoulderRz": -0.0000, 
-														"rightArmRx": 0,"rightArmRy": 0.0000,"rightArmRz": 1.3659, 
-														"rightForeArmRx": 0,"rightForeArmRy": Math.PI/2,"rightForeArmRz": 0.0000, 
-														"rightHandRx": 0.0005,"rightHandRy": 0.0000,"rightHandRz": -0.0000, 
-														"leftShoulderRx": Math.PI/2,"leftShoulderRy": -0.0000,"leftShoulderRz": 0.0000, 
-														"leftArmRx": 0,"leftArmRy": -0.0000,"leftArmRz": -1.3659, 
-														"leftForeArmRx": 0,"leftForeArmRy": -Math.PI/2,"leftForeArmRz": -0.0000, 
-														"leftHandRx": 0.0005,"leftHandRy": -0.0000,"leftHandRz": 0.0000, 
-														"rightUpLegRx": -Math.PI/3,"rightUpLegRy": 0.0000,"rightUpLegRz": -0.0001, 
-														"rightLegRx": Math.PI/4,"rightLegRy": 0.0000,"rightLegRz": -0.0000, 
-														"rightFootRx": -0.0010,"rightFootRy": -0.0000,"rightFootRz": 0.0001, 
-														"leftUpLegRx": Math.PI/3,"leftUpLegRy": 0.0000,"leftUpLegRz": -0.0001, 
-														"leftLegRx": Math.PI/9,"leftLegRy": 0.0000,"leftLegRz": 0.0000, 
-														"leftFootRx": -0.0010,"leftFootRy": -0.0000,"leftFootRz": 0.0001, 
-														"neckRx": -0.0000,"neckRy": -0.0000,"neckRz": -0.0000, 
-														"headRx": 0.0000,"headRy": 0.0000,"headRz": -0.0000,
-														"rightHandPinky2Rz": 1.0472, 
-														"rightHandPinky3Rz": 1.0472, 
-														"rightHandPinky4Rz": 1.0472, 
-														"rightHandRing2Rz": 1.0472, 
-														"rightHandRing3Rz": 1.0472, 
-														"rightHandRing4Rz": 1.0472, 
-														"rightHandMiddle2Rz": 1.0472, 
-														"rightHandMiddle3Rz": 1.0472, 
-														"rightHandMiddle4Rz": 1.0472, 
-														"rightHandIndex2Rz": 1.0472, 
-														"rightHandIndex3Rz": 1.0472, 
-														"rightHandIndex4Rz": 1.0472, 
-														"rightHandThumb2Rz": -0.2618, 
-														"rightHandThumb3Rz": -0.2618, 
-														"rightHandThumb4Rz": -0.2618,
-														"rightHandThumb2Ry": -0.7854, 
-														"rightHandThumb3Ry": -0.7854, 
-														"rightHandThumb4Ry": -0.7854, 
-														"leftHandPinky2Rz": -1.0472, 
-														"leftHandPinky3Rz": -1.0472, 
-														"leftHandPinky4Rz": -1.0472, 
-														"leftHandRing2Rz": -1.0472, 
-														"leftHandRing3Rz": -1.0472, 
-														"leftHandRing4Rz": -1.0472, 
-														"leftHandMiddle2Rz": -1.0472, 
-														"leftHandMiddle3Rz": -1.0472, 
-														"leftHandMiddle4Rz": -1.0472, 
-														"leftHandIndex2Rz": -1.0472, 
-														"leftHandIndex3Rz": -1.0472, 
-														"leftHandIndex4Rz": -1.0472, 
-														"leftHandThumb2Rz": 0.2618, 
-														"leftHandThumb3Rz": 0.2618, 
-														"leftHandThumb4Rz": 0.2618,
-														"leftHandThumb2Ry": 0.7854, 
-														"leftHandThumb3Ry": 0.7854, 
-														"leftHandThumb4Ry": 0.7854}, 800);
+			jumpA = new TWEEN.Tween(startRotations).to({
+															"hipsRx" : -1.5708, "hipsRy" : -0.0000, "hipsRz" : 0.0000,
+															"spineRx" : 0.0000, "spineRy" : 0.0000, "spineRz" : -0.0000,
+															"spine1Rx" : 0.0000, "spine1Ry" : 0.0000, "spine1Rz" : -0.0000,
+															"spine2Rx" : 0.0000, "spine2Ry" : -0.0000, "spine2Rz" : -0.0000,
+															"neckRx" : -0.0000, "neckRy" : -0.0000, "neckRz" : -0.0000,
+															"headRx" : 0.0000, "headRy" : 0.0000, "headRz" : -0.0000,
+															"rightEyeRx" : -0.0000, "rightEyeRy" : 0.0000, "rightEyeRz" : -0.0000,
+															"leftEyeRx" : -0.0000, "leftEyeRy" : 0.0000, "leftEyeRz" : -0.0000,
+															"headTop_EndRx" : -0.0000, "headTop_EndRy" : 0.0000, "headTop_EndRz" : -0.0000,
+															"leftShoulderRx" : Math.PI/2, "leftShoulderRy" : -0.0000, "leftShoulderRz" : 0.0000,
+															"leftArmRx" : 0.0000, "leftArmRy" : -0.0000, "leftArmRz" : -1.3659,
+															"leftForeArmRx" : -0.0000, "leftForeArmRy" : -Math.PI/2, "leftForeArmRz" : -0.0000,
+															"leftHandRx" : 0.0005, "leftHandRy" : -0.0000, "leftHandRz" : 0.0000,
+															"leftHandThumb1Rx" : -0.0002, "leftHandThumb1Ry" : -0.0002, "leftHandThumb1Rz" : 0.0002,
+															"leftHandThumb2Rx" : 0.0000, "leftHandThumb2Ry" : 0.7854, "leftHandThumb2Rz" : 0.2618,
+															"leftHandThumb3Rx" : -0.0000, "leftHandThumb3Ry" : 0.7854, "leftHandThumb3Rz" : 0.2618,
+															"leftHandThumb4Rx" : -0.0000, "leftHandThumb4Ry" : 0.7854, "leftHandThumb4Rz" : 0.2618,
+															"leftHandIndex1Rx" : 0.0000, "leftHandIndex1Ry" : -0.0000, "leftHandIndex1Rz" : -0.0000,
+															"leftHandIndex2Rx" : -0.0000, "leftHandIndex2Ry" : 0.0000, "leftHandIndex2Rz" : -1.0472,
+															"leftHandIndex3Rx" : -0.0000, "leftHandIndex3Ry" : -0.0000, "leftHandIndex3Rz" : -1.0472,
+															"leftHandIndex4Rx" : -0.0000, "leftHandIndex4Ry" : -0.0000, "leftHandIndex4Rz" : -1.0472,
+															"leftHandMiddle1Rx" : -0.0000, "leftHandMiddle1Ry" : 0.0000, "leftHandMiddle1Rz" : -0.0000,
+															"leftHandMiddle2Rx" : -0.0000, "leftHandMiddle2Ry" : 0.0000, "leftHandMiddle2Rz" : -1.0472,
+															"leftHandMiddle3Rx" : 0.0000, "leftHandMiddle3Ry" : 0.0000, "leftHandMiddle3Rz" : -1.0472,
+															"leftHandMiddle4Rx" : 0.0000, "leftHandMiddle4Ry" : 0.0000, "leftHandMiddle4Rz" : -1.0472,
+															"leftHandRing1Rx" : 0.0000, "leftHandRing1Ry" : 0.0000, "leftHandRing1Rz" : -0.0000,
+															"leftHandRing2Rx" : -0.0000, "leftHandRing2Ry" : -0.0000, "leftHandRing2Rz" : -1.0472,
+															"leftHandRing3Rx" : 0.0000, "leftHandRing3Ry" : 0.0000, "leftHandRing3Rz" : -1.0472,
+															"leftHandRing4Rx" : 0.0000, "leftHandRing4Ry" : -0.0000, "leftHandRing4Rz" : -1.0472,
+															"leftHandPinky1Rx" : 0.0000, "leftHandPinky1Ry" : 0.0000, "leftHandPinky1Rz" : 0.0000,
+															"leftHandPinky2Rx" : 0.0000, "leftHandPinky2Ry" : -0.0000, "leftHandPinky2Rz" : -1.0472,
+															"leftHandPinky3Rx" : -0.0000, "leftHandPinky3Ry" : 0.0000, "leftHandPinky3Rz" : -1.0472,
+															"leftHandPinky4Rx" : 0.0000, "leftHandPinky4Ry" : 0.0000, "leftHandPinky4Rz" : -1.0472,
+															"rightShoulderRx" : Math.PI/2, "rightShoulderRy" : -0.0000, "rightShoulderRz" : -0.0000,
+															"rightArmRx" : 0.0000, "rightArmRy" : 0.0000, "rightArmRz" : 1.3659,
+															"rightForeArmRx" : -0.0000, "rightForeArmRy" : Math.PI/2, "rightForeArmRz" : 0.0000,
+															"rightHandRx" : 0.0005, "rightHandRy" : 0.0000, "rightHandRz" : -0.0000,
+															"rightHandPinky1Rx" : 0.0000, "rightHandPinky1Ry" : -0.0000, "rightHandPinky1Rz" : -0.0000,
+															"rightHandPinky2Rx" : 0.0000, "rightHandPinky2Ry" : 0.0000, "rightHandPinky2Rz" : 1.0472,
+															"rightHandPinky3Rx" : -0.0000, "rightHandPinky3Ry" : -0.0000, "rightHandPinky3Rz" : 1.0472,
+															"rightHandPinky4Rx" : -0.0000, "rightHandPinky4Ry" : 0.0000, "rightHandPinky4Rz" : 1.0472,
+															"rightHandRing1Rx" : 0.0000, "rightHandRing1Ry" : -0.0000, "rightHandRing1Rz" : 0.0000,
+															"rightHandRing2Rx" : -0.0000, "rightHandRing2Ry" : 0.0000, "rightHandRing2Rz" : 1.0472,
+															"rightHandRing3Rx" : 0.0000, "rightHandRing3Ry" : -0.0000, "rightHandRing3Rz" : 1.0472,
+															"rightHandRing4Rx" : 0.0000, "rightHandRing4Ry" : -0.0000, "rightHandRing4Rz" : 1.0472,
+															"rightHandMiddle1Rx" : -0.0000, "rightHandMiddle1Ry" : -0.0000, "rightHandMiddle1Rz" : 0.0000,
+															"rightHandMiddle2Rx" : -0.0000, "rightHandMiddle2Ry" : -0.0000, "rightHandMiddle2Rz" : 1.0472,
+															"rightHandMiddle3Rx" : 0.0000, "rightHandMiddle3Ry" : -0.0000, "rightHandMiddle3Rz" : 1.0472,
+															"rightHandMiddle4Rx" : 0.0000, "rightHandMiddle4Ry" : 0.0000, "rightHandMiddle4Rz" : 1.0472,
+															"rightHandIndex1Rx" : -0.0000, "rightHandIndex1Ry" : 0.0000, "rightHandIndex1Rz" : 0.0000,
+															"rightHandIndex2Rx" : -0.0000, "rightHandIndex2Ry" : -0.0000, "rightHandIndex2Rz" : 1.0472,
+															"rightHandIndex3Rx" : 0.0000, "rightHandIndex3Ry" : 0.0000, "rightHandIndex3Rz" : 1.0472,
+															"rightHandIndex4Rx" : 0.0000, "rightHandIndex4Ry" : 0.0000, "rightHandIndex4Rz" : 1.0472,
+															"rightHandThumb1Rx" : -0.0002, "rightHandThumb1Ry" : 0.0002, "rightHandThumb1Rz" : -0.0002,
+															"rightHandThumb2Rx" : 0.0000, "rightHandThumb2Ry" : -0.7854, "rightHandThumb2Rz" : -0.2618,
+															"rightHandThumb3Rx" : 0.0000, "rightHandThumb3Ry" : -0.7854, "rightHandThumb3Rz" : -0.2618,
+															"rightHandThumb4Rx" : 0.0000, "rightHandThumb4Ry" : -0.7854, "rightHandThumb4Rz" : -0.2618,
+															"leftUpLegRx" : Math.PI/3, "leftUpLegRy" : 0.0000, "leftUpLegRz" : -0.0001,
+															"leftLegRx" : Math.PI/9, "leftLegRy" : 0.0000, "leftLegRz" : 0.0000,
+															"leftFootRx" : -0.0010, "leftFootRy" : -0.0000, "leftFootRz" : 0.0001,
+															"leftToeBaseRx" : 0.0000, "leftToeBaseRy" : -0.0000, "leftToeBaseRz" : -0.0000,
+															"leftToe_EndRx" : -0.0000, "leftToe_EndRy" : 0.0000, "leftToe_EndRz" : 0.0000,
+															"rightUpLegRx" : -Math.PI/3, "rightUpLegRy" : 0.0000, "rightUpLegRz" : -0.0001,
+															"rightLegRx" : Math.PI/4, "rightLegRy" : 0.0000, "rightLegRz" : -0.0000,
+															"rightFootRx" : -0.0010, "rightFootRy" : -0.0000, "rightFootRz" : 0.0001,
+															"rightToeBaseRx" : 0.0000, "rightToeBaseRy" : -0.0000, "rightToeBaseRz" : -0.0000,
+															"rightToe_EndRx" : 0.0000, "rightToe_EndRy" : -0.0000, "rightToe_EndRz" : -0.0000}, 800);
 			
 			jumpB = new TWEEN.Tween(startRotations).to({"rightShoulderRx": Math.PI/2,"rightShoulderRy": -0.0000,"rightShoulderRz": -0.0000, 
 														"rightArmRx": 0,"rightArmRy": 0.0000,"rightArmRz": 1.3659, 
@@ -2303,6 +2458,7 @@
 														});
 
 			idle.onUpdate(updateFunction);
+			idleB.onUpdate(updateFunction);
 			runA.onUpdate(updateFunction);
 			runB.onUpdate(updateFunction);
 			walkA.onUpdate(updateFunction);
@@ -2442,13 +2598,13 @@
 
 		function obj1Completed(){
 			if(!target1hit || !target2hit) return;
-			console.log("LEVEL 2");
+			// console.log("LEVEL 2");
 			level2Unlock.start();
 		}
 
 		function obj2Completed(){
 			if(!target3hit || !target4hit) return;
-			console.log("LEVEL 3");
+			// console.log("LEVEL 3");
 			rotatePlatFloatingTweens.forEach(element => {
 				element.stop();
 				rotatePlatFloatingTweens = rotatePlatFloatingTweens.filter(function(ele){ 
@@ -2661,7 +2817,9 @@
 
 
 		orbit.addEventListener('lock', function() {animateScene=false; pause_bg.style.display = 'none'; pause_fg.style.display = 'none';});
-		orbit.addEventListener('unlock', function() {lastUnlockTime = performance.now(); animateScene=true; pause_fg.style.display = ''; pause_bg.style.display = '';});
+		orbit.addEventListener('unlock', function() {lastUnlockTime = performance.now(); animateScene=true; pause_fg.style.display = ''; pause_bg.style.display = '';
+				//console.log('"hipsRx" : ' + archerStructure["hips"].rotation.x.toFixed(4) + ', "hipsRy" : ' + archerStructure["hips"].rotation.y.toFixed(4) + ', "hipsRz" : ' + archerStructure["hips"].rotation.z.toFixed(4) + ',\n"spineRx" : ' + archerStructure["spine"].rotation.x.toFixed(4) + ', "spineRy" : ' + archerStructure["spine"].rotation.y.toFixed(4) + ', "spineRz" : ' + archerStructure["spine"].rotation.z.toFixed(4) + ',\n"spine1Rx" : ' + archerStructure["spine1"].rotation.x.toFixed(4) + ', "spine1Ry" : ' + archerStructure["spine1"].rotation.y.toFixed(4) + ', "spine1Rz" : ' + archerStructure["spine1"].rotation.z.toFixed(4) + ',\n"spine2Rx" : ' + archerStructure["spine2"].rotation.x.toFixed(4) + ', "spine2Ry" : ' + archerStructure["spine2"].rotation.y.toFixed(4) + ', "spine2Rz" : ' + archerStructure["spine2"].rotation.z.toFixed(4) + ',\n"neckRx" : ' + archerStructure["neck"].rotation.x.toFixed(4) + ', "neckRy" : ' + archerStructure["neck"].rotation.y.toFixed(4) + ', "neckRz" : ' + archerStructure["neck"].rotation.z.toFixed(4) + ',\n"headRx" : ' + archerStructure["head"].rotation.x.toFixed(4) + ', "headRy" : ' + archerStructure["head"].rotation.y.toFixed(4) + ', "headRz" : ' + archerStructure["head"].rotation.z.toFixed(4) + ',\n"rightEyeRx" : ' + archerStructure["rightEye"].rotation.x.toFixed(4) + ', "rightEyeRy" : ' + archerStructure["rightEye"].rotation.y.toFixed(4) + ', "rightEyeRz" : ' + archerStructure["rightEye"].rotation.z.toFixed(4) + ',\n"leftEyeRx" : ' + archerStructure["leftEye"].rotation.x.toFixed(4) + ', "leftEyeRy" : ' + archerStructure["leftEye"].rotation.y.toFixed(4) + ', "leftEyeRz" : ' + archerStructure["leftEye"].rotation.z.toFixed(4) + ',\n"headTop_EndRx" : ' + archerStructure["headTop_End"].rotation.x.toFixed(4) + ', "headTop_EndRy" : ' + archerStructure["headTop_End"].rotation.y.toFixed(4) + ', "headTop_EndRz" : ' + archerStructure["headTop_End"].rotation.z.toFixed(4) + ',\n"leftShoulderRx" : ' + archerStructure["leftShoulder"].rotation.x.toFixed(4) + ', "leftShoulderRy" : ' + archerStructure["leftShoulder"].rotation.y.toFixed(4) + ', "leftShoulderRz" : ' + archerStructure["leftShoulder"].rotation.z.toFixed(4) + ',\n"leftArmRx" : ' + archerStructure["leftArm"].rotation.x.toFixed(4) + ', "leftArmRy" : ' + archerStructure["leftArm"].rotation.y.toFixed(4) + ', "leftArmRz" : ' + archerStructure["leftArm"].rotation.z.toFixed(4) + ',\n"leftForeArmRx" : ' + archerStructure["leftForeArm"].rotation.x.toFixed(4) + ', "leftForeArmRy" : ' + archerStructure["leftForeArm"].rotation.y.toFixed(4) + ', "leftForeArmRz" : ' + archerStructure["leftForeArm"].rotation.z.toFixed(4) + ',\n"leftHandRx" : ' + archerStructure["leftHand"].rotation.x.toFixed(4) + ', "leftHandRy" : ' + archerStructure["leftHand"].rotation.y.toFixed(4) + ', "leftHandRz" : ' + archerStructure["leftHand"].rotation.z.toFixed(4) + ',\n"leftHandThumb1Rx" : ' + archerStructure["leftHandThumb1"].rotation.x.toFixed(4) + ', "leftHandThumb1Ry" : ' + archerStructure["leftHandThumb1"].rotation.y.toFixed(4) + ', "leftHandThumb1Rz" : ' + archerStructure["leftHandThumb1"].rotation.z.toFixed(4) + ',\n"leftHandThumb2Rx" : ' + archerStructure["leftHandThumb2"].rotation.x.toFixed(4) + ', "leftHandThumb2Ry" : ' + archerStructure["leftHandThumb2"].rotation.y.toFixed(4) + ', "leftHandThumb2Rz" : ' + archerStructure["leftHandThumb2"].rotation.z.toFixed(4) + ',\n"leftHandThumb3Rx" : ' + archerStructure["leftHandThumb3"].rotation.x.toFixed(4) + ', "leftHandThumb3Ry" : ' + archerStructure["leftHandThumb3"].rotation.y.toFixed(4) + ', "leftHandThumb3Rz" : ' + archerStructure["leftHandThumb3"].rotation.z.toFixed(4) + ',\n"leftHandThumb4Rx" : ' + archerStructure["leftHandThumb4"].rotation.x.toFixed(4) + ', "leftHandThumb4Ry" : ' + archerStructure["leftHandThumb4"].rotation.y.toFixed(4) + ', "leftHandThumb4Rz" : ' + archerStructure["leftHandThumb4"].rotation.z.toFixed(4) + ',\n"leftHandIndex1Rx" : ' + archerStructure["leftHandIndex1"].rotation.x.toFixed(4) + ', "leftHandIndex1Ry" : ' + archerStructure["leftHandIndex1"].rotation.y.toFixed(4) + ', "leftHandIndex1Rz" : ' + archerStructure["leftHandIndex1"].rotation.z.toFixed(4) + ',\n"leftHandIndex2Rx" : ' + archerStructure["leftHandIndex2"].rotation.x.toFixed(4) + ', "leftHandIndex2Ry" : ' + archerStructure["leftHandIndex2"].rotation.y.toFixed(4) + ', "leftHandIndex2Rz" : ' + archerStructure["leftHandIndex2"].rotation.z.toFixed(4) + ',\n"leftHandIndex3Rx" : ' + archerStructure["leftHandIndex3"].rotation.x.toFixed(4) + ', "leftHandIndex3Ry" : ' + archerStructure["leftHandIndex3"].rotation.y.toFixed(4) + ', "leftHandIndex3Rz" : ' + archerStructure["leftHandIndex3"].rotation.z.toFixed(4) + ',\n"leftHandIndex4Rx" : ' + archerStructure["leftHandIndex4"].rotation.x.toFixed(4) + ', "leftHandIndex4Ry" : ' + archerStructure["leftHandIndex4"].rotation.y.toFixed(4) + ', "leftHandIndex4Rz" : ' + archerStructure["leftHandIndex4"].rotation.z.toFixed(4) + ',\n"leftHandMiddle1Rx" : ' + archerStructure["leftHandMiddle1"].rotation.x.toFixed(4) + ', "leftHandMiddle1Ry" : ' + archerStructure["leftHandMiddle1"].rotation.y.toFixed(4) + ', "leftHandMiddle1Rz" : ' + archerStructure["leftHandMiddle1"].rotation.z.toFixed(4) + ',\n"leftHandMiddle2Rx" : ' + archerStructure["leftHandMiddle2"].rotation.x.toFixed(4) + ', "leftHandMiddle2Ry" : ' + archerStructure["leftHandMiddle2"].rotation.y.toFixed(4) + ', "leftHandMiddle2Rz" : ' + archerStructure["leftHandMiddle2"].rotation.z.toFixed(4) + ',\n"leftHandMiddle3Rx" : ' + archerStructure["leftHandMiddle3"].rotation.x.toFixed(4) + ', "leftHandMiddle3Ry" : ' + archerStructure["leftHandMiddle3"].rotation.y.toFixed(4) + ', "leftHandMiddle3Rz" : ' + archerStructure["leftHandMiddle3"].rotation.z.toFixed(4) + ',\n"leftHandMiddle4Rx" : ' + archerStructure["leftHandMiddle4"].rotation.x.toFixed(4) + ', "leftHandMiddle4Ry" : ' + archerStructure["leftHandMiddle4"].rotation.y.toFixed(4) + ', "leftHandMiddle4Rz" : ' + archerStructure["leftHandMiddle4"].rotation.z.toFixed(4) + ',\n"leftHandRing1Rx" : ' + archerStructure["leftHandRing1"].rotation.x.toFixed(4) + ', "leftHandRing1Ry" : ' + archerStructure["leftHandRing1"].rotation.y.toFixed(4) + ', "leftHandRing1Rz" : ' + archerStructure["leftHandRing1"].rotation.z.toFixed(4) + ',\n"leftHandRing2Rx" : ' + archerStructure["leftHandRing2"].rotation.x.toFixed(4) + ', "leftHandRing2Ry" : ' + archerStructure["leftHandRing2"].rotation.y.toFixed(4) + ', "leftHandRing2Rz" : ' + archerStructure["leftHandRing2"].rotation.z.toFixed(4) + ',\n"leftHandRing3Rx" : ' + archerStructure["leftHandRing3"].rotation.x.toFixed(4) + ', "leftHandRing3Ry" : ' + archerStructure["leftHandRing3"].rotation.y.toFixed(4) + ', "leftHandRing3Rz" : ' + archerStructure["leftHandRing3"].rotation.z.toFixed(4) + ',\n"leftHandRing4Rx" : ' + archerStructure["leftHandRing4"].rotation.x.toFixed(4) + ', "leftHandRing4Ry" : ' + archerStructure["leftHandRing4"].rotation.y.toFixed(4) + ', "leftHandRing4Rz" : ' + archerStructure["leftHandRing4"].rotation.z.toFixed(4) + ',\n"leftHandPinky1Rx" : ' + archerStructure["leftHandPinky1"].rotation.x.toFixed(4) + ', "leftHandPinky1Ry" : ' + archerStructure["leftHandPinky1"].rotation.y.toFixed(4) + ', "leftHandPinky1Rz" : ' + archerStructure["leftHandPinky1"].rotation.z.toFixed(4) + ',\n"leftHandPinky2Rx" : ' + archerStructure["leftHandPinky2"].rotation.x.toFixed(4) + ', "leftHandPinky2Ry" : ' + archerStructure["leftHandPinky2"].rotation.y.toFixed(4) + ', "leftHandPinky2Rz" : ' + archerStructure["leftHandPinky2"].rotation.z.toFixed(4) + ',\n"leftHandPinky3Rx" : ' + archerStructure["leftHandPinky3"].rotation.x.toFixed(4) + ', "leftHandPinky3Ry" : ' + archerStructure["leftHandPinky3"].rotation.y.toFixed(4) + ', "leftHandPinky3Rz" : ' + archerStructure["leftHandPinky3"].rotation.z.toFixed(4) + ',\n"leftHandPinky4Rx" : ' + archerStructure["leftHandPinky4"].rotation.x.toFixed(4) + ', "leftHandPinky4Ry" : ' + archerStructure["leftHandPinky4"].rotation.y.toFixed(4) + ', "leftHandPinky4Rz" : ' + archerStructure["leftHandPinky4"].rotation.z.toFixed(4) + ',\n"rightShoulderRx" : ' + archerStructure["rightShoulder"].rotation.x.toFixed(4) + ', "rightShoulderRy" : ' + archerStructure["rightShoulder"].rotation.y.toFixed(4) + ', "rightShoulderRz" : ' + archerStructure["rightShoulder"].rotation.z.toFixed(4) + ',\n"rightArmRx" : ' + archerStructure["rightArm"].rotation.x.toFixed(4) + ', "rightArmRy" : ' + archerStructure["rightArm"].rotation.y.toFixed(4) + ', "rightArmRz" : ' + archerStructure["rightArm"].rotation.z.toFixed(4) + ',\n"rightForeArmRx" : ' + archerStructure["rightForeArm"].rotation.x.toFixed(4) + ', "rightForeArmRy" : ' + archerStructure["rightForeArm"].rotation.y.toFixed(4) + ', "rightForeArmRz" : ' + archerStructure["rightForeArm"].rotation.z.toFixed(4) + ',\n"rightHandRx" : ' + archerStructure["rightHand"].rotation.x.toFixed(4) + ', "rightHandRy" : ' + archerStructure["rightHand"].rotation.y.toFixed(4) + ', "rightHandRz" : ' + archerStructure["rightHand"].rotation.z.toFixed(4) + ',\n"rightHandPinky1Rx" : ' + archerStructure["rightHandPinky1"].rotation.x.toFixed(4) + ', "rightHandPinky1Ry" : ' + archerStructure["rightHandPinky1"].rotation.y.toFixed(4) + ', "rightHandPinky1Rz" : ' + archerStructure["rightHandPinky1"].rotation.z.toFixed(4) + ',\n"rightHandPinky2Rx" : ' + archerStructure["rightHandPinky2"].rotation.x.toFixed(4) + ', "rightHandPinky2Ry" : ' + archerStructure["rightHandPinky2"].rotation.y.toFixed(4) + ', "rightHandPinky2Rz" : ' + archerStructure["rightHandPinky2"].rotation.z.toFixed(4) + ',\n"rightHandPinky3Rx" : ' + archerStructure["rightHandPinky3"].rotation.x.toFixed(4) + ', "rightHandPinky3Ry" : ' + archerStructure["rightHandPinky3"].rotation.y.toFixed(4) + ', "rightHandPinky3Rz" : ' + archerStructure["rightHandPinky3"].rotation.z.toFixed(4) + ',\n"rightHandPinky4Rx" : ' + archerStructure["rightHandPinky4"].rotation.x.toFixed(4) + ', "rightHandPinky4Ry" : ' + archerStructure["rightHandPinky4"].rotation.y.toFixed(4) + ', "rightHandPinky4Rz" : ' + archerStructure["rightHandPinky4"].rotation.z.toFixed(4) + ',\n"rightHandRing1Rx" : ' + archerStructure["rightHandRing1"].rotation.x.toFixed(4) + ', "rightHandRing1Ry" : ' + archerStructure["rightHandRing1"].rotation.y.toFixed(4) + ', "rightHandRing1Rz" : ' + archerStructure["rightHandRing1"].rotation.z.toFixed(4) + ',\n"rightHandRing2Rx" : ' + archerStructure["rightHandRing2"].rotation.x.toFixed(4) + ', "rightHandRing2Ry" : ' + archerStructure["rightHandRing2"].rotation.y.toFixed(4) + ', "rightHandRing2Rz" : ' + archerStructure["rightHandRing2"].rotation.z.toFixed(4) + ',\n"rightHandRing3Rx" : ' + archerStructure["rightHandRing3"].rotation.x.toFixed(4) + ', "rightHandRing3Ry" : ' + archerStructure["rightHandRing3"].rotation.y.toFixed(4) + ', "rightHandRing3Rz" : ' + archerStructure["rightHandRing3"].rotation.z.toFixed(4) + ',\n"rightHandRing4Rx" : ' + archerStructure["rightHandRing4"].rotation.x.toFixed(4) + ', "rightHandRing4Ry" : ' + archerStructure["rightHandRing4"].rotation.y.toFixed(4) + ', "rightHandRing4Rz" : ' + archerStructure["rightHandRing4"].rotation.z.toFixed(4) + ',\n"rightHandMiddle1Rx" : ' + archerStructure["rightHandMiddle1"].rotation.x.toFixed(4) + ', "rightHandMiddle1Ry" : ' + archerStructure["rightHandMiddle1"].rotation.y.toFixed(4) + ', "rightHandMiddle1Rz" : ' + archerStructure["rightHandMiddle1"].rotation.z.toFixed(4) + ',\n"rightHandMiddle2Rx" : ' + archerStructure["rightHandMiddle2"].rotation.x.toFixed(4) + ', "rightHandMiddle2Ry" : ' + archerStructure["rightHandMiddle2"].rotation.y.toFixed(4) + ', "rightHandMiddle2Rz" : ' + archerStructure["rightHandMiddle2"].rotation.z.toFixed(4) + ',\n"rightHandMiddle3Rx" : ' + archerStructure["rightHandMiddle3"].rotation.x.toFixed(4) + ', "rightHandMiddle3Ry" : ' + archerStructure["rightHandMiddle3"].rotation.y.toFixed(4) + ', "rightHandMiddle3Rz" : ' + archerStructure["rightHandMiddle3"].rotation.z.toFixed(4) + ',\n"rightHandMiddle4Rx" : ' + archerStructure["rightHandMiddle4"].rotation.x.toFixed(4) + ', "rightHandMiddle4Ry" : ' + archerStructure["rightHandMiddle4"].rotation.y.toFixed(4) + ', "rightHandMiddle4Rz" : ' + archerStructure["rightHandMiddle4"].rotation.z.toFixed(4) + ',\n"rightHandIndex1Rx" : ' + archerStructure["rightHandIndex1"].rotation.x.toFixed(4) + ', "rightHandIndex1Ry" : ' + archerStructure["rightHandIndex1"].rotation.y.toFixed(4) + ', "rightHandIndex1Rz" : ' + archerStructure["rightHandIndex1"].rotation.z.toFixed(4) + ',\n"rightHandIndex2Rx" : ' + archerStructure["rightHandIndex2"].rotation.x.toFixed(4) + ', "rightHandIndex2Ry" : ' + archerStructure["rightHandIndex2"].rotation.y.toFixed(4) + ', "rightHandIndex2Rz" : ' + archerStructure["rightHandIndex2"].rotation.z.toFixed(4) + ',\n"rightHandIndex3Rx" : ' + archerStructure["rightHandIndex3"].rotation.x.toFixed(4) + ', "rightHandIndex3Ry" : ' + archerStructure["rightHandIndex3"].rotation.y.toFixed(4) + ', "rightHandIndex3Rz" : ' + archerStructure["rightHandIndex3"].rotation.z.toFixed(4) + ',\n"rightHandIndex4Rx" : ' + archerStructure["rightHandIndex4"].rotation.x.toFixed(4) + ', "rightHandIndex4Ry" : ' + archerStructure["rightHandIndex4"].rotation.y.toFixed(4) + ', "rightHandIndex4Rz" : ' + archerStructure["rightHandIndex4"].rotation.z.toFixed(4) + ',\n"rightHandThumb1Rx" : ' + archerStructure["rightHandThumb1"].rotation.x.toFixed(4) + ', "rightHandThumb1Ry" : ' + archerStructure["rightHandThumb1"].rotation.y.toFixed(4) + ', "rightHandThumb1Rz" : ' + archerStructure["rightHandThumb1"].rotation.z.toFixed(4) + ',\n"rightHandThumb2Rx" : ' + archerStructure["rightHandThumb2"].rotation.x.toFixed(4) + ', "rightHandThumb2Ry" : ' + archerStructure["rightHandThumb2"].rotation.y.toFixed(4) + ', "rightHandThumb2Rz" : ' + archerStructure["rightHandThumb2"].rotation.z.toFixed(4) + ',\n"rightHandThumb3Rx" : ' + archerStructure["rightHandThumb3"].rotation.x.toFixed(4) + ', "rightHandThumb3Ry" : ' + archerStructure["rightHandThumb3"].rotation.y.toFixed(4) + ', "rightHandThumb3Rz" : ' + archerStructure["rightHandThumb3"].rotation.z.toFixed(4) + ',\n"rightHandThumb4Rx" : ' + archerStructure["rightHandThumb4"].rotation.x.toFixed(4) + ', "rightHandThumb4Ry" : ' + archerStructure["rightHandThumb4"].rotation.y.toFixed(4) + ', "rightHandThumb4Rz" : ' + archerStructure["rightHandThumb4"].rotation.z.toFixed(4) + ',\n"leftUpLegRx" : ' + archerStructure["leftUpLeg"].rotation.x.toFixed(4) + ', "leftUpLegRy" : ' + archerStructure["leftUpLeg"].rotation.y.toFixed(4) + ', "leftUpLegRz" : ' + archerStructure["leftUpLeg"].rotation.z.toFixed(4) + ',\n"leftLegRx" : ' + archerStructure["leftLeg"].rotation.x.toFixed(4) + ', "leftLegRy" : ' + archerStructure["leftLeg"].rotation.y.toFixed(4) + ', "leftLegRz" : ' + archerStructure["leftLeg"].rotation.z.toFixed(4) + ',\n"leftFootRx" : ' + archerStructure["leftFoot"].rotation.x.toFixed(4) + ', "leftFootRy" : ' + archerStructure["leftFoot"].rotation.y.toFixed(4) + ', "leftFootRz" : ' + archerStructure["leftFoot"].rotation.z.toFixed(4) + ',\n"leftToeBaseRx" : ' + archerStructure["leftToeBase"].rotation.x.toFixed(4) + ', "leftToeBaseRy" : ' + archerStructure["leftToeBase"].rotation.y.toFixed(4) + ', "leftToeBaseRz" : ' + archerStructure["leftToeBase"].rotation.z.toFixed(4) + ',\n"leftToe_EndRx" : ' + archerStructure["leftToe_End"].rotation.x.toFixed(4) + ', "leftToe_EndRy" : ' + archerStructure["leftToe_End"].rotation.y.toFixed(4) + ', "leftToe_EndRz" : ' + archerStructure["leftToe_End"].rotation.z.toFixed(4) + ',\n"rightUpLegRx" : ' + archerStructure["rightUpLeg"].rotation.x.toFixed(4) + ', "rightUpLegRy" : ' + archerStructure["rightUpLeg"].rotation.y.toFixed(4) + ', "rightUpLegRz" : ' + archerStructure["rightUpLeg"].rotation.z.toFixed(4) + ',\n"rightLegRx" : ' + archerStructure["rightLeg"].rotation.x.toFixed(4) + ', "rightLegRy" : ' + archerStructure["rightLeg"].rotation.y.toFixed(4) + ', "rightLegRz" : ' + archerStructure["rightLeg"].rotation.z.toFixed(4) + ',\n"rightFootRx" : ' + archerStructure["rightFoot"].rotation.x.toFixed(4) + ', "rightFootRy" : ' + archerStructure["rightFoot"].rotation.y.toFixed(4) + ', "rightFootRz" : ' + archerStructure["rightFoot"].rotation.z.toFixed(4) + ',\n"rightToeBaseRx" : ' + archerStructure["rightToeBase"].rotation.x.toFixed(4) + ', "rightToeBaseRy" : ' + archerStructure["rightToeBase"].rotation.y.toFixed(4) + ', "rightToeBaseRz" : ' + archerStructure["rightToeBase"].rotation.z.toFixed(4) + ',\n"rightToe_EndRx" : ' + archerStructure["rightToe_End"].rotation.x.toFixed(4) + ', "rightToe_EndRy" : ' + archerStructure["rightToe_End"].rotation.y.toFixed(4) + ', "rightToe_EndRz" : ' + archerStructure["rightToe_End"].rotation.z.toFixed(4) + ',\n')
+		});
 
 		const time = new THREE.Clock();
 		var deltaTime = 0;
@@ -2909,6 +3067,7 @@
 			if(lastExecutedAnimation == playerState) return;
 			lastExecutedAnimation = playerState;
 			idle.stop();
+			idleB.stop();
 			walkA.stop();
 			walkB.stop();
 			runA.stop();
@@ -2929,12 +3088,14 @@
 					jumpA.start();
 					break;
 				default:
+					idle.start();
 					break;
 			}
 		}
 
 		//Functions that applies the updates to the player through each frame (animation, movement, etc.)
 		function playerAnimate(delta){
+			console.log(playerState)
 
 			//Degree of desired direction
 			
