@@ -418,7 +418,7 @@
 
 		var positions = [new CANNON.Vec3(-15, -1, 48),
 						new CANNON.Vec3(15, -1, 54),
-						new CANNON.Vec3(0, -1, 67),
+						new CANNON.Vec3(0, -1, 75),
 						new CANNON.Vec3(-20, 0, 90),
 						new CANNON.Vec3(20, 0, 90),
 						new CANNON.Vec3(-20, 0, 95),
@@ -564,8 +564,15 @@
 			//Function that returns the listener for the collision event of the robots (can't create the listener directly in the loop)
 			function robotColliderEvent(genRobot){
 				return (e) => {
-					var arrowsBodies = Array.from(arrows, x => x.can.id);
-					if (genRobot["body"] && ((e.contact.bi.id == genRobot["body"].id && arrowsBodies.includes(e.contact.bj.id)) || (e.contact.bj.id == genRobot["body"].id && arrowsBodies.includes(e.contact.bj.id)))) {
+					//Function that checks if an arrow with that id exists and it's able to kill
+					function checkArrowKiller(id){
+						var ret=false;
+						arrows.forEach(element => {
+							if(element["killer"] && element["can"].id==id) ret = true;
+						});
+						return ret;
+					}
+					if (genRobot["body"] && ((e.contact.bi.id == genRobot["body"].id && checkArrowKiller(e.contact.bj.id)) || (e.contact.bj.id == genRobot["body"].id && checkArrowKiller(e.contact.bj.id)))) {
 						scene.remove(genRobot["model"]);
 						setTimeout(function() {
 							world.removeBody(genRobot["body"]);
@@ -591,6 +598,11 @@
 					}
 				} 
 			}
+
+			//Tween onComplete function to make the next (the one in the argument) tween start
+			function getOnCompleteHandler (tween) {
+					return function () {tween.start()};
+			};
 
 			//Tween update function, can't create it directly in the loop
 			function createUpdateFunction(genRobotStructure){
@@ -738,7 +750,7 @@
 					wireframe: true
 					});
 				var genRobotMesh = new THREE.Mesh(genRobotGeo, genRobotMat);
-				scene.add(genRobotMesh);
+				//scene.add(genRobotMesh);
 				genRobotMesh.receiveShadow=true;
 				genRobotMesh.castshadow=true;
 
@@ -1038,9 +1050,7 @@
 					"poleTargetRRx" : 0.0000,
 					"poleTargetRRy" : 0.0000,
 					"poleTargetRRz" : -0.0000
-				}, 500).onComplete(()=> {
-					idleBEnemy.start();
-				});
+				}, 500);
 
 				var idleBEnemy = new TWEEN.Tween(initialRotations).to({
 					"rootJointRx" : 0.0000,
@@ -1178,6 +1188,7 @@
 				}, 1000).repeat(Infinity).yoyo(true);
 
 				idleAEnemy.onUpdate(updateFunction);
+				idleAEnemy.onComplete(getOnCompleteHandler(idleBEnemy));
 				tweens["idleA"] = idleAEnemy;
 				idleBEnemy.onUpdate(updateFunction);
 				tweens["idleB"] = idleBEnemy;
@@ -1450,13 +1461,15 @@
 					"poleTargetRRx" : 0.0000,
 					"poleTargetRRy" : 0.0000,
 					"poleTargetRRz" : -0.0000
-				}, 250).onComplete(() => {
-					runAEnemy.start();		
-				});
+				}, 250);
+
+
+				runAEnemy.onComplete(getOnCompleteHandler(runBEnemy));
+				runBEnemy.onComplete(getOnCompleteHandler(runAEnemy));
+
 
 				runAEnemy.onUpdate(updateFunction);
 				runBEnemy.onUpdate(updateFunction);
-				runAEnemy.chain(runBEnemy);
 
 				tweens["runA"] = runAEnemy;
 				tweens["runB"] = runBEnemy;
@@ -2323,6 +2336,20 @@
 		}
 
 		function throwArrow(){
+					
+			//Function that returns the listener for the collision event of the arrows (can't create the listener directly in the loop)
+			function arrowColliderEvent(genArrow){
+				return (e) => {
+					if ( e.contact.bi.id == genArrow["can"].id ) {
+					e.contact.ni.negate( e.contact.ni );
+					}
+
+					if ( e.contact.ni.dot( new CANNON.Vec3( 0, 1, 0 ) ) > 0.5) {
+						genArrow["killer"] = false;
+					}
+				} 
+			}
+
 			var cameraDirection= new THREE.Vector3();
 			camera.getWorldDirection(cameraDirection);
 
@@ -2364,7 +2391,11 @@
 			cubeArrowCan.velocity.z = arrowVelocity * moveZ;
 			cubeArrowCan.velocity.x = arrowVelocity * moveX;
 			
-			arrows.push(({"can":cubeArrowCan, "mesh":cubeArrowMesh, "model":cubeArrowModelParent}));
+			var genArrow = {"can":cubeArrowCan, "mesh":cubeArrowMesh, "model":cubeArrowModelParent, "killer" : true};
+			
+			arrows.push(genArrow);
+
+			cubeArrowCan.addEventListener("collide", arrowColliderEvent(genArrow));
 
 		}
 
@@ -2606,19 +2637,24 @@
 
 
 
+
 		orbit.addEventListener('lock', function() {animateScene=false; pause_bg.style.display = 'none'; pause_fg.style.display = 'none';});
 		orbit.addEventListener('unlock', function() {lastUnlockTime = performance.now(); animateScene=true; pause_fg.style.display = ''; pause_bg.style.display = '';});
 
 		const time = new THREE.Clock();
+		var deltaTime = 0;
+		var elapsedTime = 0;
 		function animate() {
+			deltaTime = time.getDelta();
 			if(animateScene == false){
-				world.step(1/60);
+				elapsedTime = time.getElapsedTime() * 1000;
 				TWEEN.update();
-				orbit.update();
+				world.step(1/60,deltaTime,10);
+				orbit.update(deltaTime);
 
 
-				playerAnimate(time.getDelta());
-				enemiesAnimate();
+				playerAnimate(deltaTime);
+				enemiesAnimate(deltaTime);
 
 				if(groundMesh && groundPlatModelParent){
 					groundMesh.position.copy(groundBody.position);
@@ -2976,13 +3012,15 @@
 		changePlayerState();
 		};
 
-		function enemiesAnimate(){
+		function enemiesAnimate(deltaTime){
+			var i = 0;
+			var str ="";
 			robots.forEach(enemy => {
 				//Camera angle with respect to player (obtained through x and z displacements)
 				
 				var enemyPosition = enemy.body.position;
 				var archerPos = cubeBody.position;
-				var distance = new THREE.Vector3(); // create once an reuse it
+				var distance = new THREE.Vector3();
 				
 				distance.subVectors( archerPos, enemyPosition );
 
@@ -2995,27 +3033,26 @@
 						enemy.state = "RUNNING";
 					}
 
-					var dir = distance.normalize();
+					var enemyDir = distance.normalize();
 					var desAngle = Math.atan2(
 						(enemyPosition.x - archerPos.x),
 						(enemyPosition.z - archerPos.z));
 		
 					//Desired final direction, that has to be reached slowly (using rotateTowards)
 					enemy.mesh.quaternion.rotateTowards((new THREE.Quaternion()).setFromAxisAngle(new THREE.Vector3(0,1,0), desAngle), 0.2);
-					var enemyVelocity = 5;
-					enemy.body.velocity.x = enemyVelocity * dir.x;
-					enemy.body.velocity.z = enemyVelocity * dir.z;
-
+					var enemyVelocity = 4;
+					enemy.body.velocity.x = enemyVelocity * enemyDir.x * deltaTime*100;
+					enemy.body.velocity.z = enemyVelocity * enemyDir.z * deltaTime*100;
 				}
 				else{
-					if(enemy.state == "RUNNING"){
 						enemy.tweens.runA.stop();
 						enemy.tweens.runB.stop();
 						enemy.tweens.idleA.start();
 						enemy.state = "IDLE";
 					}
-				}
+				// str += "Player "+(i++)+ "State: "+ enemy.state+ " | ";
 			});
+			// console.log(str);
 		}
 		
 		function cameraMoveY(){
