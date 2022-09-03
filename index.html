@@ -225,6 +225,9 @@
 		var pause_fg = document.getElementById("pause_fg");
 		var justRepulsedArcher = false;
 		var arrowAnimation, archerRightHand;
+		var bombs = [];
+		var bombModel;
+		var justShotCannon1 = false;
 
 		//CANNON AND THREE SETUP
 		const world = new CANNON.World({
@@ -426,7 +429,17 @@
 						new CANNON.Vec3(-20, 0, 95),
 						new CANNON.Vec3(20, 0, 95),
 						new CANNON.Vec3(-20, 0, 100),
-						new CANNON.Vec3(20, 0, 100)
+						new CANNON.Vec3(20, 0, 100),
+						new CANNON.Vec3(5, 6.5, 140),
+						new CANNON.Vec3(10, 6.5, 148),
+						new CANNON.Vec3(15, 6.5, 156),
+						new CANNON.Vec3(10, 6.5, 164),
+						new CANNON.Vec3(5, 6.5, 172),
+						new CANNON.Vec3(-5, 6.5, 140),
+						new CANNON.Vec3(-10, 6.5, 148),
+						new CANNON.Vec3(-15, 6.5, 156),
+						new CANNON.Vec3(-10, 6.5, 164),
+						new CANNON.Vec3(-5, 6.5, 172),
 					];
 
 		
@@ -572,17 +585,18 @@
 				var ret=false;
 				arrows.forEach(element => {
 					if(element["killer"] && element["can"].id==id){
-						element["killer"]=false;
 						ret = true;
 					}
 				});
 				return ret;
 			}
+			
 
 			//Function that returns the listener for the collision event of the robots (can't create the listener directly in the loop)
 			function robotColliderEvent(genRobot){
 				return (e) => {
-					if (genRobot["body"] && ((e.contact.bi.id == genRobot["body"].id && checkArrowKiller(e.contact.bj.id)) || (e.contact.bj.id == genRobot["body"].id && checkArrowKiller(e.contact.bj.id)))) {
+					if (genRobot["body"] && ((e.contact.bi.id == genRobot["body"].id && checkArrowKiller(e.contact.bj.id)) || (e.contact.bj.id == genRobot["body"].id && checkArrowKiller(e.contact.bi.id)))) {
+						console.log("ci sono");
 						var arrowRepulseVelocity = 40;
 						var impactDir = new THREE.Vector3();
 						//For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
@@ -1500,6 +1514,21 @@
 				arrowAnimation.position.set(-10, -1, -10);
 				arrowAnimation.rotation.set(...[0,0,0]);
 			}
+
+		gltfLoader.load("gltf/iron_ball/scene.gltf", (gltf) => {
+			bombModel = gltf.scene.getObjectByName("Sketchfab_Scene");
+
+			bombModel.scale.setScalar( 0.11 );
+
+			gltf.scene.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.castShadow = true;
+					node.receiveShadow=true;
+					node.frustumCulled=false;
+			}
+		} );
+
+		});
 
 		gltfLoader.load("gltf/archer/scene.gltf", (gltf) => {
 			archerModel = gltf.scene.getObjectByName("Sketchfab_Scene");
@@ -2975,6 +3004,104 @@
 			shootC.onUpdate(updateFunctionUpperShoot);
 		});
 
+			function cannonShootArcher(){
+				function checkBombKiller(id){
+					var ret=false;
+					bombs.forEach(element => {
+						if(element["killer"] && element["can"].id==id){
+							ret = true;
+						}
+					});
+					return ret;
+				}
+
+				//Function that returns the listener for the collision event of the bombs (can't create the listener directly in the loop)
+				function bombColliderEvent(genBomb){
+					return (e) => {
+						if ( e.contact.bi.id == genBomb["can"].id ) {
+						e.contact.ni.negate( e.contact.ni );
+						}
+
+						if ( e.contact.ni.dot( new CANNON.Vec3( 0, 1, 0 ) ) > 0.5) {
+							genBomb["killer"] = false;
+						}
+						console.log("entered", cubeBody)
+						if (cubeBody && cannonBody && ((e.contact.bi.id == cubeBody.id && checkBombKiller(e.contact.bj.id)) || (e.contact.bj.id == cubeBody.id && checkBombKiller(e.contact.bi.id)))) {
+						var bombRepulseVelocity = 80;
+						var impactDir = new THREE.Vector3();
+						//For simplicity I consider the position of the cannon to calculate the direction of the impact (should be near the bomb impact direction)
+						impactDir.subVectors(  cubeBody.position,cannonBody.position);
+						impactDir.normalize();
+						// console.log(impactDir)
+						cubeBody.velocity.x = bombRepulseVelocity * impactDir.x;
+						cubeBody.velocity.z = bombRepulseVelocity * impactDir.z;
+					}
+
+
+					} 
+				}
+
+				var distance = new THREE.Vector3();
+				distance.subVectors( cannonBody.position, cubeBody.position );
+				
+				if(distance.dot(distance) < 800 && !justShotCannon1){
+					justShotCannon1=true;
+					setTimeout(function() {
+						justShotCannon1 = false;
+					},3000);
+					var bombSpawnPosition = cannonBody.position;
+
+					var genBombCan = new CANNON.Body({
+						mass: 10,
+						shape: new CANNON.Sphere(0.5),
+						position: new CANNON.Vec3(bombSpawnPosition.x, bombSpawnPosition.y, bombSpawnPosition.z),
+						linearDamping: 0.5,
+						angularDamping: 0.5,
+					});
+					
+					var genBombMesh = new THREE.Mesh( new THREE.SphereGeometry(0.5), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ));
+					
+					var genBombModel = bombModel.clone();
+					
+					var genBombModelParent = new THREE.Object3D();
+					//genBombModel.getWorldPosition(genBombModelParent.position);
+					genBombModel.position.set(0 , -0.4, 0);
+					genBombModelParent.add(genBombModel);
+					
+					scene.add( genBombMesh );
+					scene.add( genBombModelParent );
+					
+					world.addBody(genBombCan);
+
+					var bombVelocity = 100;
+
+					var impactDir = new THREE.Vector3();
+					//For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
+					impactDir.subVectors( cubeBody.position, cannonBody.position);
+					impactDir.normalize();
+					// console.log(impactDir)
+					genBombCan.velocity.x = bombVelocity * impactDir.x;
+					genBombCan.velocity.z = bombVelocity * impactDir.z;
+					genBombCan.velocity.y = bombVelocity * impactDir.y;
+
+					
+					var genbomb = {"can":genBombCan, "mesh":genBombMesh, "model":genBombModelParent, "killer" : true};
+					
+					bombs.push(genbomb);
+
+					genBombCan.addEventListener("collide", bombColliderEvent(genbomb));
+				}
+
+			
+		}
+
+		//CANNON (CANNON)
+		const cannonBody = new CANNON.Body({
+			shape: new CANNON.Box(new CANNON.Vec3(0.7, 1.5, 1.0)),
+			position: new CANNON.Vec3(0, 20, 164),
+			type: CANNON.Body.STATIC 
+		});
+		world.addBody(cannonBody);
 
 
 		//CUBE (CANNON)
@@ -2994,6 +3121,7 @@
 		function shoot(){
 			shootPre.start();
 		}
+
 
 		function throwArrow(){
 					
@@ -3135,6 +3263,12 @@
 			level3Unlock5.start();
 			level3Unlock6.start();
 		}
+
+		function obj3Completed(){
+			if(robots.length == 0){
+				console.log("LEVEL 3");
+			}
+		}
 		
 
 		
@@ -3198,10 +3332,7 @@
 			cubePhysMat,
 			{restitution : 0},
 			{friction : 1}
-			// {contactEquationRelaxation : 1000},
-			// {restitution : 0},
-			// {linearDamping : 1},
-		);
+			);
 
 		world.addContactMaterial(groundBoxContactMat);
 
@@ -3393,6 +3524,7 @@
 				playerAnimate(deltaTime);
 				enemiesAnimate(deltaTime);
 				obsPlatAnimate();
+				cannonShootArcher();
 
 				if(groundMesh && groundPlatModelParent){
 					groundMesh.position.copy(groundBody.position);
@@ -3469,6 +3601,25 @@
 							},0);
 							scene.remove(element["mesh"]);
 							arrows = arrows.filter(function(ele){ 
+								return ele != element; 
+							});
+						}
+				});
+
+				bombs.forEach(element => {
+					element["mesh"].position.copy(element["can"].position);
+					element["model"].position.copy(element["can"].position);
+					element["can"].quaternion.copy(element["model"].quaternion);
+					element["mesh"].quaternion.copy(element["model"].quaternion);
+
+					//Check if the bomb is falling down
+					if(element["can"].position.y < -5){
+							scene.remove(element["model"]);
+							setTimeout(function() {
+								world.removeBody(element["can"]);
+							},0);
+							scene.remove(element["mesh"]);
+							bombs = bombs.filter(function(ele){ 
 								return ele != element; 
 							});
 						}
@@ -3886,7 +4037,7 @@
 				
 				distance.subVectors( archerPos, enemyPosition );
 
-				if(distance.dot(distance) <  100){
+				if(distance.dot(distance) <  150){
 					
 					if(enemy.state != "RUNNING"){
 						enemy.tweens.idleA.stop();
@@ -3924,6 +4075,7 @@
 					robots = robots.filter(function(ele){ 
 						return ele != enemy; 
 					});
+					obj3Completed();
 				}
 			});
 			// console.log(str);
