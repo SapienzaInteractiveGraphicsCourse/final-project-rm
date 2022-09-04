@@ -228,6 +228,7 @@
 		var bombs = [];
 		var bombModel;
 		var justShotCannon1 = false;
+		var cannonBody, cannonModel, cannonModelParent, cannonMesh;
 
 		//CANNON AND THREE SETUP
 		const world = new CANNON.World({
@@ -439,7 +440,7 @@
 						new CANNON.Vec3(-10, 6.5, 148),
 						new CANNON.Vec3(-15, 6.5, 156),
 						new CANNON.Vec3(-10, 6.5, 164),
-						new CANNON.Vec3(-5, 6.5, 172),
+						new CANNON.Vec3(0, 6.5, 150),
 					];
 
 		
@@ -1528,6 +1529,42 @@
 			}
 		} );
 
+		});
+
+		gltfLoader.load("gltf/cannon/scene.gltf", (gltf) => {
+			cannonModel = gltf.scene.getObjectByName("Sketchfab_Scene");
+
+			cannonModel.scale.setScalar( 0.11 );
+
+			gltf.scene.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.castShadow = true;
+					node.receiveShadow=true;
+					node.frustumCulled=false;
+			}
+		} );
+
+		var genCannonModel = cannonModel.clone();
+
+		//CANNON (CANNON)
+		cannonBody = new CANNON.Body({
+			shape: new CANNON.Box(new CANNON.Vec3(1.5, 1.5, 1.5)),
+			position: new CANNON.Vec3(0, 8.4, 164),
+			type: CANNON.Body.STATIC 
+		});
+		world.addBody(cannonBody);
+
+		cannonMesh = new THREE.Mesh( new THREE.BoxGeometry(3,3,3), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ));
+		// scene.add(cannonMesh);
+		
+		cannonModelParent = new THREE.Object3D();
+		//genBombModel.getWorldPosition(cannonModelParent.position);
+		genCannonModel.position.set(0 , -cannonMesh.geometry.parameters.height/2, -8.8);
+		genCannonModel.rotation.set(...[0,Math.PI/2,0]);
+		cannonModelParent.add(genCannonModel);
+		
+		// scene.add( genBombMesh );
+		scene.add( cannonModelParent );
 		});
 
 		gltfLoader.load("gltf/archer/scene.gltf", (gltf) => {
@@ -3025,38 +3062,44 @@
 						if ( e.contact.ni.dot( new CANNON.Vec3( 0, 1, 0 ) ) > 0.5) {
 							genBomb["killer"] = false;
 						}
-						console.log("entered", cubeBody)
 						if (cubeBody && cannonBody && ((e.contact.bi.id == cubeBody.id && checkBombKiller(e.contact.bj.id)) || (e.contact.bj.id == cubeBody.id && checkBombKiller(e.contact.bi.id)))) {
-						var bombRepulseVelocity = 80;
-						var impactDir = new THREE.Vector3();
-						//For simplicity I consider the position of the cannon to calculate the direction of the impact (should be near the bomb impact direction)
-						impactDir.subVectors(  cubeBody.position,cannonBody.position);
-						impactDir.normalize();
-						// console.log(impactDir)
-						cubeBody.velocity.x = bombRepulseVelocity * impactDir.x;
-						cubeBody.velocity.z = bombRepulseVelocity * impactDir.z;
-					}
-
-
+							// console.log("preso")
+							var bombRepulseVelocity = 80;
+							var impactDir = new THREE.Vector3();
+							//For simplicity I consider the position of the cannon to calculate the direction of the impact (should be near the bomb impact direction)
+							impactDir.subVectors(  cubeBody.position,cannonBody.position);
+							impactDir.normalize();
+							// console.log(impactDir)
+							cubeBody.velocity.x = bombRepulseVelocity * impactDir.x;
+							cubeBody.velocity.z = bombRepulseVelocity * impactDir.z;
+						}
 					} 
 				}
 
-				var distance = new THREE.Vector3();
-				distance.subVectors( cannonBody.position, cubeBody.position );
 				
-				if(distance.dot(distance) < 800 && !justShotCannon1){
+				if(cubeBody.position.z > 135 && cubeBody.position.z < 180 && !justShotCannon1){
 					justShotCannon1=true;
 					setTimeout(function() {
 						justShotCannon1 = false;
 					},3000);
-					var bombSpawnPosition = cannonBody.position;
+
+					var desAngle = new THREE.Vector3()
+					desAngle.x = -(cannonBody.position.x - cubeBody.position.x);
+					desAngle.y = 0;
+					desAngle.z = -(cannonBody.position.z - cubeBody.position.z);
+					desAngle.normalize();
+
+
+					//TO FIX THE SPAWN POSITION
+					var bombSpawnPosition = new THREE.Vector3(cannonBody.position.x + desAngle.x * 2, cannonBody.position.y, cannonBody.position.z + desAngle.z * 2);
 
 					var genBombCan = new CANNON.Body({
-						mass: 10,
+						mass: 0,
 						shape: new CANNON.Sphere(0.5),
 						position: new CANNON.Vec3(bombSpawnPosition.x, bombSpawnPosition.y, bombSpawnPosition.z),
 						linearDamping: 0.5,
 						angularDamping: 0.5,
+						type : CANNON.Body.DYNAMIC
 					});
 					
 					var genBombMesh = new THREE.Mesh( new THREE.SphereGeometry(0.5), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ));
@@ -3068,22 +3111,23 @@
 					genBombModel.position.set(0 , -0.4, 0);
 					genBombModelParent.add(genBombModel);
 					
-					scene.add( genBombMesh );
+					// scene.add( genBombMesh );
 					scene.add( genBombModelParent );
 					
 					world.addBody(genBombCan);
 
-					var bombVelocity = 100;
+					var bombVelocity = 1;
 
 					var impactDir = new THREE.Vector3();
-					//For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
+					// //For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
 					impactDir.subVectors( cubeBody.position, cannonBody.position);
-					impactDir.normalize();
-					// console.log(impactDir)
-					genBombCan.velocity.x = bombVelocity * impactDir.x;
-					genBombCan.velocity.z = bombVelocity * impactDir.z;
-					genBombCan.velocity.y = bombVelocity * impactDir.y;
 
+					var startPosition = bombSpawnPosition;
+					var desPosition= cubeBody.position;
+					var shootVelocity = 0.04;
+					var distance = Math.abs(cannonBody.position.x - cubeBody.position.x) + Math.abs(cannonBody.position.z - cubeBody.position.z)
+					var time = distance / shootVelocity;
+					new TWEEN.Tween({"x": startPosition.x, "y": startPosition.y, "z": startPosition.z,}).to({"x": desPosition.x, "y": bombSpawnPosition.y, "z": desPosition.z},time).onComplete(() => {genBombCan.mass=10; genBombCan.updateMassProperties(); genBombCan.velocity.x = bombVelocity * impactDir.x; genBombCan.velocity.z = bombVelocity * impactDir.z; genBombCan.velocity.y = bombVelocity * impactDir.y;}).onUpdate((object)=>{genBombCan.position.x=object["x"];genBombCan.position.y=object["y"];genBombCan.position.z=object["z"];}).start();
 					
 					var genbomb = {"can":genBombCan, "mesh":genBombMesh, "model":genBombModelParent, "killer" : true};
 					
@@ -3095,13 +3139,11 @@
 			
 		}
 
-		//CANNON (CANNON)
-		const cannonBody = new CANNON.Body({
-			shape: new CANNON.Box(new CANNON.Vec3(0.7, 1.5, 1.0)),
-			position: new CANNON.Vec3(0, 20, 164),
-			type: CANNON.Body.STATIC 
-		});
-		world.addBody(cannonBody);
+
+		
+		new TWEEN.Tween({"z": 150}).to({"z": 170},2000).repeat(Infinity).yoyo(true).onUpdate((object)=>{cannonBody.position.z=object["z"]; obsPlat[18].body.position.z=object["z"]}).start();
+		
+
 
 
 		//CUBE (CANNON)
@@ -3110,7 +3152,7 @@
 		const cubeBody = new CANNON.Body({
 			mass: 80,
 			shape: new CANNON.Box(new CANNON.Vec3(0.7, 1.5, 1.0)),
-			position: new CANNON.Vec3(0, 2.8, 0),
+			position: new CANNON.Vec3(0, 2.8 + 6.5, 0 + 130),
 			material: cubePhysMat,
 			linearDamping: 0.5,
  		    angularDamping: 0.5,
@@ -3524,6 +3566,7 @@
 				playerAnimate(deltaTime);
 				enemiesAnimate(deltaTime);
 				obsPlatAnimate();
+				cannonAnimate();
 				cannonShootArcher();
 
 				if(groundMesh && groundPlatModelParent){
@@ -3543,6 +3586,13 @@
 				if(cubeBody && archerModelParent){
 					archerModelParent.position.copy(cubeBody.position);
 					archerModelParent.quaternion.copy(cubeBody.quaternion);
+				}
+
+				if(cannonBody && cannonModelParent){
+					cannonModelParent.position.copy(cannonBody.position);
+					cannonModelParent.quaternion.copy(cannonMesh.quaternion);
+					cannonMesh.position.copy(cannonBody.position);
+					cannonBody.quaternion.copy(cannonMesh.quaternion);
 				}
 
 				if(targetBody1 && targetModelParent1 && targetMesh1){
@@ -3651,6 +3701,15 @@
 		};
 
 
+		//Animate the cannon
+		function cannonAnimate(){
+			var desAngle = Math.atan2(
+						(cannonBody.position.x - cubeBody.position.x),
+						(cannonBody.position.z - cubeBody.position.z));
+		
+			//Desired final direction, that has to be reached slowly (using rotateTowards)
+			cannonMesh.quaternion.rotateTowards((new THREE.Quaternion()).setFromAxisAngle(new THREE.Vector3(0,1,0), desAngle + Math.PI/2), 0.2);
+		}
 
 		//Set elements of archer useful for animations
 		function populateArcherStructure(){
