@@ -229,6 +229,7 @@
 		var bombModel;
 		var justShotCannon1 = false;
 		var cannonBody, cannonModel, cannonModelParent, cannonMesh;
+		var slModel, slModelParent;
 
 		//CANNON AND THREE SETUP
 		const world = new CANNON.World({
@@ -353,6 +354,33 @@
 					node.frustumCulled=false;
 			}
 			} );
+		});		
+		
+		gltfLoader.load("gltf/starting_line/scene.gltf", (gltf) => {
+			slModel = gltf.scene.getObjectByName("Sketchfab_Scene");
+			slModel.scale.setScalar( 90 );
+
+			gltf.scene.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.castShadow = true;
+					node.receiveShadow=true;
+					node.frustumCulled=false;
+			}
+			} );
+
+			var genSlModel = slModel.clone();
+			slModelParent = new THREE.Object3D();
+			//slModel.getWorldPosition(slModelParent.position);
+			genSlModel.rotation.set(...[0,0,0]);
+			genSlModel.position.set(47.5,0.5,-17.5);
+			slModelParent.add(genSlModel);
+			slModelParent.position.set(0, 6.5, 185);
+			scene.add(slModelParent);
+
+			
+			var slFloating = new TWEEN.Tween({y:slModelParent.position.y}).to({y:slModelParent.position.y+0.2}, 200).onUpdate((object)=>{if(slModelParent)slModelParent.position.y= object.y;});
+			slFloating.repeat(Infinity).yoyo(true);
+			slFloating.start();
 		});
 
 		gltfLoader.load("gltf/main_plat/scene.gltf", (gltf) => {
@@ -441,6 +469,18 @@
 						new CANNON.Vec3(-15, 6.5, 156),
 						new CANNON.Vec3(-10, 6.5, 164),
 						new CANNON.Vec3(0, 6.5, 150),
+						new CANNON.Vec3(-5, 6.5, 172),
+						new CANNON.Vec3(13, 6.5, 185),
+						new CANNON.Vec3(-13, 6.5, 185),
+						new CANNON.Vec3(0, 6.5, 180),
+						new CANNON.Vec3(0, 6.5, 185),
+						new CANNON.Vec3(0, 6.5, 190),
+						new CANNON.Vec3(0, 6.5, 205),
+						new CANNON.Vec3(5, 6.5, 215),
+						new CANNON.Vec3(0, 6.5, 225),
+						new CANNON.Vec3(-5, 6.5, 235),
+						new CANNON.Vec3(-10, 6.5, 225),
+						new CANNON.Vec3(-25, 6.5, 225),
 					];
 
 		
@@ -577,6 +617,7 @@
 			var positions = [new CANNON.Vec3(5, 8.7, 117.5),
 						new CANNON.Vec3(-5, 8.7, 117.5),
 						new CANNON.Vec3(0, 8.7, 122.5),
+						new CANNON.Vec3(0, 8.7, 190),
 						// new CANNON.Vec3(0, 8.7, 5)
 										];
 
@@ -601,7 +642,7 @@
 						var arrowRepulseVelocity = 40;
 						var impactDir = new THREE.Vector3();
 						//For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
-						impactDir.subVectors( genRobot["body"].position, cubeBody.position,);
+						impactDir.subVectors(genRobot["body"].position, cubeBody.position);
 						impactDir.normalize();
 						// console.log(impactDir)
 						genRobot["body"].velocity.x = arrowRepulseVelocity * impactDir.x;
@@ -2021,7 +2062,7 @@
 													"rightFootRx" : -0.0010, "rightFootRy" : -0.0000, "rightFootRz" : 0.0001,
 													"rightToeBaseRx" : 0.0000, "rightToeBaseRy" : -0.0000, "rightToeBaseRz" : -0.0000,
 													"rightToe_EndRx" : 0.0000, "rightToe_EndRy" : -0.0000, "rightToe_EndRz" : -0.0000
-													}, 1000);
+													}, 200);
 			
 			idleB = new TWEEN.Tween(startRotations).to({
 													"hipsRx" : -1.5708, "hipsRy" : -0.0000, "hipsRz" : 0.0000,
@@ -2237,7 +2278,7 @@
 													"rightFootRx" : -0.0010, "rightFootRy" : -0.0000, "rightFootRz" : 0.0001,
 													"rightToeBaseRx" : 0.0000, "rightToeBaseRy" : -0.0000, "rightToeBaseRz" : -0.0000,
 													"rightToe_EndRx" : 0.0000, "rightToe_EndRy" : -0.0000, "rightToe_EndRz" : -0.0000
-													}, 800);
+													}, 200);
 
 			walkA = new TWEEN.Tween(startRotations).to({													
 													"hipsRx" : -1.5708, "hipsRy" : -0.0000, "hipsRz" : 0.0000,
@@ -3077,7 +3118,7 @@
 				}
 
 				
-				if(cubeBody.position.z > 135 && cubeBody.position.z < 180 && !justShotCannon1){
+				if(cubeBody.position.z > 135 && cubeBody.position.z < 172 && !justShotCannon1){
 					justShotCannon1=true;
 					setTimeout(function() {
 						justShotCannon1 = false;
@@ -3141,7 +3182,7 @@
 
 
 		
-		new TWEEN.Tween({"z": 150}).to({"z": 170},2000).repeat(Infinity).yoyo(true).onUpdate((object)=>{cannonBody.position.z=object["z"]; obsPlat[18].body.position.z=object["z"]}).start();
+		new TWEEN.Tween({"z": 150}).to({"z": 162},1500).repeat(Infinity).yoyo(true).onUpdate((object)=>{cannonBody.position.z=object["z"]; obsPlat[18].body.position.z=object["z"]}).start();
 		
 
 
@@ -4096,7 +4137,7 @@
 				
 				distance.subVectors( archerPos, enemyPosition );
 
-				if(distance.dot(distance) <  150){
+				if(distance.dot(distance) <  1){
 					
 					if(enemy.state != "RUNNING"){
 						enemy.tweens.idleA.stop();
