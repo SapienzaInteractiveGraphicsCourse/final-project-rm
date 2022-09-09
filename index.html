@@ -479,8 +479,21 @@
 						new CANNON.Vec3(5, 6.5, 215),
 						new CANNON.Vec3(0, 6.5, 225),
 						new CANNON.Vec3(-5, 6.5, 235),
-						new CANNON.Vec3(-10, 6.5, 225),
-						new CANNON.Vec3(-25, 6.5, 225),
+						new CANNON.Vec3(-10, 6.5, 245),
+						new CANNON.Vec3(-0, 6.5, 250),
+						new CANNON.Vec3(-0, 6.5, 265),
+						new CANNON.Vec3(15, 6.5, 265),
+						new CANNON.Vec3(30, 6.5, 265),
+						new CANNON.Vec3(30, 6.5, 250),
+						new CANNON.Vec3(45, 6.5, 250),
+						new CANNON.Vec3(60, 6.5, 250),
+						new CANNON.Vec3(60, 6.5, 265),
+						new CANNON.Vec3(60, 6.5, 280),
+						new CANNON.Vec3(60, 6.5, 295),
+						new CANNON.Vec3(45, 6.5, 295),
+						new CANNON.Vec3(30, 6.5, 295),
+						new CANNON.Vec3(15, 6.5, 295),
+						new CANNON.Vec3(0, 6.5, 295)
 					];
 
 		
@@ -510,11 +523,12 @@
 
 			var genPlatBody = new CANNON.Body({
 				shape: new CANNON.Cylinder(2.5,2.5,0.5,8),
-				type: CANNON.Body.KINEMATIC,
+				type: CANNON.Body.DYNAMIC,
 				material: groundPhysMat,
 				position: positions[i],
 				linearDamping: 1,
- 		    	angularDamping: 1
+ 		    	angularDamping: 1,
+				mass : 0
 			});
 			world.addBody(genPlatBody);
 			genPlatBody.quaternion.setFromEuler(0, 0, 0);
@@ -530,10 +544,13 @@
 			rotateHelixTween.repeat(Infinity);
 			rotateHelixTween.start();
 
+			element["rotateHelixTween"] = rotateHelixTween;
+
 			var rotatePlatFloating = new TWEEN.Tween({y:element["body"].position.y}).to({y:element["body"].position.y+0.2}, 200).onUpdate((object)=>{if(element["body"])element["body"].position.y= object.y;});
 			rotatePlatFloating.repeat(Infinity).yoyo(true);
 			rotatePlatFloating.start();
 
+			element["rotatePlatFloating"] = rotatePlatFloating;
 			rotatePlatFloatingTweens.push(rotatePlatFloating);
 		});
 		var helix = genPlatModel.getObjectByName("Helix");
@@ -3082,6 +3099,25 @@
 			shootC.onUpdate(updateFunctionUpperShoot);
 		});
 
+		var currentObsPlat = 24;
+		var canFallPlatform = true;
+		function level4Animate(){
+			if(cubeBody.position.z > 195 && cubeBody.position.z < 300 && canFallPlatform && obsPlat[currentObsPlat]){
+				console.log("ciao")
+					canFallPlatform=false;
+					setTimeout(function() {
+						canFallPlatform = true;
+					},2000);
+					
+					obsPlat[currentObsPlat]["rotatePlatFloating"].stop();
+					obsPlat[currentObsPlat]["body"].mass=100;
+					obsPlat[currentObsPlat]["body"].linearDamping=0;
+					obsPlat[currentObsPlat]["body"].angularDamping=0;
+					obsPlat[currentObsPlat]["body"].updateMassProperties();
+					currentObsPlat++;
+				}
+		}
+
 			function cannonShootArcher(){
 				function checkBombKiller(id){
 					var ret=false;
@@ -3193,7 +3229,7 @@
 		const cubeBody = new CANNON.Body({
 			mass: 80,
 			shape: new CANNON.Box(new CANNON.Vec3(0.7, 1.5, 1.0)),
-			position: new CANNON.Vec3(0, 2.8 + 6.5, 0 + 130),
+			position: new CANNON.Vec3(0, 2.8 + 6., 0 + 180),
 			material: cubePhysMat,
 			linearDamping: 0.5,
  		    angularDamping: 0.5,
@@ -3609,6 +3645,7 @@
 				obsPlatAnimate();
 				cannonAnimate();
 				cannonShootArcher();
+				level4Animate();
 
 				if(groundMesh && groundPlatModelParent){
 					groundMesh.position.copy(groundBody.position);
