@@ -74,11 +74,44 @@
 		var slModel, slModelParent;
         var targetBody1,targetMesh1, targetModelParent1;
         var targets=[];
-        var targetSpeed = 0.1;
-        var horizontalMax = 100;
-        var verticalMax = 100;
+        var targetSpeed = 0.01;
+        var horizontalMax = 50;
+        var verticalMax = 50;
         var generatingStep = 4;
         var targetsDepth = 20;
+
+        const raycaster = new THREE.Raycaster();
+        const pointer = new THREE.Vector2();
+
+        function onPointerClick( event ) {
+
+            // calculate pointer position in normalized device coordinates
+            // (-1 to +1) for both components
+
+            pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+            pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+            // update the picking ray with the camera and pointer position
+            raycaster.setFromCamera( pointer, camera );
+
+            // calculate objects intersecting the picking ray
+            const intersects = raycaster.intersectObjects( scene.children );
+
+            if(intersects[0]){
+                targets.forEach(element => {
+                    if(element["mesh"] == intersects[0].object){
+                        console.log(element["mesh"] + intersects[0].object)
+                        element["body"].mass = 100;
+                        element["body"].updateMassProperties();
+                    }
+                });
+            }
+
+        }
+
+        window.addEventListener( 'pointerdown', onPointerClick );
+
+
 
 		//CANNON AND THREE SETUP
 		const world = new CANNON.World({
@@ -125,9 +158,9 @@
 		
 
         var positions = [];
-        for(var i = 0 ; i < horizontalMax / generatingStep; i++){
-            for(var j = 0 ; j < verticalMax / generatingStep; j++){
-                positions.push(new THREE.Vector3(- horizontalMax + generatingStep * i, - verticalMax + generatingStep * j, targetsDepth));
+        for(var i = 0 ; i < (horizontalMax*2) / generatingStep; i++){
+            for(var j = 0 ; j < (verticalMax*2) / generatingStep; j++){
+                positions.push(new THREE.Vector3( - horizontalMax + generatingStep * i, - verticalMax + generatingStep * j, targetsDepth));
             }
         }
 
@@ -148,54 +181,28 @@
             for(var i=0; i<positions.length; i++){
                createTarget(positions[i]);
             }
-
-    
-            // targetBody1.addEventListener("collide", function(e){
-            //     //We've to check if one of the arrows hits the target1
-            //     if (targetBody1 && (e.contact.bi.id == targetBody1.id || e.contact.bj.id == targetBody1.id)) {
-            //         var arrowRepulseVelocity = 20;
-            //         var impactDir = new THREE.Vector3();
-            //         //For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
-            //         impactDir.subVectors( targetBody1.position, cubeBody.position,);
-            //         impactDir.normalize();
-            //         // console.log(impactDir)
-            //         targetBody1.velocity.x = arrowRepulseVelocity * impactDir.x;
-            //         targetBody1.velocity.z = arrowRepulseVelocity * impactDir.z;
-            //         removeArrowByID(e.contact.bi.id);
-            //         removeArrowByID(e.contact.bj.id);
-            //         target1hit=true;
-            //         targetBody1.mass=100;
-            //         targetBody1.updateMassProperties();
-            //         targetMovement1.stop();
-            //         setTimeout(function() {
-            //             scene.remove(targetModelParent1);
-            //             world.removeBody(targetBody1);
-            //             scene.remove(targetMesh1);
-            //         },10000);
-            //         obj1Completed();
-            //     }
-            // });
 		});
 
 	function createTarget(position){
         var genTargetModelParent = new THREE.Object3D();
-                var genTargetModel = targetModel.clone();
-                genTargetModel.getWorldPosition(genTargetModelParent.position);
-                genTargetModel.rotation.set(...[Math.PI/2,0,0]);
-                genTargetModelParent.add(genTargetModel);
-                scene.add(genTargetModelParent);
-    
-                var genTargetBody = new CANNON.Body({
-                    shape: new CANNON.Cylinder(1,1,0.5,10),
-                    position: position,
-                    type : CANNON.Body.DYNAMIC,
-                    mass:0
-                });
-                var genTargetMesh = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ) );
-                // scene.add(genTargetMesh);
-                world.addBody(genTargetBody);		
-                genTargetBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),Math.PI/2);
-                targets.push({"body" : genTargetBody, "mesh" : genTargetMesh, "model" : genTargetModelParent})
+        var genTargetModel = targetModel.clone();
+        genTargetModel.getWorldPosition(genTargetModelParent.position);
+        genTargetModel.rotation.set(...[Math.PI/2,0,0]);
+        genTargetModelParent.add(genTargetModel);
+        scene.add(genTargetModelParent);
+
+        var genTargetBody = new CANNON.Body({
+            shape: new CANNON.Cylinder(1,1,0.5,10),
+            position: position,
+            type : CANNON.Body.DYNAMIC,
+            mass:0
+        });
+        var genTargetMesh = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ) );
+        scene.add(genTargetMesh);
+        world.addBody(genTargetBody);		
+        genTargetBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),Math.PI/2);
+
+        targets.push({"body" : genTargetBody, "mesh" : genTargetMesh, "model" : genTargetModelParent})
     }
 
 
@@ -212,7 +219,7 @@
 
 
 				targets.forEach(element => {
-                    // element["body"].position.x -= targetSpeed;
+                     element["body"].position.x -= targetSpeed;
 
                     element["model"].position.copy(element["body"].position);
 					element["model"].quaternion.copy(element["body"].quaternion);
@@ -251,6 +258,7 @@
 				// 		}
 				// });
             }
+
 
 			renderer.render( scene, camera );
 
