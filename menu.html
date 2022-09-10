@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first three.js app</title>
+		<style>
+			
+		</style>
+	</head>
+	<body>
+        <!-- Remove this when import maps will be widely supported -->
+		<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+
+
+        <!-- Needed to make the import "three" work-->
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../node_modules/three/build/three.module.js"
+				}
+			}
+		</script>
+
+        <!-- Initial loading bar -->
+        <div id="gameLoading_bg" style="text-align:center; position: absolute; width: 100%; height: 100%; background-color: rgba(0,0,0,1);">
+            <div id="gameLoading_fg" style="text-align:center; position:absolute;     width: 100em; height: auto; margin: 0 auto; padding: 10px; margin-top:20%;  position: relative; ">
+                <label id="gameLoading_label" style=" font-size: 3em; color:white;" for="gameLoading_fb_bar">Loading in progress:</label><br>
+                <progress  id="gameLoading_fg_bar" style="width: 100em; height: 3em;" max="100" ></progress>
+            </div>
+        </div>
+
+		<script type="module">
+        import * as THREE from '../node_modules/three/build/three.module.js';
+        import { OrbitControls } from '../node_modules/three/examples/jsm/controls/ModifiedOrbitControls.js';
+		import * as CANNON from '../node_modules/cannon-es/dist/cannon-es.js';
+		import {GLTFLoader} from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js';
+		import { TWEEN } from '../node_modules/three/examples/jsm/libs/tween.module.min.js'
+		import { Sky } from '../node_modules/three/examples/jsm/objects/Sky.js';
+
+		var gameLoaded = false;
+		var animateScene = false;
+		var relDir=0;
+		var playerState = "Idle";
+		var cameraTarget = new THREE.Vector3();
+		var mixer;
+		var archerModel, archerModelParent;
+		var arrowModel, targetModel, targetModel1, targetModel2,targetModel3, targetModel4;
+		var targetModelParent1, targetModelParent2, targetModelParent3, targetModelParent4;
+		var archerStructure = {};
+		var canShoot=true;
+		var lastExecutedAnimation = "Idle";
+		var idle, idleB, runA, runB, runC, runD, jumpA, jumpB, walkA, walkB, walkC, walkD, shootPre, shootA, shootB, shootC, targetMovement1, targetMovement2, targetMovement3, targetMovement4, level2Unlock, level3Unlock1, level3Unlock2, level3Unlock3, level3Unlock4, level3Unlock5, level3Unlock6;
+		var backObsPlat1, fwdObsPlat1, backObsPlat2, fwdObsPlat2, backObsPlat3, fwdObsPlat3;
+		var arrows =[];
+		var target1hit = false, target2hit = false, target3hit=false, target4hit=false;
+		var prevPlayerPosition;
+		var obsPlatTweens = [];
+		var obsPlat=[];
+		var robots=[];
+		var robotsTweens = [];
+		var oldx = 0, oldz = 0, oldy = 10;
+		var cameraAngle, desQuat;
+		var rotatingPlatModel;
+		var rotatePlatFloatingTweens =[];
+		var skyboxModel, mainPlatModel, groundPlatModelParent, level2PlatformModelParent, level3PlatformModelParent;
+		var pause_bg = document.getElementById("pause_bg");
+		var pause_fg = document.getElementById("pause_fg");
+		var justRepulsedArcher = false;
+		var arrowAnimation, archerRightHand;
+		var bombs = [];
+		var bombModel;
+		var justShotCannon1 = false;
+		var cannonBody, cannonModel, cannonModelParent, cannonMesh;
+		var slModel, slModelParent;
+        var targetBody1,targetMesh1, targetModelParent1;
+        var targets=[];
+        var targetSpeed = 0.1;
+        var horizontalMax = 100;
+        var verticalMax = 100;
+        var generatingStep = 4;
+        var targetsDepth = 20;
+
+		//CANNON AND THREE SETUP
+		const world = new CANNON.World({
+			gravity: new CANNON.Vec3(0, -20, 0)
+		});
+
+		const scene = new THREE.Scene();
+		scene.background = new THREE.Color( 0x00C0F0 );
+		
+		const camera = new THREE.PerspectiveCamera(
+			45,
+			window.innerWidth / window.innerHeight,
+			0.1,
+			1000
+			);
+			
+			
+			const renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.shadowMap.enabled = true;
+			document.body.appendChild( renderer.domElement );
+			renderer.toneMappingExposure = 0.5;
+			
+			camera.position.set(0,0,-5);
+			camera.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), Math.PI);
+
+
+		
+		//LIGHT SETUP
+
+		const ambLight = new THREE.AmbientLight(0xFFFFFF, 1);
+		scene.add(ambLight);
+
+		//CUBE (THREE)
+
+		
+		const loadingManager = new THREE.LoadingManager();
+        const gltfLoader = new GLTFLoader(loadingManager);
+		loadingManager.onLoad = () => {gameLoaded = true; document.querySelector('#gameLoading_fg').style.display = 'none'; document.querySelector('#gameLoading_bg').style.display = 'none';};
+		loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
+			document.querySelector('#gameLoading_fg_bar').setAttribute("value",`${itemsLoaded / itemsTotal * 100 | 0}`);
+		};
+
+		
+
+        var positions = [];
+        for(var i = 0 ; i < horizontalMax / generatingStep; i++){
+            for(var j = 0 ; j < verticalMax / generatingStep; j++){
+                positions.push(new THREE.Vector3(- horizontalMax + generatingStep * i, - verticalMax + generatingStep * j, targetsDepth));
+            }
+        }
+
+		gltfLoader.load("gltf/target/scene.gltf", (gltf) => {
+			targetModel = gltf.scene.getObjectByName("Sketchfab_Scene");
+			targetModel.scale.setScalar( 0.3 );
+
+			
+			gltf.scene.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.castShadow = true;
+					node.receiveShadow=true;
+					node.frustumCulled=false;
+			}
+			} );
+
+
+            for(var i=0; i<positions.length; i++){
+               createTarget(positions[i]);
+            }
+
+    
+            // targetBody1.addEventListener("collide", function(e){
+            //     //We've to check if one of the arrows hits the target1
+            //     if (targetBody1 && (e.contact.bi.id == targetBody1.id || e.contact.bj.id == targetBody1.id)) {
+            //         var arrowRepulseVelocity = 20;
+            //         var impactDir = new THREE.Vector3();
+            //         //For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
+            //         impactDir.subVectors( targetBody1.position, cubeBody.position,);
+            //         impactDir.normalize();
+            //         // console.log(impactDir)
+            //         targetBody1.velocity.x = arrowRepulseVelocity * impactDir.x;
+            //         targetBody1.velocity.z = arrowRepulseVelocity * impactDir.z;
+            //         removeArrowByID(e.contact.bi.id);
+            //         removeArrowByID(e.contact.bj.id);
+            //         target1hit=true;
+            //         targetBody1.mass=100;
+            //         targetBody1.updateMassProperties();
+            //         targetMovement1.stop();
+            //         setTimeout(function() {
+            //             scene.remove(targetModelParent1);
+            //             world.removeBody(targetBody1);
+            //             scene.remove(targetMesh1);
+            //         },10000);
+            //         obj1Completed();
+            //     }
+            // });
+		});
+
+	function createTarget(position){
+        var genTargetModelParent = new THREE.Object3D();
+                var genTargetModel = targetModel.clone();
+                genTargetModel.getWorldPosition(genTargetModelParent.position);
+                genTargetModel.rotation.set(...[Math.PI/2,0,0]);
+                genTargetModelParent.add(genTargetModel);
+                scene.add(genTargetModelParent);
+    
+                var genTargetBody = new CANNON.Body({
+                    shape: new CANNON.Cylinder(1,1,0.5,10),
+                    position: position,
+                    type : CANNON.Body.DYNAMIC,
+                    mass:0
+                });
+                var genTargetMesh = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ) );
+                // scene.add(genTargetMesh);
+                world.addBody(genTargetBody);		
+                genTargetBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),Math.PI/2);
+                targets.push({"body" : genTargetBody, "mesh" : genTargetMesh, "model" : genTargetModelParent})
+    }
+
+
+
+		const time = new THREE.Clock();
+		var deltaTime = 0;
+		var elapsedTime = 0;
+		function animate() {
+			deltaTime = time.getDelta();
+			if(animateScene == false){
+				elapsedTime = time.getElapsedTime() * 1000;
+				TWEEN.update();
+				world.step(1/60,deltaTime,10);
+
+
+				targets.forEach(element => {
+                    // element["body"].position.x -= targetSpeed;
+
+                    element["model"].position.copy(element["body"].position);
+					element["model"].quaternion.copy(element["body"].quaternion);
+					element["mesh"].quaternion.copy(element["body"].quaternion);
+					element["mesh"].position.copy(element["body"].position);
+                    
+					//Check if the target is falling down or out of scene
+					if(element["body"].position.y < -verticalMax || element["body"].position.x < -verticalMax){
+							scene.remove(element["model"]);
+							setTimeout(function() {
+								world.removeBody(element["body"]);
+							},0);
+							scene.remove(element["mesh"]);
+							targets = targets.filter(function(ele){ 
+								return ele != element; 
+							});
+						}
+                });
+   
+                // arrows.forEach(element => {
+                //     element["mesh"].position.copy(element["can"].position);
+                //     element["model"].position.copy(element["can"].position);
+                //     element["can"].quaternion.copy(element["model"].quaternion);
+                //     element["mesh"].quaternion.copy(element["model"].quaternion);
+
+				// 	//Check if the arrow is falling down
+				// 	if(element["can"].position.y < -5){
+				// 			scene.remove(element["model"]);
+				// 			setTimeout(function() {
+				// 				world.removeBody(element["can"]);
+				// 			},0);
+				// 			scene.remove(element["mesh"]);
+				// 			arrows = arrows.filter(function(ele){ 
+				// 				return ele != element; 
+				// 			});
+				// 		}
+				// });
+            }
+
+			renderer.render( scene, camera );
+
+			requestAnimationFrame(animate);
+		};
+
+		requestAnimationFrame(animate);
+
+		function dumpObject(obj, lines = [], isLast = true, prefix = '') {
+            const localPrefix = isLast ? '└─' : '├─';
+            lines.push(`${prefix}${prefix ? localPrefix : ''}${obj.name || '*no-name*'} [${obj.type}]`);
+            const newPrefix = prefix + (isLast ? '  ' : '│ ');
+            const lastNdx = obj.children.length - 1;
+            obj.children.forEach((child, ndx) => {
+                const isLast = ndx === lastNdx;
+                dumpObject(child, lines, isLast, newPrefix);
+            });
+            return lines;
+        }
+
+		</script>
+	</body>
+</html>

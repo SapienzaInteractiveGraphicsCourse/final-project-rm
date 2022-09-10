@@ -313,27 +313,27 @@
 		//cubeMesh.receiveShadow=true;
 		// var cubeMesh;
 		const loadingManager = new THREE.LoadingManager();
+		const gltfLoader = new GLTFLoader(loadingManager);
 		loadingManager.onLoad = () => {gameLoaded = true; createArrowAnimation(); document.querySelector('#gameLoading_fg').style.display = 'none'; document.querySelector('#gameLoading_bg').style.display = 'none'; pause_fg.style.display = ''; pause_bg.style.display = '';};
 		loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
 			document.querySelector('#gameLoading_fg_bar').setAttribute("value",`${itemsLoaded / itemsTotal * 100 | 0}`);
 		};
-		const gltfLoader = new GLTFLoader(loadingManager);
 		//GROUND (THREE)
 		const groundGeo = new THREE.CylinderGeometry( 18, 18, 1, 6 );
 		const groundMat = new THREE.MeshPhongMaterial({ 
 			color: 0x00ff00,
 			side: THREE.DoubleSide,
 			wireframe: true
-			});
+		});
 		const groundMesh = new THREE.Mesh(groundGeo, groundMat);
 		//scene.add(groundMesh);
 		groundMesh.receiveShadow=true;
 		groundMesh.castshadow=true;
-
+		
 		//GROUND (CANNON)
 		const groundPhysMat = new CANNON.Material();
 
-
+		
 		const groundBody = new CANNON.Body({
 			shape: new CANNON.Cylinder(18,18,1,6),
 			type: CANNON.Body.KINEMATIC,
@@ -341,7 +341,7 @@
 		});
 		world.addBody(groundBody);
 		groundBody.quaternion.setFromEuler(0, Math.PI/6, 0);
-
+		
 
 		gltfLoader.load("gltf/arrow/scene.gltf", (gltf) => {
 			arrowModel = gltf.scene.getObjectByName("Sketchfab_Scene");
@@ -3102,8 +3102,7 @@
 		var currentObsPlat = 24;
 		var canFallPlatform = true;
 		function level4Animate(){
-			if(cubeBody.position.z > 195 && cubeBody.position.z < 300 && canFallPlatform && obsPlat[currentObsPlat]){
-				console.log("ciao")
+			if(cubeBody.position.z > 195 && cubeBody.position.z < 295 && canFallPlatform && obsPlat[currentObsPlat]){
 					canFallPlatform=false;
 					setTimeout(function() {
 						canFallPlatform = true;
@@ -3114,6 +3113,16 @@
 					obsPlat[currentObsPlat]["body"].linearDamping=0;
 					obsPlat[currentObsPlat]["body"].angularDamping=0;
 					obsPlat[currentObsPlat]["body"].updateMassProperties();
+					setTimeout(function() {
+						scene.remove(obsPlat[currentObsPlat]["model"]);
+						setTimeout(function() {
+							world.removeBody(obsPlat[currentObsPlat]["body"]);
+						},0);
+						scene.remove(obsPlat[currentObsPlat]["mesh"]);
+						obsPlat = obsPlat.filter(function(ele){ 
+							return ele != obsPlat[currentObsPlat]; 
+						});
+					},5000);
 					currentObsPlat++;
 				}
 		}
