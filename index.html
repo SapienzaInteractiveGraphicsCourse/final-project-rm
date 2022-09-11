@@ -526,8 +526,6 @@
 				type: CANNON.Body.DYNAMIC,
 				material: groundPhysMat,
 				position: positions[i],
-				linearDamping: 1,
- 		    	angularDamping: 1,
 				mass : 0
 			});
 			world.addBody(genPlatBody);
@@ -664,6 +662,10 @@
 						// console.log(impactDir)
 						genRobot["body"].velocity.x = arrowRepulseVelocity * impactDir.x;
 						genRobot["body"].velocity.z = arrowRepulseVelocity * impactDir.z;
+						genRobot["active"] = false;
+						setTimeout(function() {
+							genRobot["active"]=true;
+						},1000);
 					}
 					else if((justRepulsedArcher == false && genRobot["body"] && cubeBody) && ((e.contact.bi.id == genRobot["body"].id && e.contact.bj.id == cubeBody.id || (e.contact.bj.id == genRobot["body"].id && e.contact.bi.id == cubeBody.id)))){
 						justRepulsedArcher = true;
@@ -1558,7 +1560,7 @@
 				tweens["runA"] = runAEnemy;
 				tweens["runB"] = runBEnemy;
 				
-				var genRobot = {"mesh" : genRobotMesh, "body" : genRobotBody, "model": robotModelParent, "state": "IDLE", "tweens": tweens};
+				var genRobot = {"mesh" : genRobotMesh, "body" : genRobotBody, "model": robotModelParent, "state": "IDLE", "tweens": tweens, "active" : true};
 				robots.push(genRobot);
 
 				idleAEnemy.start();
@@ -3102,7 +3104,7 @@
 		var currentObsPlat = 24;
 		var canFallPlatform = true;
 		function level4Animate(){
-			if(cubeBody.position.z > 195 && cubeBody.position.z < 295 && canFallPlatform && obsPlat[currentObsPlat]){
+			if(cubeBody.position.z > 190 && cubeBody.position.z < 295 && canFallPlatform && obsPlat[currentObsPlat]){
 					canFallPlatform=false;
 					setTimeout(function() {
 						canFallPlatform = true;
@@ -3110,19 +3112,7 @@
 					
 					obsPlat[currentObsPlat]["rotatePlatFloating"].stop();
 					obsPlat[currentObsPlat]["body"].mass=100;
-					obsPlat[currentObsPlat]["body"].linearDamping=0;
-					obsPlat[currentObsPlat]["body"].angularDamping=0;
 					obsPlat[currentObsPlat]["body"].updateMassProperties();
-					setTimeout(function() {
-						scene.remove(obsPlat[currentObsPlat]["model"]);
-						setTimeout(function() {
-							world.removeBody(obsPlat[currentObsPlat]["body"]);
-						},0);
-						scene.remove(obsPlat[currentObsPlat]["mesh"]);
-						obsPlat = obsPlat.filter(function(ele){ 
-							return ele != obsPlat[currentObsPlat]; 
-						});
-					},5000);
 					currentObsPlat++;
 				}
 		}
@@ -3767,6 +3757,18 @@
 					element["mesh"].quaternion.copy(element["body"].quaternion);
 					element["model"].position.copy(element["body"].position);
 					element["model"].quaternion.copy(element["body"].quaternion);
+
+					if(element["body"].position.y < -10){
+						scene.remove(element["model"]);
+						setTimeout(function() {
+							world.removeBody(element["body"]);
+						},0);
+						scene.remove(element["mesh"]);
+						obsPlat = obsPlat.filter(function(ele){ 
+							return ele != element; 
+						});
+						currentObsPlat--;
+					}
 				});
 
 				robots.forEach(element => {
@@ -4183,7 +4185,7 @@
 				
 				distance.subVectors( archerPos, enemyPosition );
 
-				if(distance.dot(distance) <  1){
+				if(distance.dot(distance) <  150  && enemy["active"]){
 					
 					if(enemy.state != "RUNNING"){
 						enemy.tweens.idleA.stop();

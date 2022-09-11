@@ -74,11 +74,13 @@
 		var slModel, slModelParent;
         var targetBody1,targetMesh1, targetModelParent1;
         var targets=[];
-        var targetSpeed = 0.01;
-        var horizontalMax = 50;
+        var targetSpeed = 0.0005;
+        var targetRotation = 0.00001;
+        var horizontalMax = 20;
         var verticalMax = 50;
         var generatingStep = 4;
         var targetsDepth = 20;
+		var addedTarget = 0;
 
         const raycaster = new THREE.Raycaster();
         const pointer = new THREE.Vector2();
@@ -100,7 +102,6 @@
             if(intersects[0]){
                 targets.forEach(element => {
                     if(element["mesh"] == intersects[0].object){
-                        console.log(element["mesh"] + intersects[0].object)
                         element["body"].mass = 100;
                         element["body"].updateMassProperties();
                     }
@@ -119,8 +120,20 @@
 		});
 
 		const scene = new THREE.Scene();
-		scene.background = new THREE.Color( 0x00C0F0 );
+		// scene.background = new THREE.Color( 0x00C0F0 );
 		
+		var sky = new Sky();
+		sky.scale.setScalar( 450000 );
+		scene.add( sky );
+		var sunPosition = new THREE.Vector3();
+
+		sky.material.uniforms[ 'turbidity' ].value =20;
+		sky.material.uniforms[ 'mieCoefficient' ].value =0;
+		sky.material.uniforms[ 'mieDirectionalG' ].value =1;
+		sky.material.uniforms[ 'rayleigh' ].value =0.05;
+		sunPosition.setFromSphericalCoords( 1, THREE.MathUtils.degToRad( 90 - 45 ), THREE.MathUtils.degToRad( 90 ) );
+		sky.material.uniforms[ 'sunPosition' ].value.copy( sunPosition );
+
 		const camera = new THREE.PerspectiveCamera(
 			45,
 			window.innerWidth / window.innerHeight,
@@ -144,6 +157,21 @@
 
 		const ambLight = new THREE.AmbientLight(0xFFFFFF, 1);
 		scene.add(ambLight);
+		
+		const dirLight = new THREE.DirectionalLight(0xFFFFFF, 10);
+		dirLight.position.set(0, 50, -5);
+		dirLight.target.position.set(0, 0, 20);
+		dirLight.castShadow = true; 
+		dirLight.shadow.camera.left = - 200;
+		dirLight.shadow.camera.right = 15;
+		dirLight.shadow.camera.top = 15;
+		dirLight.shadow.camera.bottom = - 15;
+		dirLight.shadow.camera.far = 100;
+		dirLight.shadow.bias = - 0;
+		dirLight.shadow.mapSize.width = Math.pow(2,12); // default
+		dirLight.shadow.mapSize.height = Math.pow(2,12); // default
+		scene.add(dirLight);
+		scene.add(dirLight.target);
 
 		//CUBE (THREE)
 
@@ -158,11 +186,28 @@
 		
 
         var positions = [];
-        for(var i = 0 ; i < (horizontalMax*2) / generatingStep; i++){
-            for(var j = 0 ; j < (verticalMax*2) / generatingStep; j++){
+        for(var i = 0 ; i <= (horizontalMax*2) / generatingStep; i++){
+            for(var j = 0 ; j <= (verticalMax*2) / generatingStep; j++){
                 positions.push(new THREE.Vector3( - horizontalMax + generatingStep * i, - verticalMax + generatingStep * j, targetsDepth));
             }
         }
+
+		gltfLoader.load("gltf/skybox/scene.gltf", (gltf) => {
+			skyboxModel = gltf.scene.getObjectByName("Sketchfab_Scene");
+			skyboxModel.scale.setScalar( 1 );
+			//Removing the sky (it causes issues with directional light)
+			var sky= gltf.scene.getObjectByName("hoth_sky");
+			sky.visible=false;
+			skyboxModel.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.castShadow = true;
+					node.receiveShadow=true;
+					node.frustumCulled=true;
+			}
+			} );
+			scene.add(skyboxModel);
+			skyboxModel.rotation.y = -0.50;
+		});
 
 		gltfLoader.load("gltf/target/scene.gltf", (gltf) => {
 			targetModel = gltf.scene.getObjectByName("Sketchfab_Scene");
@@ -189,6 +234,7 @@
         genTargetModel.getWorldPosition(genTargetModelParent.position);
         genTargetModel.rotation.set(...[Math.PI/2,0,0]);
         genTargetModelParent.add(genTargetModel);
+		genTargetModelParent.position.set(position);
         scene.add(genTargetModelParent);
 
         var genTargetBody = new CANNON.Body({
@@ -197,8 +243,10 @@
             type : CANNON.Body.DYNAMIC,
             mass:0
         });
-        var genTargetMesh = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ) );
+        var genTargetMesh = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true, opacity : 0, transparent: true} ) );
+		genTargetMesh.position.set(position);
         scene.add(genTargetMesh);
+		genTargetMesh.material.opacity=0;
         world.addBody(genTargetBody);		
         genTargetBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),Math.PI/2);
 
@@ -217,17 +265,25 @@
 				TWEEN.update();
 				world.step(1/60,deltaTime,10);
 
+				if(targets[0])
+					addedTarget += (deltaTime * 1000 * targetSpeed);
+				
+				if(skyboxModel){
+					skyboxModel.rotation.y -= (deltaTime * 1000 * targetRotation);
+					console.log(skyboxModel.rotation.y)
+				}
+								
 
 				targets.forEach(element => {
-                     element["body"].position.x -= targetSpeed;
+					element["body"].position.x -= (deltaTime * 1000 * targetSpeed);
 
                     element["model"].position.copy(element["body"].position);
 					element["model"].quaternion.copy(element["body"].quaternion);
 					element["mesh"].quaternion.copy(element["body"].quaternion);
 					element["mesh"].position.copy(element["body"].position);
-                    
+
 					//Check if the target is falling down or out of scene
-					if(element["body"].position.y < -verticalMax || element["body"].position.x < -verticalMax){
+					if(element["body"].position.y < -verticalMax || element["body"].position.x < -horizontalMax){
 							scene.remove(element["model"]);
 							setTimeout(function() {
 								world.removeBody(element["body"]);
@@ -238,25 +294,18 @@
 							});
 						}
                 });
-   
-                // arrows.forEach(element => {
-                //     element["mesh"].position.copy(element["can"].position);
-                //     element["model"].position.copy(element["can"].position);
-                //     element["can"].quaternion.copy(element["model"].quaternion);
-                //     element["mesh"].quaternion.copy(element["model"].quaternion);
 
-				// 	//Check if the arrow is falling down
-				// 	if(element["can"].position.y < -5){
-				// 			scene.remove(element["model"]);
-				// 			setTimeout(function() {
-				// 				world.removeBody(element["can"]);
-				// 			},0);
-				// 			scene.remove(element["mesh"]);
-				// 			arrows = arrows.filter(function(ele){ 
-				// 				return ele != element; 
-				// 			});
-				// 		}
-				// });
+				if(addedTarget > generatingStep){
+					var newPositions =[];
+					for(var j=0; j<(verticalMax*2)/generatingStep; j++){
+						newPositions.push(new THREE.Vector3(horizontalMax, - verticalMax + j * generatingStep, targetsDepth));
+					}
+					for(var i=0; i<newPositions.length; i++){
+						createTarget(newPositions[i]);
+					}
+					addedTarget = 0;
+				}
+   
             }
 
 
