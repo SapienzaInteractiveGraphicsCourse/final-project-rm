@@ -4,7 +4,128 @@
 		<meta charset="utf-8">
 		<title>My first three.js app</title>
 		<style>
+			body { margin: 0;
+				background: #000;
+				font-family: Helvetica, sans-serif; }
 			
+			.example {
+			float: left;
+			margin: 10px;
+			}
+			.inp {
+			background: rgba(0,127,128,0.68);
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+			border: 1px solid rgba(128,255,255,0.25);
+			color: rgba(255,255,255,0.75);
+			text-shadow: 0 0 10px rgba(0,255,255,0.95);
+			font-size: 30px;
+			padding: 10px 30px;
+			text-shadow: 0 0 10px rgba(0,255,255,0.5);
+			outline: none;
+			}
+			.inp:hover {
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			border: 1px solid rgba(128,255,255,0.75);
+			}
+			.inp:focus {
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			border: 1px solid rgba(128,255,255,0.75);
+			}
+			.inp-secondary {
+			background-color: transparent;
+			color: rgba(0,127,128,0.8);
+			text-shadow: 0 0 12px rgba(0,255,255,0.3);
+			/* text-shadow: none; */
+			border: 1px solid rgba(128,255,255,0.5);
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.25);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.25);
+			}
+			.btn {
+			background: rgba(0,127,128,1);
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+			border: 1px solid rgba(128,255,255,0.25);
+			color: rgba(255,255,255,1);
+			text-shadow: 0 0 10px rgba(0,255,255,0.95);
+			font-size: 30px;
+			padding: 10px 30px;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			outline: none;
+			}
+			.btn:hover {
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			border: 1px solid rgba(128,255,255,0.75);
+			}
+			.btn-primary:active {
+			background: rgba(0,127,128,0.9);
+			}
+			.btn-secondary {
+			background-color: transparent;
+			color: rgba(0,127,128,0.8);
+			text-shadow: 0 0 12px rgba(0,255,255,0.3);
+			/* text-shadow: none; */
+			border: 1px solid rgba(128,255,255,0.5);
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.25);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.25);
+			}
+			.btn-secondary:active {
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			}
+			.element {
+			position: relative;
+			width: 120px;
+			height: 160px;
+			color: #fff;
+			text-align: center;
+			background: rgba(0,127,128,0.68);
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+			border: 1px solid rgba(128,255,255,0.25);
+			cursor: default;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			}
+			.element:hover {
+			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			border: 1px solid rgba(128,255,255,0.75);
+			}
+			.element .number {
+			font-size: 12px;
+			color: rgba(128,255,255,0.75);
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			}
+			.element .symbol {
+			color: rgba(255,255,255,0.75);
+			text-shadow: 0 0 10px rgba(0,255,255,0.95);
+			position: absolute;
+			font-size: 60px;
+			font-weight: bold;
+			top: 40px;
+			left: 0px;
+			right: 0px;
+			}
+			.element .details {
+			font-size: 12px;
+			color: rgba(128,255,255,0.75);
+			position: absolute;
+			bottom: 15px;
+			left: 0px;
+			right: 0px;
+			}
+
 		</style>
 	</head>
 	<body>
@@ -28,6 +149,71 @@
                 <progress  id="gameLoading_fg_bar" style="width: 100em; height: 3em;" max="100" ></progress>
             </div>
         </div>
+		<div id="start-menu">
+			<div style = "width: 100%; position: fixed; top: 20%; left: 50%; transform: translate(-30%, -50%);">
+				<button id="start_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;   padding: 2%;">
+					<span >
+						<span style="vertical-align:middle; font-size: 50px;">START </span>
+						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/start.png" width="50px">
+					</span>
+				</button>
+			</div>
+			<div style = "width: 100%; position: fixed; top: 50%; left: 50%; transform: translate(-30%, -50%);">
+				<button id="settings_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 2%;">
+					<span>
+						<span style="vertical-align:middle; font-size: 50px;">OPTIONS </span>
+						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/settings.png" width="50px">
+					</span>
+				</button>
+			</div>
+			<div style = "width: 100%; position: fixed; top: 80%; left: 50%; transform: translate(-30%, -50%); ">
+				<button id="credits_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 2%;">
+					<span>
+						<span style="vertical-align:middle; font-size: 50px;">CREDITS </span>
+						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/credits.png" width="50px">
+					</span>
+				</button>
+			</div>
+		</div>
+
+		<div id="settings-menu" style="display:none">
+			<div style = "width: 100%; position: fixed; top: 20%; left: 50%; transform: translate(-30%, -50%);">
+				<button id="shadows_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;   padding: 2%;">
+					<span>
+						<span id = "shadows_btn_txt" style="vertical-align:middle; font-size: 50px;">SHADOWS : MAX</span>
+						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/shadows.png" width="50px">
+					</span>
+				</button>
+			</div>
+			<div style = "width: 100%; position: fixed; top: 40%; left: 50%; transform: translate(-30%, -50%);">
+				<button id="sound_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 2%;">
+					<span>
+						<span id = "sound_btn_txt" style="vertical-align:middle; font-size: 50px;">SOUND : ON</span>
+						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/sound.png" width="50px">
+					</span>
+				</button>
+			</div>
+			<div style = "width: 100%; position: fixed; top: 60%; left: 50%; transform: translate(-30%, -50%); ">
+				<button id="wireframes_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 2%;">
+					<span>
+						<span id = "wireframes_btn_txt" style="vertical-align:middle; font-size: 50px;">WIREFRAMES : OFF</span>
+						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/wireframes.png" width="50px">
+					</span>
+				</button>
+			</div>
+			<div style = "width: 100%; position: fixed; top: 80%; left: 50%; transform: translate(-30%, -50%); ">
+				<button id="back_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 2%;">
+					<span>
+						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/back.png" width="50px">
+						<span style="vertical-align:middle; font-size: 50px;">BACK</span>
+					</span>
+				</button>
+			</div>
+
+			<div id="credits">
+				<div id="close_credits_btn"></div>
+			</div>
+		</div>
 
 		<script type="module">
         import * as THREE from '../node_modules/three/build/three.module.js';
@@ -76,12 +262,84 @@
         var targets=[];
         var targetSpeed = 0.0005;
         var targetRotation = 0.00001;
-        var horizontalMax = 20;
-        var verticalMax = 50;
+        var horizontalMax = 30;
+        var verticalMax = 30;
         var generatingStep = 4;
         var targetsDepth = 20;
 		var addedTarget = 0;
 
+		//SETTINGS PARAMETERS
+		var shadows = 3;
+		var sound = 1;
+		var wireframes = 0;
+
+		function start(){
+			window.location.href = 'index.html?shadows='+shadows+'&sound='+sound+'&wireframes='+wireframes;
+		}
+		document.querySelector("#start_btn").addEventListener("click",start);
+		
+		function openSettings(){
+			document.querySelector("#start-menu").style.display = "none";
+			document.querySelector("#settings-menu").style.display = "";
+		}
+		document.querySelector("#settings_btn").addEventListener("click",openSettings);
+
+		function closeSettings(){
+			document.querySelector("#start-menu").style.display = "";
+			document.querySelector("#settings-menu").style.display = "none";
+		}
+		document.querySelector("#back_btn").addEventListener("click",closeSettings);
+
+		function openCredits(){
+			document.querySelector("#credits").style.display = "";
+		}
+		document.querySelector("#credits_btn").addEventListener("click",openCredits);
+
+		function closeCredits(){
+			document.querySelector("#credits").style.display = "none";
+		}
+		document.querySelector("#close_credits_btn").addEventListener("click",closeCredits);
+
+
+		function changeShadows(){
+			if(shadows == 3){
+				shadows = 2;
+				document.querySelector("#shadows_btn_txt").innerHTML = "SHADOWS : MED";
+			}
+			else if(shadows == 2){
+				shadows = 1;
+				document.querySelector("#shadows_btn_txt").innerHTML = "SHADOWS : MIN";
+			}
+			else{
+				shadows = 3;
+				document.querySelector("#shadows_btn_txt").innerHTML = "SHADOWS : MAX";
+			}
+		}
+		document.querySelector("#shadows_btn").addEventListener("click",changeShadows);
+
+		function changeSound(){
+			if(sound == 1){
+				sound = 0;
+				document.querySelector("#sound_btn_txt").innerHTML = "SOUND : OFF";
+			}
+			else {
+				sound = 1;
+				document.querySelector("#sound_btn_txt").innerHTML = "SOUND : ON";
+			}
+		}
+		document.querySelector("#sound_btn").addEventListener("click",changeSound);
+
+		function changeWireframes(){
+			if(wireframes == 1){
+				wireframes = 0;
+				document.querySelector("#wireframes_btn_txt").innerHTML = "WIREFRAMES : OFF";
+			}
+			else {
+				wireframes = 1;
+				document.querySelector("#wireframes_btn_txt").innerHTML = "WIREFRAMES : ON";
+			}
+		}
+		document.querySelector("#wireframes_btn").addEventListener("click",changeWireframes);
         const raycaster = new THREE.Raycaster();
         const pointer = new THREE.Vector2();
 
@@ -178,7 +436,7 @@
 		
 		const loadingManager = new THREE.LoadingManager();
         const gltfLoader = new GLTFLoader(loadingManager);
-		loadingManager.onLoad = () => {gameLoaded = true; document.querySelector('#gameLoading_fg').style.display = 'none'; document.querySelector('#gameLoading_bg').style.display = 'none';};
+		loadingManager.onLoad = () => {gameLoaded = true; document.querySelector('#gameLoading_fg').style.display = 'none'; document.querySelector('#gameLoading_bg').style.display = 'none'; animateScene=false;};
 		loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
 			document.querySelector('#gameLoading_fg_bar').setAttribute("value",`${itemsLoaded / itemsTotal * 100 | 0}`);
 		};
@@ -246,7 +504,6 @@
         var genTargetMesh = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true, opacity : 0, transparent: true} ) );
 		genTargetMesh.position.set(position);
         scene.add(genTargetMesh);
-		genTargetMesh.material.opacity=0;
         world.addBody(genTargetBody);		
         genTargetBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),Math.PI/2);
 
@@ -270,7 +527,6 @@
 				
 				if(skyboxModel){
 					skyboxModel.rotation.y -= (deltaTime * 1000 * targetRotation);
-					console.log(skyboxModel.rotation.y)
 				}
 								
 
