@@ -137,7 +137,7 @@
 		<script type="importmap">
 			{
 				"imports": {
-					"three": "../node_modules/three/build/three.module.js"
+					"three": "./node_modules/three/build/three.module.js"
 				}
 			}
 		</script>
@@ -188,12 +188,12 @@
 
 
 		<script type="module">
-        import * as THREE from '../node_modules/three/build/three.module.js';
-        import { OrbitControls } from '../node_modules/three/examples/jsm/controls/ModifiedOrbitControls.js';
-		import * as CANNON from '../node_modules/cannon-es/dist/cannon-es.js';
-		import {GLTFLoader} from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js';
-		import { TWEEN } from '../node_modules/three/examples/jsm/libs/tween.module.min.js'
-		import { Sky } from '../node_modules/three/examples/jsm/objects/Sky.js';
+        import * as THREE from './node_modules/three/build/three.module.js';
+        import { OrbitControls } from './node_modules/three/examples/jsm/controls/ModifiedOrbitControls.js';
+		import * as CANNON from './node_modules/cannon-es/dist/cannon-es.js';
+		import {GLTFLoader} from './node_modules/three/examples/jsm/loaders/GLTFLoader.js';
+		import { TWEEN } from './node_modules/three/examples/jsm/libs/tween.module.min.js'
+		import { Sky } from './node_modules/three/examples/jsm/objects/Sky.js';
 
 		var gameLoaded = false;
 		var animateScene = true;
@@ -234,18 +234,20 @@
 		var getParameterShadows = findGetParameter("shadows");
 		if(getParameterShadows == null || !(["1", "2", "3"].includes(getParameterShadows)))
 			getParameterShadows=3;
-		var getParameterSound = findGetParameter("sound");
-		if(getParameterSound == null || !["0", "1"].includes(getParameterSound))
-			getParameterSound=1;
+		var getParameterSoundEf = findGetParameter("soundef");
+		if(getParameterSoundEf == null || !["0", "1"].includes(getParameterSoundEf))
+			getParameterSoundEf=1;
+		var getParameterSoundMu = findGetParameter("soundmu");
+		if(getParameterSoundMu == null || !["0", "1"].includes(getParameterSoundMu))
+			getParameterSoundMu=1;
 		var getParameterWireframes = findGetParameter("wireframes");
 		if(getParameterWireframes == null || !["1","0"].includes(getParameterWireframes))
 			getParameterWireframes=0;
-
 		var getParameterClouds = findGetParameter("clouds");
 		if(getParameterClouds == null || !["1","0"].includes(getParameterClouds))
 			getParameterClouds=1;
 
-		console.log(getParameterShadows +" "+ getParameterSound +" "+ getParameterWireframes + " " + getParameterClouds)
+		// console.log(getParameterShadows +" "+ getParameterSoundEf +" " + getParameterSoundMu +" "+ getParameterWireframes + " " + getParameterClouds)
 
 
 		//CANNON AND THREE SETUP
@@ -297,7 +299,25 @@
 
 
 
+		//SOUND SETUP
+		const audioListener = new THREE.AudioListener();
+		camera.add( audioListener );
+		const audioLoader = new THREE.AudioLoader();
 		
+		const archerShootAudio = new THREE.PositionalAudio( audioListener );
+
+		audioLoader.load( 'sounds/archerShoot.mp3', function( buffer ) {
+			archerShootAudio.setBuffer( buffer );
+			archerShootAudio.setRefDistance( 20 );
+		});
+
+		var metalImpactAudioBuffer;
+
+		audioLoader.load( 'sounds/metalImpact.mp3', function( buffer ) {
+			metalImpactAudioBuffer = buffer;
+		});
+
+
 		//LIGHT SETUP
 
 		const ambLight = new THREE.AmbientLight(0xFFFFFF, 0.8);
@@ -326,6 +346,7 @@
 		const cubeGeometry = new THREE.BoxGeometry( 1.4, 3.0, 2.0 );
 		const cubeMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} );
 		const cubeMesh = new THREE.Mesh( cubeGeometry, cubeMaterial );
+		cubeMesh.add( archerShootAudio );
 		if(getParameterWireframes == "1")
 			scene.add( cubeMesh );
 		cubeMesh.castShadow=true;
@@ -673,7 +694,7 @@
 			function robotColliderEvent(genRobot){
 				return (e) => {
 					if (genRobot["body"] && ((e.contact.bi.id == genRobot["body"].id && checkArrowKiller(e.contact.bj.id)) || (e.contact.bj.id == genRobot["body"].id && checkArrowKiller(e.contact.bi.id)))) {
-						console.log("ci sono");
+						// console.log("ci sono");
 						var arrowRepulseVelocity = 40;
 						var impactDir = new THREE.Vector3();
 						//For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
@@ -693,11 +714,12 @@
 						setTimeout(function() {
 							justRepulsedArcher = false;
 						},500);
-						var enemyRepulseVelocity = 150;
+						var enemyRepulseVelocity = 1;
 						var impactDir = new THREE.Vector3();
 						impactDir.subVectors( cubeBody.position, genRobot["body"].position);
 						impactDir.normalize();
 						// console.log(impactDir)
+						genRobot["metalImpactAudio"].play();
 						cubeBody.velocity.x = enemyRepulseVelocity * impactDir.x;
 						cubeBody.velocity.z = enemyRepulseVelocity * impactDir.z;
 					}
@@ -1580,8 +1602,11 @@
 
 				tweens["runA"] = runAEnemy;
 				tweens["runB"] = runBEnemy;
-				
-				var genRobot = {"mesh" : genRobotMesh, "body" : genRobotBody, "model": robotModelParent, "state": "IDLE", "tweens": tweens, "active" : true};
+				const genMetalImpactAudio= new THREE.PositionalAudio( audioListener );
+				genMetalImpactAudio.setBuffer(metalImpactAudioBuffer);
+				genMetalImpactAudio.setRefDistance( 20 );
+				genRobotMesh.add(genMetalImpactAudio);
+				var genRobot = {"mesh" : genRobotMesh, "body" : genRobotBody, "model": robotModelParent, "state": "IDLE", "tweens": tweens, "active" : true, "metalImpactAudio" : genMetalImpactAudio};
 				robots.push(genRobot);
 
 				idleAEnemy.start();
@@ -3255,6 +3280,8 @@
  		    angularDamping: 0.5,
 			type: CANNON.Body.DYNAMIC 
 		});
+
+		
 		world.addBody(cubeBody);
 
 		function shoot(){
@@ -3309,6 +3336,9 @@
 			if(getParameterWireframes == "1")
 				scene.add( cubeArrowMesh );
 			scene.add( cubeArrowModelParent );
+
+			if(getParameterSoundEf == "1")
+				archerShootAudio.play();
 			
 			world.addBody(cubeArrowCan);
 			cubeArrowModelParent.lookAt(arrowDirection);
@@ -3409,7 +3439,7 @@
 
 		function obj3Completed(){
 			if(robots.length == 0){
-				console.log("LEVEL 3");
+				// console.log("LEVEL 3");
 			}
 		}
 		

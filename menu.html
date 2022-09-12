@@ -137,7 +137,7 @@
 		<script type="importmap">
 			{
 				"imports": {
-					"three": "../node_modules/three/build/three.module.js"
+					"three": "./node_modules/three/build/three.module.js"
 				}
 			}
 		</script>
@@ -193,7 +193,7 @@
 
 		</div>
 		<div id="settings-menu" style="display:none">
-			<div style = "width: 100%; position: fixed; top: 20%; left: 50%; transform: translate(-30%, -50%);">
+			<div style = "width: 100%; position: fixed; top: 10%; left: 50%; transform: translate(-30%, -50%);">
 				<button id="shadows_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;   padding: 2%;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/shadows.png" width="50px">
@@ -201,15 +201,23 @@
 					</span>
 				</button>
 			</div>
-			<div style = "width: 100%; position: fixed; top: 40%; left: 50%; transform: translate(-30%, -50%);">
-				<button id="sound_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 2%;">
+			<div style = "width: 75%; position: fixed; top: 70%; left: 25%; transform: translate(-30%, -50%);">
+				<button id="soundef_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 2%;">
 					<span>
-						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/sound.png" width="50px">
-						<span id = "sound_btn_txt" style="vertical-align:middle; font-size: 50px;"><b>SOUND</b> : ON</span>
+						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/soundef.png" width="50px">
+						<span id = "soundef_btn_txt" style="vertical-align:middle; font-size: 50px;"><b>EFFECT</b> : ON</span>
 					</span>
 				</button>
 			</div>
-			<div style = "width: 100%; position: fixed; top: 60%; left: 50%; transform: translate(-30%, -50%); ">
+			<div style = "width: 75%; position: fixed; top: 70%; left: 75%; transform: translate(-30%, -50%);">
+				<button id="soundmu_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 2%;">
+					<span>
+						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/soundmu.png" width="50px">
+						<span id = "soundmu_btn_txt" style="vertical-align:middle; font-size: 50px;"><b>MUSIC</b> : ON</span>
+					</span>
+				</button>
+			</div>
+			<div style = "width: 100%; position: fixed; top: 50%; left: 50%; transform: translate(-30%, -50%); ">
 				<button id="wireframes_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 2%;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/wireframes.png" width="50px">
@@ -217,7 +225,15 @@
 					</span>
 				</button>
 			</div>
-			<div style = "width: 100%; position: fixed; top: 80%; left: 50%; transform: translate(-30%, -50%); ">
+			<div style = "width: 100%; position: fixed; top: 30%; left: 50%; transform: translate(-30%, -50%); ">
+				<button id="clouds_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 2%;">
+					<span>
+						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/clouds.png" width="50px">
+						<span id = "clouds_btn_txt" style="vertical-align:middle; font-size: 50px;"><b>CLOUDS</b> : OFF</span>
+					</span>
+				</button>
+			</div>
+			<div style = "width: 100%; position: fixed; top: 90%; left: 50%; transform: translate(-30%, -50%); ">
 				<button id="back_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 2%;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/back.png" width="50px">
@@ -231,12 +247,12 @@
 		</div>
 
 		<script type="module">
-        import * as THREE from '../node_modules/three/build/three.module.js';
-        import { OrbitControls } from '../node_modules/three/examples/jsm/controls/ModifiedOrbitControls.js';
-		import * as CANNON from '../node_modules/cannon-es/dist/cannon-es.js';
-		import {GLTFLoader} from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js';
-		import { TWEEN } from '../node_modules/three/examples/jsm/libs/tween.module.min.js'
-		import { Sky } from '../node_modules/three/examples/jsm/objects/Sky.js';
+        import * as THREE from './node_modules/three/build/three.module.js';
+        import { OrbitControls } from './node_modules/three/examples/jsm/controls/ModifiedOrbitControls.js';
+		import * as CANNON from './node_modules/cannon-es/dist/cannon-es.js';
+		import {GLTFLoader} from './node_modules/three/examples/jsm/loaders/GLTFLoader.js';
+		import { TWEEN } from './node_modules/three/examples/jsm/libs/tween.module.min.js'
+		import { Sky } from './node_modules/three/examples/jsm/objects/Sky.js';
 
 		var gameLoaded = false;
 		var animateScene = false;
@@ -285,11 +301,13 @@
 
 		//SETTINGS PARAMETERS
 		var shadows = 3;
-		var sound = 1;
+		var soundef = 1;
+		var soundmu = 1;
 		var wireframes = 0;
+		var clouds = 1;
 
 		function start(){
-			window.location.href = 'index.html?shadows='+shadows+'&sound='+sound+'&wireframes='+wireframes;
+			window.location.href = 'index.html?shadows='+shadows+'&soundef='+soundef+'&soundmu='+soundmu+'&wireframes='+wireframes;
 		}
 		document.querySelector("#start_btn").addEventListener("click",start);
 		
@@ -332,17 +350,41 @@
 		}
 		document.querySelector("#shadows_btn").addEventListener("click",changeShadows);
 
-		function changeSound(){
-			if(sound == 1){
-				sound = 0;
-				document.querySelector("#sound_btn_txt").innerHTML = "<b>SOUND</b> : OFF";
+		function changeSoundEf(){
+			if(soundef == 1){
+				soundef = 0;
+				document.querySelector("#soundef_btn_txt").innerHTML = "<b>EFFECTS</b> : OFF";
 			}
 			else {
-				sound = 1;
-				document.querySelector("#sound_btn_txt").innerHTML = "<b>SOUND</b> : ON";
+				soundef = 1;
+				document.querySelector("#soundef_btn_txt").innerHTML = "<b>EFFECTS</b> : ON";
 			}
 		}
-		document.querySelector("#sound_btn").addEventListener("click",changeSound);
+		document.querySelector("#soundef_btn").addEventListener("click",changeSoundEf);
+
+		function changeSoundMu(){
+			if(soundmu == 1){
+				soundmu = 0;
+				document.querySelector("#soundmu_btn_txt").innerHTML = "<b>MUSIC</b> : OFF";
+			}
+			else {
+				soundmu = 1;
+				document.querySelector("#soundmu_btn_txt").innerHTML = "<b>MUSIC</b> : ON";
+			}
+		}
+		document.querySelector("#soundmu_btn").addEventListener("click",changeSoundMu);
+
+		function changeClouds(){
+			if(clouds == 1){
+				clouds = 0;
+				document.querySelector("#clouds_btn_txt").innerHTML = "<b>CLOUDS</b> : OFF";
+			}
+			else {
+				clouds = 1;
+				document.querySelector("#clouds_btn_txt").innerHTML = "<b>CLOUDS</b> : ON";
+			}
+		}
+		document.querySelector("#clouds_btn").addEventListener("click",changeClouds);
 
 		function changeWireframes(){
 			if(wireframes == 1){
