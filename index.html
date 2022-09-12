@@ -311,6 +311,52 @@
 			archerShootAudio.setRefDistance( 20 );
 		});
 
+		const cannonShootAudio = new THREE.PositionalAudio( audioListener );
+
+		audioLoader.load( 'sounds/cannonShoot.mp3', function( buffer ) {
+			cannonShootAudio.setBuffer( buffer );
+			cannonShootAudio.setRefDistance( 20 );
+		});
+
+		const tadaAudio = new THREE.PositionalAudio( audioListener );
+
+		audioLoader.load( 'sounds/tada.mp3', function( buffer ) {
+			tadaAudio.setBuffer( buffer );
+			tadaAudio.setRefDistance( 20 );
+		});
+
+		const playerWalkAudio = new THREE.PositionalAudio( audioListener );
+
+		audioLoader.load( 'sounds/walk.wav', function( buffer ) {
+			playerWalkAudio.setBuffer( buffer );
+			playerWalkAudio.setRefDistance( 20 );
+			playerWalkAudio.setLoop( true );
+			playerWalkAudio.playbackRate = 2.1;
+			playerWalkAudio.setVolume(0.1);
+		});
+
+		const playerRunAudio = new THREE.PositionalAudio( audioListener );
+
+		audioLoader.load( 'sounds/run.wav', function( buffer ) {
+			playerRunAudio.setBuffer( buffer );
+			playerRunAudio.setRefDistance( 20 );
+			playerRunAudio.setLoop( true );
+			playerRunAudio.playbackRate = 0.8;
+			playerRunAudio.setVolume(0.1);
+		});
+
+		const mainThemeAudio = new THREE.Audio( audioListener );
+
+		audioLoader.load( 'sounds/mainTheme.mp3', function( buffer ) {
+			mainThemeAudio.setBuffer( buffer );
+			mainThemeAudio.setLoop( true );
+			mainThemeAudio.setVolume( 0.1 );
+			if(getParameterSoundMu == "1"){
+				mainThemeAudio.play();
+			}
+		});
+
+
 		var metalImpactAudioBuffer;
 
 		audioLoader.load( 'sounds/metalImpact.mp3', function( buffer ) {
@@ -347,6 +393,9 @@
 		const cubeMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} );
 		const cubeMesh = new THREE.Mesh( cubeGeometry, cubeMaterial );
 		cubeMesh.add( archerShootAudio );
+		cubeMesh.add( tadaAudio );
+		cubeMesh.add( playerWalkAudio );
+		cubeMesh.add( playerRunAudio );
 		if(getParameterWireframes == "1")
 			scene.add( cubeMesh );
 		cubeMesh.castShadow=true;
@@ -704,6 +753,8 @@
 						genRobot["body"].velocity.x = arrowRepulseVelocity * impactDir.x;
 						genRobot["body"].velocity.z = arrowRepulseVelocity * impactDir.z;
 						genRobot["active"] = false;
+						if(getParameterSoundEf == "1")
+							genRobot["metalImpactAudio"].play();
 						setTimeout(function() {
 							genRobot["active"]=true;
 						},1000);
@@ -714,12 +765,13 @@
 						setTimeout(function() {
 							justRepulsedArcher = false;
 						},500);
-						var enemyRepulseVelocity = 1;
+						var enemyRepulseVelocity = 150;
 						var impactDir = new THREE.Vector3();
 						impactDir.subVectors( cubeBody.position, genRobot["body"].position);
 						impactDir.normalize();
 						// console.log(impactDir)
-						genRobot["metalImpactAudio"].play();
+						if(getParameterSoundEf == "1")
+							genRobot["metalImpactAudio"].play();
 						cubeBody.velocity.x = enemyRepulseVelocity * impactDir.x;
 						cubeBody.velocity.z = enemyRepulseVelocity * impactDir.z;
 					}
@@ -1661,6 +1713,7 @@
 		world.addBody(cannonBody);
 
 		cannonMesh = new THREE.Mesh( new THREE.BoxGeometry(3,3,3), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ));
+		cannonMesh.add(cannonShootAudio);
 		if(getParameterWireframes == "1")
 			scene.add(cannonMesh);
 		
@@ -3235,6 +3288,10 @@
 					genBombModel.position.set(0 , -0.4, 0);
 					genBombModelParent.add(genBombModel);
 					scene.add( genBombModelParent );
+
+					if(getParameterSoundEf == "1"){
+						cannonShootAudio.play();
+					}
 					
 					world.addBody(genBombCan);
 
@@ -3274,7 +3331,7 @@
 		const cubeBody = new CANNON.Body({
 			mass: 80,
 			shape: new CANNON.Box(new CANNON.Vec3(0.7, 1.5, 1.0)),
-			position: new CANNON.Vec3(0, 2.8 + 6., 0 + 180),
+			position: new CANNON.Vec3(0, 2.8 /*+ 6.*/, 0 /*+ 180*/),
 			material: cubePhysMat,
 			linearDamping: 0.5,
  		    angularDamping: 0.5,
@@ -3409,6 +3466,8 @@
 			if(!target1hit || !target2hit) return;
 			// console.log("LEVEL 2");
 			level2Unlock.start();
+			if(getParameterSoundEf == "1")
+				tadaAudio.play();
 		}
 
 		function obj2Completed(){
@@ -3419,6 +3478,8 @@
 				rotatePlatFloatingTweens = rotatePlatFloatingTweens.filter(function(ele){ 
 					return ele != element; 
 				});
+				if(getParameterSoundEf == "1")
+					tadaAudio.play();
 			});
 			
 			level3Unlock1.onComplete(()=> {
@@ -3983,6 +4044,8 @@
 		function changePlayerState(){
 			if(lastExecutedAnimation == playerState) return;
 			lastExecutedAnimation = playerState;
+			
+			//Animations
 			idle.stop();
 			idleB.stop();
 			walkA.stop();
@@ -3995,15 +4058,25 @@
 			runD.stop();
 			jumpA.stop();
 			jumpB.stop();
+
+			//Sounds
+			if(playerWalkAudio.isPlaying)
+				playerWalkAudio.stop();
+			if(playerRunAudio.isPlaying)
+				playerRunAudio.stop();
 			switch(playerState){
 				case "Idle":
 					idle.start();
 					break;
 				case "Walk":
 					walkA.start();
+					if(getParameterSoundEf == "1")
+						playerWalkAudio.play();
 					break;
 				case "Run":
 					runA.start();
+					if(getParameterSoundEf == "1")
+						playerRunAudio.play();
 					break;
 				case "Jump":
 					jumpA.start();
