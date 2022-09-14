@@ -1,0 +1,627 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 565,
+      "max": [
+        50.78236389160156,
+        43.05037307739258,
+        50.78236389160156
+      ],
+      "min": [
+        -50.78236389160156,
+        -3.403663726291885e-16,
+        -50.78236389160156
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 6780,
+      "componentType": 5126,
+      "count": 565,
+      "max": [
+        0.9999999403953552,
+        1.0,
+        0.9999999403953552
+      ],
+      "min": [
+        -0.9999999403953552,
+        -1.0,
+        -0.9999999403953552
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 565,
+      "max": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 565,
+      "max": [
+        0.9901882410049438,
+        0.9899085164070129
+      ],
+      "min": [
+        0.012041255831718445,
+        0.017182976007461548
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 1248,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 13560,
+      "componentType": 5126,
+      "count": 37,
+      "max": [
+        41.5097541809082,
+        31.18528938293457,
+        41.5097541809082
+      ],
+      "min": [
+        -41.5097541809082,
+        20.171049118041992,
+        -41.5097541809082
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 14004,
+      "componentType": 5126,
+      "count": 37,
+      "max": [
+        0.7487213015556335,
+        1.0,
+        0.7487213015556335
+      ],
+      "min": [
+        -0.7487213015556335,
+        0.6461884379386902,
+        -0.7487213015556335
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "byteOffset": 9040,
+      "componentType": 5126,
+      "count": 37,
+      "max": [
+        1.0,
+        7.015029837020847e-07,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -0.7539900541305542,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 4520,
+      "componentType": 5126,
+      "count": 37,
+      "max": [
+        0.9954056143760681,
+        0.9875593781471252
+      ],
+      "min": [
+        0.6610993146896362,
+        0.7694433331489563
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 4992,
+      "componentType": 5125,
+      "count": 84,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 14448,
+      "componentType": 5126,
+      "count": 26,
+      "max": [
+        47.492733001708984,
+        200.0841827392578,
+        47.49245071411133
+      ],
+      "min": [
+        -47.492733001708984,
+        35.62297821044922,
+        -47.493011474609375
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 14760,
+      "componentType": 5126,
+      "count": 26,
+      "max": [
+        0.9998161196708679,
+        -0.019175510853528976,
+        0.9998161196708679
+      ],
+      "min": [
+        -0.9998161196708679,
+        -0.21643000841140747,
+        -0.9998161792755127
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 4816,
+      "componentType": 5126,
+      "count": 26,
+      "max": [
+        0.6249999403953552,
+        0.6875
+      ],
+      "min": [
+        0.375,
+        0.30614861845970154
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 5328,
+      "componentType": 5125,
+      "count": 72,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 15072,
+      "componentType": 5126,
+      "count": 25,
+      "max": [
+        47.492733001708984,
+        200.0841827392578,
+        47.49245071411133
+      ],
+      "min": [
+        -47.492733001708984,
+        200.08384704589844,
+        -47.493011474609375
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 15372,
+      "componentType": 5126,
+      "count": 25,
+      "max": [
+        0.9998161196708679,
+        1.0,
+        0.9998161196708679
+      ],
+      "min": [
+        -0.9998161196708679,
+        -0.019177796319127083,
+        -0.9998161792755127
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 5024,
+      "componentType": 5126,
+      "count": 25,
+      "max": [
+        1.0,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 5616,
+      "componentType": 5125,
+      "count": 36,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "Greggory_Fisher (https://sketchfab.com/Greggory_Fisher)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/holo-projector-137582d0c2774eaaad2400a9f9944df4",
+      "title": "𝐇𝐨𝐥𝐨 𝐏𝐫𝐨𝐣𝐞𝐜𝐭𝐨𝐫"
+    },
+    "generator": "Sketchfab-13.78.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 5760,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 5224,
+      "byteOffset": 5760,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 15672,
+      "byteOffset": 10984,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 9632,
+      "byteOffset": 26656,
+      "byteStride": 16,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 36288,
+      "uri": "scene.bin"
+    }
+  ],
+  "extensionsRequired": [
+    "KHR_materials_pbrSpecularGlossiness"
+  ],
+  "extensionsUsed": [
+    "KHR_materials_pbrSpecularGlossiness"
+  ],
+  "images": [
+    {
+      "uri": "textures/M_Projector_Base_diffuse.png"
+    },
+    {
+      "uri": "textures/M_Projector_Base_specularGlossiness.png"
+    },
+    {
+      "uri": "textures/M_Projector_Base_normal.png"
+    },
+    {
+      "uri": "textures/M_Projector_Base_occlusion.png"
+    },
+    {
+      "uri": "textures/M_Holo_Sides_diffuse.png"
+    }
+  ],
+  "materials": [
+    {
+      "extensions": {
+        "KHR_materials_pbrSpecularGlossiness": {
+          "diffuseFactor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "diffuseTexture": {
+            "index": 0
+          },
+          "glossinessFactor": 1.0,
+          "specularFactor": [
+            0.1,
+            0.1,
+            0.1
+          ],
+          "specularGlossinessTexture": {
+            "index": 1
+          }
+        }
+      },
+      "name": "M_Projector_Base",
+      "normalTexture": {
+        "index": 2
+      },
+      "occlusionTexture": {
+        "index": 3
+      }
+    },
+    {
+      "emissiveFactor": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "extensions": {
+        "KHR_materials_pbrSpecularGlossiness": {
+          "diffuseFactor": [
+            0.031037904363111334,
+            0.07568460048785382,
+            0.3471510850534478,
+            1.0
+          ],
+          "glossinessFactor": 1.0,
+          "specularFactor": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "specularGlossinessTexture": {
+            "index": 1
+          }
+        }
+      },
+      "name": "M_Projector_Emissive",
+      "normalTexture": {
+        "index": 2
+      },
+      "occlusionTexture": {
+        "index": 3
+      }
+    },
+    {
+      "alphaMode": "BLEND",
+      "doubleSided": true,
+      "extensions": {
+        "KHR_materials_pbrSpecularGlossiness": {
+          "diffuseFactor": [
+            0.03310476657088505,
+            0.08228270712981474,
+            0.3564001441459435,
+            0.1
+          ],
+          "diffuseTexture": {
+            "index": 4
+          },
+          "glossinessFactor": 1.0,
+          "specularFactor": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "name": "M_Holo_Sides"
+    },
+    {
+      "alphaMode": "BLEND",
+      "extensions": {
+        "KHR_materials_pbrSpecularGlossiness": {
+          "diffuseFactor": [
+            0.035601314875020336,
+            0.08228270712981486,
+            0.3564001441459435,
+            0.0
+          ],
+          "glossinessFactor": 0.0,
+          "specularFactor": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "name": "M_Holo_Top"
+    }
+  ],
+  "meshes": [
+    {
+      "name": "SM_Holo_Projector_M_Projector_Base_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "SM_Holo_Projector_M_Projector_Emissive_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 6,
+            "POSITION": 5,
+            "TANGENT": 7,
+            "TEXCOORD_0": 8
+          },
+          "indices": 9,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "SM_Holo_Projector_M_Holo_Sides_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 11,
+            "POSITION": 10,
+            "TEXCOORD_0": 12
+          },
+          "indices": 13,
+          "material": 2,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "SM_Holo_Projector_M_Holo_Top_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 15,
+            "POSITION": 14,
+            "TEXCOORD_0": 16
+          },
+          "indices": 17,
+          "material": 3,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        0.8490577340126038,
+        -3.6269736396214367e-16,
+        0.5283000469207764,
+        0.0,
+        0.5283000469207764,
+        3.1604000990051863e-16,
+        -0.8490577340126038,
+        0.0,
+        1.409870458837022e-16,
+        1.0,
+        4.599492400429093e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.009999999776482582,
+        0.0,
+        0.0,
+        -0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "a47e0cd5b8cf4f9d87461bf7df29a485.fbx"
+    },
+    {
+      "children": [
+        3
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "name": "SM_Holo_Projector"
+    },
+    {
+      "mesh": 0,
+      "name": "SM_Holo_Projector_M_Projector_Base_0"
+    },
+    {
+      "mesh": 1,
+      "name": "SM_Holo_Projector_M_Projector_Emissive_0"
+    },
+    {
+      "mesh": 2,
+      "name": "SM_Holo_Projector_M_Holo_Sides_0"
+    },
+    {
+      "mesh": 3,
+      "name": "SM_Holo_Projector_M_Holo_Top_0"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    },
+    {
+      "sampler": 0,
+      "source": 3
+    },
+    {
+      "sampler": 0,
+      "source": 4
+    }
+  ]
+}
