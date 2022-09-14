@@ -2,7 +2,8 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>My first three.js app</title>
+		<title>TheArcher</title>
+		<link rel="icon" type="image/x-icon" href="/img/favicon.png">
 		<style>
 			body { margin: 0;
 				background: #000;
@@ -153,24 +154,30 @@
 		
 		
 		<div id="start-menu" style="display:none">
-			<div style = "width: 100%; position: fixed; top: 20%; left: 50%; transform: translate(-30%, -50%);">
-				<button id="start_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;   padding: 3%;">
+			<div style = "width: 100%; position: fixed; top: 19%; left: 50%; transform: translate(-280pt, -50%);">
+					<span >
+						<img src="img/logo.png" width="800pt" >
+					</span>
+				</button>
+			</div>
+			<div style = "width: 100%; position: fixed; top: 50%; left: 50%; transform: translate(-30%, -50%);">
+				<button id="start_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;   padding: 30pt;">
 					<span >
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/start.png" width="50px">
 						<span style="vertical-align:middle; font-size: 50px;"><b>START</b> </span>
 					</span>
 				</button>
 			</div>
-			<div style = "width: 100%; position: fixed; top: 50%; left: 50%; transform: translate(-30%, -50%);">
-				<button id="settings_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 3%;">
+			<div style = "width: 100%; position: fixed; top: 70%; left: 50%; transform: translate(-30%, -50%);">
+				<button id="settings_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/settings.png" width="50px">
 						<span style="vertical-align:middle; font-size: 50px;"><b>OPTIONS</b> </span>
 					</span>
 				</button>
 			</div>
-			<div style = "width: 100%; position: fixed; top: 80%; left: 50%; transform: translate(-30%, -50%); ">
-				<button id="credits_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 3%;">
+			<div style = "width: 100%; position: fixed; top: 90%; left: 50%; transform: translate(-30%, -50%); ">
+				<button id="credits_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/credits.png" width="50px">
 						<span style="vertical-align:middle; font-size: 50px;"><b>CREDITS</b> </span>
@@ -194,7 +201,7 @@
 		</div>
 		<div id="settings-menu" style="display:none">
 			<div style = "width: 100%; position: fixed; top: 10%; left: 50%; transform: translate(-30%, -50%);">
-				<button id="shadows_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;   padding: 2%;">
+				<button id="shadows_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;   padding: 30pt;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/shadows.png" width="50px">
 						<span id = "shadows_btn_txt" style="vertical-align:middle; font-size: 50px;"><b>SHADOWS</b> : MAX</span>
@@ -202,15 +209,15 @@
 				</button>
 			</div>
 			<div style = "width: 75%; position: fixed; top: 70%; left: 25%; transform: translate(-30%, -50%);">
-				<button id="soundef_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 2%;">
+				<button id="soundef_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/soundef.png" width="50px">
-						<span id = "soundef_btn_txt" style="vertical-align:middle; font-size: 50px;"><b>EFFECT</b> : ON</span>
+						<span id = "soundef_btn_txt" style="vertical-align:middle; font-size: 50px;"><b>EFFECTS</b> : ON</span>
 					</span>
 				</button>
 			</div>
 			<div style = "width: 75%; position: fixed; top: 70%; left: 75%; transform: translate(-30%, -50%);">
-				<button id="soundmu_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 2%;">
+				<button id="soundmu_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/soundmu.png" width="50px">
 						<span id = "soundmu_btn_txt" style="vertical-align:middle; font-size: 50px;"><b>MUSIC</b> : ON</span>
@@ -218,7 +225,7 @@
 				</button>
 			</div>
 			<div style = "width: 100%; position: fixed; top: 50%; left: 50%; transform: translate(-30%, -50%); ">
-				<button id="wireframes_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 2%;">
+				<button id="wireframes_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/wireframes.png" width="50px">
 						<span id = "wireframes_btn_txt" style="vertical-align:middle; font-size: 50px;"><b>WIREFRAMES</b> : OFF</span>
@@ -226,15 +233,15 @@
 				</button>
 			</div>
 			<div style = "width: 100%; position: fixed; top: 30%; left: 50%; transform: translate(-30%, -50%); ">
-				<button id="clouds_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 2%;">
+				<button id="clouds_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/clouds.png" width="50px">
-						<span id = "clouds_btn_txt" style="vertical-align:middle; font-size: 50px;"><b>CLOUDS</b> : OFF</span>
+						<span id = "clouds_btn_txt" style="vertical-align:middle; font-size: 50px;"><b>CLOUDS</b> : ON</span>
 					</span>
 				</button>
 			</div>
 			<div style = "width: 100%; position: fixed; top: 90%; left: 50%; transform: translate(-30%, -50%); ">
-				<button id="back_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 2%;">
+				<button id="back_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/back.png" width="50px">
 						<span style="vertical-align:middle; font-size: 50px;"><b>BACK</b></span>
@@ -307,34 +314,40 @@
 		var clouds = 1;
 
 		function start(){
+			if(soundef == 1)clickAudio.play();
 			window.location.href = 'index.html?shadows='+shadows+'&soundef='+soundef+'&soundmu='+soundmu+'&wireframes='+wireframes;
 		}
 		document.querySelector("#start_btn").addEventListener("click",start);
 		
 		function openSettings(){
+			if(soundef == 1)clickAudio.play();
 			document.querySelector("#start-menu").style.display = "none";
 			document.querySelector("#settings-menu").style.display = "";
 		}
 		document.querySelector("#settings_btn").addEventListener("click",openSettings);
 
 		function closeSettings(){
+			if(soundef == 1)clickAudio.play();
 			document.querySelector("#start-menu").style.display = "";
 			document.querySelector("#settings-menu").style.display = "none";
 		}
 		document.querySelector("#back_btn").addEventListener("click",closeSettings);
 
 		function openCredits(){
+			if(soundef == 1)clickAudio.play();
 			document.querySelector("#credits").style.display = "";
 		}
 		document.querySelector("#credits_btn").addEventListener("click",openCredits);
 
 		function closeCredits(){
+			if(soundef == 1)clickAudio.play();
 			document.querySelector("#credits").style.display = "none";
 		}
 		document.querySelector("#close_credits_btn").addEventListener("click",closeCredits);
 
 
 		function changeShadows(){
+			if(soundef == 1)clickAudio.play();
 			if(shadows == 3){
 				shadows = 2;
 				document.querySelector("#shadows_btn_txt").innerHTML = "<b>SHADOWS</b> : MED";
@@ -347,10 +360,13 @@
 				shadows = 3;
 				document.querySelector("#shadows_btn_txt").innerHTML = "<b>SHADOWS</b> : MAX";
 			}
+			dirLight.shadow.mapSize.width = Math.pow(2,4 * shadows); // default
+			dirLight.shadow.mapSize.height = Math.pow(2,4 * shadows); // default
 		}
 		document.querySelector("#shadows_btn").addEventListener("click",changeShadows);
 
 		function changeSoundEf(){
+			if(soundef == 1)clickAudio.play();
 			if(soundef == 1){
 				soundef = 0;
 				document.querySelector("#soundef_btn_txt").innerHTML = "<b>EFFECTS</b> : OFF";
@@ -363,45 +379,67 @@
 		document.querySelector("#soundef_btn").addEventListener("click",changeSoundEf);
 
 		function changeSoundMu(){
+			if(soundef == 1)clickAudio.play();
 			if(soundmu == 1){
 				soundmu = 0;
+				if(mainThemeAudio.isPlaying)
+					mainThemeAudio.stop();
 				document.querySelector("#soundmu_btn_txt").innerHTML = "<b>MUSIC</b> : OFF";
 			}
 			else {
 				soundmu = 1;
+				mainThemeAudio.play();
 				document.querySelector("#soundmu_btn_txt").innerHTML = "<b>MUSIC</b> : ON";
 			}
 		}
 		document.querySelector("#soundmu_btn").addEventListener("click",changeSoundMu);
 
 		function changeClouds(){
+			if(soundef == 1)clickAudio.play();
 			if(clouds == 1){
 				clouds = 0;
+				if(skyboxModel)
+					scene.remove(skyboxModel);
 				document.querySelector("#clouds_btn_txt").innerHTML = "<b>CLOUDS</b> : OFF";
 			}
 			else {
 				clouds = 1;
+				if(skyboxModel)
+					scene.add(skyboxModel);
 				document.querySelector("#clouds_btn_txt").innerHTML = "<b>CLOUDS</b> : ON";
 			}
 		}
 		document.querySelector("#clouds_btn").addEventListener("click",changeClouds);
 
 		function changeWireframes(){
+			if(soundef == 1)clickAudio.play();
 			if(wireframes == 1){
 				wireframes = 0;
+				targets.forEach(element => {
+					element["mesh"].material.opacity = 0;
+				});
+				if(helper)
+					scene.remove(helper);
 				document.querySelector("#wireframes_btn_txt").innerHTML = "<b>WIREFRAMES</b> : OFF";
 			}
 			else {
 				wireframes = 1;
+				targets.forEach(element => {
+					element["mesh"].material.opacity = 1;
+				});
+				if(helper)
+					scene.add(helper);
 				document.querySelector("#wireframes_btn_txt").innerHTML = "<b>WIREFRAMES</b> : ON";
 			}
 		}
+
+
 		document.querySelector("#wireframes_btn").addEventListener("click",changeWireframes);
         const raycaster = new THREE.Raycaster();
         const pointer = new THREE.Vector2();
 
         function onPointerClick( event ) {
-
+			if(!mainThemeAudio.isPlaying && soundmu == "1") mainThemeAudio.play();
             // calculate pointer position in normalized device coordinates
             // (-1 to +1) for both components
 
@@ -466,7 +504,26 @@
 			camera.position.set(0,0,-5);
 			camera.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), Math.PI);
 
+		//AUDIO
 
+		const audioListener = new THREE.AudioListener();
+		camera.add( audioListener );
+		const audioLoader = new THREE.AudioLoader();
+
+		const mainThemeAudio = new THREE.Audio( audioListener );
+
+		audioLoader.load( 'sounds/mainTheme.mp3', function( buffer ) {
+			mainThemeAudio.setBuffer( buffer );
+			mainThemeAudio.setLoop( true );
+			mainThemeAudio.setVolume( 0.5 );
+		});
+
+		const clickAudio = new THREE.Audio( audioListener );
+
+		audioLoader.load( 'sounds/click.mp3', function( buffer ) {
+			clickAudio.setBuffer( buffer );
+			clickAudio.setVolume( 0.6 );
+		});
 		
 		//LIGHT SETUP
 
@@ -487,6 +544,8 @@
 		dirLight.shadow.mapSize.height = Math.pow(2,12); // default
 		scene.add(dirLight);
 		scene.add(dirLight.target);
+
+		const helper = new THREE.CameraHelper( dirLight.shadow.camera );
 
 		//CUBE (THREE)
 
@@ -558,7 +617,9 @@
             type : CANNON.Body.DYNAMIC,
             mass:0
         });
-        var genTargetMesh = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true, opacity : 0, transparent: true} ) );
+        var genTargetMesh = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true, transparent: true} ) );
+		if(wireframes == 1)genTargetMesh.material.opacity = 1;
+		else genTargetMesh.material.opacity = 0;
 		genTargetMesh.position.set(position);
         scene.add(genTargetMesh);
         world.addBody(genTargetBody);		
