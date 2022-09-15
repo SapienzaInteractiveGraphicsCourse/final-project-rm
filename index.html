@@ -152,6 +152,22 @@
 			</div>
 		</div>
 
+		<div id="showText_prompt" style=" width: 70%; position: fixed; top: 50%; left: 50%; transform: translate(-40%, -50%); height: auto; text-align: center; cursor: pointer; padding: 20pt; display:none;">
+			<div class="btn btn-primary example" style=" display:block; width: 70%; height: auto; text-align: center; ">
+				<div id="close_showText_prompt_btn" style="display:inline-block; margin-left: 96%; color: white; font-weight: bold; cursor: pointer;">
+					x
+				</div>
+				<span style="display:inline-block;width:100%;overflow: auto;">
+					<span id="showText_prompt_txt" style=" vertical-align:middle; font-size: 50px;"> </span>
+					<div style=" display:inline-block; width:100%; overflow: auto;"><span style="vertical-align: middle;">[Press </span><img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/e-key.png" width="50px"><span style="vertical-align: middle;"> to close the prompt]</span></div>
+				</span>
+			</div>
+		</div>
+
+		<div id="interaction_prompt" class="btn btn-primary example" style=" width: 70%; position: fixed; top: 90%; left: 50%; transform: translate(-50%, -50%); height: auto; text-align: center; cursor: pointer; padding: 20pt; display:none;">
+			<span style="vertical-align: middle;">PRESS </span><img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/e-key.png" width="50px"><span style="vertical-align: middle;"> TO INTERACT</span>
+		</div>
+
 		<!-- Pause Menu -->
 		<div id="pause_bg" style = "position:fixed; width : 100%; height : 100%; background-color: rgba(0,0,0,0.7); display:none;" >
 
@@ -161,6 +177,7 @@
 				</span>
 			</button>
 			</div>
+
 
 			<button id="pause_fg" class="btn btn-primary example" style=" width: 70%; position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); height: auto; text-align: center; cursor: pointer; padding: 20pt; display:none;">
 				<p style="margin:10pt; font-size: 50px; vertical-align: top;">
@@ -213,21 +230,6 @@
 			</div>
 		</div>
 
-		<div id="interaction_prompt" class="btn btn-primary example" style=" width: 70%; position: fixed; top: 90%; left: 50%; transform: translate(-50%, -50%); height: auto; text-align: center; cursor: pointer; padding: 20pt; display:none;">
-			<span style="vertical-align: middle;">PRESS </span><img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/e-key.png" width="50px"><span style="vertical-align: middle;"> TO INTERACT</span>
-		</div>
-
-		<div id="showText_prompt" style=" width: 70%; position: fixed; top: 50%; left: 50%; transform: translate(-40%, -50%); height: 80%; text-align: center; cursor: pointer; padding: 20pt; display:none;">
-			<div class="btn btn-primary example" style=" display:block; width: 70%; height: 80%; text-align: center; ">
-				<div id="close_showText_prompt_btn" style="display:inline-block; margin-left: 96%; color: white; font-weight: bold; cursor: pointer;">
-					x
-				</div>
-				<span style="display:inline-block;width:100%;overflow: auto;">
-					<span id="showText_prompt_txt" style=" vertical-align:middle; font-size: 50px;"> </span>
-				</span>
-			</div>
-		</div>
-
 
 		<script type="module">
         import * as THREE from './node_modules/three/build/three.module.js';
@@ -245,6 +247,7 @@
 		var mixer;
 		var archerModel, archerModelParent;
 		var arrowModel, targetModel, targetModel1, targetModel2,targetModel3, targetModel4;
+		var robotHoloModel;
 		var targetModelParent1, targetModelParent2, targetModelParent3, targetModelParent4;
 		var archerStructure = {};
 		var canShoot=true;
@@ -276,7 +279,8 @@
 		var slModel, slModelParent;
 		var holoProjModel;
 		var isNearHoloProj = false;
-		var nearHoloProj = null;;
+		var nearHoloProj = null;
+		var robotHoloAppearTween, robotHoloDisappearTween;
 
 		var getParameterShadows = findGetParameter("shadows");
 		if(getParameterShadows == null || !(["1", "2", "3"].includes(getParameterShadows)))
@@ -496,6 +500,105 @@
 			}
 			} );
 		});		
+
+		gltfLoader.load("gltf/robot_holo/scene.gltf", (gltf) => {
+			robotHoloModel = gltf.scene.getObjectByName("Sketchfab_Scene");
+			robotHoloModel.scale.setScalar( 2 );
+			gltf.scene.getObjectByName("ground").visible=false;
+			gltf.scene.getObjectByName("group36").visible=false;
+			
+			var shoulderR = gltf.scene.getObjectByName("Shoulder_R_04") ;
+			var head = gltf.scene.getObjectByName("Head_M_033") ;
+
+			// console.log(dumpObject(robotHoloModel).join('\n'));
+
+			// scene.add(robotHoloModel)
+			var eye = gltf.scene.getObjectByName("Head_M_033") ;
+			var mouthOpened = gltf.scene.getObjectByName("mouth_054") ;
+			mouthOpened.scale.setScalar(0);
+			var mouthClosed = gltf.scene.getObjectByName("mouthClosHappy_057") ;
+			mouthClosed.scale.setScalar(1);
+
+			gltf.scene.getObjectByName("eyeClosKawai_052").scale.setScalar(0) ;
+			gltf.scene.getObjectByName("eyeLClosKawai_060").scale.setScalar(0) ;
+			var eyeOpenedR = gltf.scene.getObjectByName("eye_050") ;
+			var eyeOpenedL = gltf.scene.getObjectByName("eyeL_058") ;
+			eyeOpenedR.scale.setScalar(0);
+			eyeOpenedL.scale.setScalar(0);
+			var eyeClosedR = gltf.scene.getObjectByName("eyeClosHappy_053") ;
+			var eyeClosedL = gltf.scene.getObjectByName("eyeLClosHappy_061") ;
+			eyeClosedR.scale.setScalar(1);
+			eyeClosedL.scale.setScalar(1);
+
+
+			//Here it follows the list of all the different eyes and mouths available
+
+			// mouth_054
+			// mouthClos_055 
+			// mouthClosKawai_056 
+			// mouthClosHappy_057 
+
+			// eye_050 
+			// eyeClos_051 
+			// eyeClosKawai_052 
+			// eyeClosHappy_053 
+
+			// eyeL_058 
+			// eyeLClos_059 
+			// eyeLClosKawai_060 
+			// eyeLClosHappy_061 
+
+			gltf.scene.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.frustumCulled=false;
+					node.material.transparent = true;
+					node.material.opacity = 0;
+					
+			}
+			} );
+
+			
+			var tween = new TWEEN.Tween({shoulderRRX : shoulderR.rotation.x, headRX : head.rotation.x}).to({shoulderRRX:shoulderR.rotation.x - Math.PI/12, headRX : head.rotation.x+ Math.PI/12},800).onUpdate((object) => {
+						shoulderR.rotation.x = object.shoulderRRX;
+						head.rotation.x = object.headRX;
+					});
+					tween.repeat(Infinity);
+					tween.yoyo(true);
+					tween.delay(200);
+					tween.start();
+			
+			function updateMouth(){
+				if(mouthClosed.scale.x == 1){
+					mouthClosed.scale.setScalar(0);
+					mouthOpened.scale.setScalar(1);
+				}
+				else{
+					mouthClosed.scale.setScalar(1);
+					mouthOpened.scale.setScalar(0);
+				}
+
+				if(eyeClosedR.scale.x == 1){
+					eyeClosedR.scale.setScalar(0);
+					eyeClosedL.scale.setScalar(0);
+					eyeOpenedR.scale.setScalar(1);
+					eyeOpenedL.scale.setScalar(1);
+				}
+				else{
+					eyeClosedR.scale.setScalar(1);
+					eyeClosedL.scale.setScalar(1);
+					eyeOpenedR.scale.setScalar(0);
+					eyeOpenedL.scale.setScalar(0);
+				}
+				setTimeout(()=>{
+					updateMouth();
+				},2000);
+			};
+	
+			setTimeout(()=>{
+				updateMouth();
+			},2000);
+		});	
+
 		
 		gltfLoader.load("gltf/starting_line/scene.gltf", (gltf) => {
 			slModel = gltf.scene.getObjectByName("Sketchfab_Scene");
@@ -665,7 +768,7 @@
 			//OBSTACLES PLATFORMS (CANNON)
 
 			var genPlatBody = new CANNON.Body({
-				shape: new CANNON.Cylinder(2.5,2.5,2,8),
+				shape: new CANNON.Cylinder(2.5,2.5,0.5,8),
 				type: CANNON.Body.DYNAMIC,
 				material: groundPhysMat,
 				position: positions[i],
@@ -764,7 +867,9 @@
 						new CANNON.Vec3(0, 7.4, 125.5)
 					];
 
-		var texts = ["messaggio1","messaggio2","","",""];
+		var texts = ["Hello champion! You're here to save the planet! I know you're good with the bow, so I provided you one. To start you have to shoot at the targets, in order to go to the next platform. If you encounter any enemy be sure to shoot him before he makes you fall! You'll have to jump onto floating platforms, but these ones are constantly moving up and down, so if you're not careful they could make you fall!",
+		"If you arrived here it means you've already killed three of these bad boys, congratulations! From here you can see two obstacles, one immediately after the other. The first one is a cannon that will try to shoot you and make you fall down. If you manage to pass the first bad experience you will start a race against the time. When you'll cross the starting line (clearly visible) the floating platforms under your feet will start to fall. Try to not fall with them, run!",
+		""];
 		
 		for(var i=0; i<positions.length; i++){
 			var holoProjGeo = new THREE.CylinderGeometry( 1, 1, 0.9, 8 );
@@ -3496,13 +3601,13 @@
 
 			var cubeArrowCan = new CANNON.Body({
 				mass: 2,
-				shape: new CANNON.Box(new CANNON.Vec3(0.05, 0.05, 0.35 )),  
+				shape: new CANNON.Box(new CANNON.Vec3(0.05, 0.05, 0.7 )),  
 				position: new CANNON.Vec3(archerModelParent.position.x + 2*moveX, archerModelParent.position.y+0.8, archerModelParent.position.z + 2*moveZ),
 				linearDamping: 0.5,
 				angularDamping: 0.5,
 			});
 			
-			var cubeArrowMesh = new THREE.Mesh( new THREE.BoxGeometry( 0.1 , 0.1, 0.7), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ));
+			var cubeArrowMesh = new THREE.Mesh( new THREE.BoxGeometry( 0.1 , 0.1, 1.4), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ));
 			
 			var cubeArrowModel = arrowModel.clone();
 			
@@ -3720,11 +3825,34 @@
 			if(event.key.toLowerCase() == "f") pressed["F"] = true;
 			if(event.key.toLowerCase() == "e") {
 				pressed["E"] = true
-				if(isNearHoloProj){
-					if(document.getElementById("showText_prompt").style.display == "none")
+				if(animateScene == true)return;
+				if(document.getElementById("showText_prompt").style.display == ""){
+					document.getElementById("showText_prompt").style.display = "none";
+					robotHoloDisappearTween = new TWEEN.Tween({"opacity" : 0.5}).to({"opacity": 0},500).easing(TWEEN.Easing.Bounce.InOut).onUpdate((object)=>{
+						robotHoloModel.traverse( function( node ) {
+							if (node.isMesh) { 
+								node.material.opacity = object["opacity"];
+							}
+						} );
+					}).onComplete(()=>{
+						scene.remove(robotHoloModel);
+					}).start();
+				}
+				else if(isNearHoloProj){
+					if(getParameterSoundEf == "1")
 						nearHoloProj["robotBlipAudio"].play();
 					document.getElementById("showText_prompt").style.display="";
 					document.getElementById("showText_prompt_txt").innerHTML = nearHoloProj["text"];
+					scene.add(robotHoloModel)
+					if(robotHoloDisappearTween && robotHoloDisappearTween.isPlaying)robotHoloDisappearTween.stop();
+					robotHoloAppearTween = new TWEEN.Tween({"opacity" : 0}).to({"opacity": 0.5},500).easing(TWEEN.Easing.Bounce.InOut).onUpdate((object)=>{
+						robotHoloModel.traverse( function( node ) {
+							if (node.isMesh) { 
+								node.material.opacity = object["opacity"];
+							}
+						} );
+					}).start();
+					robotHoloModel.position.set(nearHoloProj["body"].position.x, nearHoloProj["body"].position.y + 1.3, nearHoloProj["body"].position.z);
 				}
 		};
 		},false);
@@ -3903,6 +4031,7 @@
 				cannonShootArcher();
 				level4Animate();
 				holoProjAnimate();
+				robotHoloAnimate();
 
 				if(groundMesh && groundPlatModelParent){
 					groundMesh.position.copy(groundBody.position);
@@ -4068,6 +4197,16 @@
 				isNearHoloProj = false;
 				interactionPrompt.style.display = "none";
 			}
+		}
+
+		//Make the robotHolo rotate towards the archer
+		function robotHoloAnimate(){
+			var desAngle = Math.atan2(
+						(robotHoloModel.position.x - cubeBody.position.x),
+						(robotHoloModel.position.z - cubeBody.position.z));
+		
+			//Desired final direction, that has to be reached slowly (using rotateTowards)
+			robotHoloModel.quaternion.rotateTowards((new THREE.Quaternion()).setFromAxisAngle(new THREE.Vector3(0,1,0), desAngle - Math.PI/1.5), 0.2);
 		}
 
 		//Animate the cannon
