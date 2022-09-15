@@ -266,7 +266,7 @@
 		var cameraAngle, desQuat;
 		var rotatingPlatModel;
 		var rotatePlatFloatingTweens =[];
-		var skyboxModel, mainPlatModel, groundPlatModelParent, level2PlatformModelParent, level3PlatformModelParent;
+		var skyboxModel, mainPlatModel, groundPlatModelParent, level2PlatformModelParent, level3PlatformModelParent, level5PlatformModelParent, level6PlatformModelParent;
 		var pause_bg = document.getElementById("pause_bg");
 		var pause_fg = document.getElementById("pause_fg");
 		var interactionPrompt = document.getElementById("interaction_prompt");
@@ -278,9 +278,13 @@
 		var cannonBody, cannonModel, cannonModelParent, cannonMesh;
 		var slModel, slModelParent;
 		var holoProjModel;
+		var terminalModel;
 		var isNearHoloProj = false;
 		var nearHoloProj = null;
+		var isNearTerminal = false;
+		var nearTerminal = null;
 		var robotHoloAppearTween, robotHoloDisappearTween;
+		var terminals = [];
 
 		var getParameterShadows = findGetParameter("shadows");
 		if(getParameterShadows == null || !(["1", "2", "3"].includes(getParameterShadows)))
@@ -418,6 +422,12 @@
 
 		audioLoader.load( 'sounds/robotBlip.mp3', function( buffer ) {
 			robotBlipAudioBuffer = buffer;
+		});
+
+		var terminalAudioBuffer;
+
+		audioLoader.load( 'sounds/terminal.mp3', function( buffer ) {
+			terminalAudioBuffer = buffer;
 		});
 
 
@@ -660,6 +670,20 @@
 			level3PlatformModel.rotation.set(...[0,0,0]);
 			level3PlatformModelParent.add(level3PlatformModel);
 			scene.add(level3PlatformModelParent);
+
+			var level5PlatformModel = mainPlatModel.clone();
+			level5PlatformModelParent = new THREE.Object3D();
+			level5PlatformModel.getWorldPosition(level5PlatformModelParent.position);
+			level5PlatformModel.rotation.set(...[0,0,0]);
+			level5PlatformModelParent.add(level5PlatformModel);
+			scene.add(level5PlatformModelParent);
+
+			var level6PlatformModel = mainPlatModel.clone();
+			level6PlatformModelParent = new THREE.Object3D();
+			level6PlatformModel.getWorldPosition(level6PlatformModelParent.position);
+			level6PlatformModel.rotation.set(...[0,0,0]);
+			level6PlatformModelParent.add(level6PlatformModel);
+			scene.add(level6PlatformModelParent);
 		});
 
 		gltfLoader.load("gltf/skybox/scene.gltf", (gltf) => {
@@ -695,7 +719,7 @@
 
 
 			//OBSTACLES PLATFORMS (THREE)
-
+		//ObsPlat positions
 		var positions = [new CANNON.Vec3(-15, -4, 48),
 						new CANNON.Vec3(15, -4, 54),
 						new CANNON.Vec3(0, -1, 75),
@@ -739,7 +763,12 @@
 						new CANNON.Vec3(45, 6.5, 295),
 						new CANNON.Vec3(30, 6.5, 295),
 						new CANNON.Vec3(15, 6.5, 295),
-						new CANNON.Vec3(0, 6.5, 295)
+						new CANNON.Vec3(0, 6.5, 295),
+						new CANNON.Vec3(25, -5, 320),
+						new CANNON.Vec3(40, -5, 320),
+						new CANNON.Vec3(55, 6.5, 320),
+						new CANNON.Vec3(60, 6.5, 320),
+						new CANNON.Vec3(0, -4, 345) //48
 					];
 
 		
@@ -859,17 +888,15 @@
 			}
 			} );
 
-
-
-			//OBSTACLES PLATFORMS (THREE)
-
+		//HoloProjs positions
 		var positions = [new CANNON.Vec3(-0, 0.9, 9),
-						new CANNON.Vec3(0, 7.4, 125.5)
+						new CANNON.Vec3(0, 7.4, 125.5),
+						new CANNON.Vec3(0, 7.4, 310)
 					];
 
 		var texts = ["Hello champion! You're here to save the planet! I know you're good with the bow, so I provided you one. To start you have to shoot at the targets, in order to go to the next platform. If you encounter any enemy be sure to shoot him before he makes you fall! You'll have to jump onto floating platforms, but these ones are constantly moving up and down, so if you're not careful they could make you fall!",
 		"If you arrived here it means you've already killed three of these bad boys, congratulations! From here you can see two obstacles, one immediately after the other. The first one is a cannon that will try to shoot you and make you fall down. If you manage to pass the first bad experience you will start a race against the time. When you'll cross the starting line (clearly visible) the floating platforms under your feet will start to fall. Try to not fall with them, run!",
-		""];
+		"Activate the first terminal (the one reachable) and run to activate the second one. You have limited time, try to be fast!"];
 		
 		for(var i=0; i<positions.length; i++){
 			var holoProjGeo = new THREE.CylinderGeometry( 1, 1, 0.9, 8 );
@@ -911,6 +938,93 @@
 			holoProjBody.quaternion.setFromEuler(0, 0, 0);
 			holoProjs.push({"mesh" : genHoloProjMesh, "body" : holoProjBody, "model": holoProjModelParent, "text": texts[i], "robotBlipAudio" : genRobotBlipAudio});
 		}
+	});
+
+	gltfLoader.load("gltf/terminal/scene.gltf", (gltf) => {
+			terminalModel = gltf.scene.getObjectByName("Sketchfab_Scene");
+			terminalModel.scale.setScalar( 2 );
+
+
+			gltf.scene.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.castShadow = true;
+					node.receiveShadow=true;
+					node.frustumCulled=false;
+			}
+			} );
+
+		//Terminals positions
+		var positions = [new CANNON.Vec3(-15, 9.5, 320),
+						new CANNON.Vec3(60, 9, 320)
+					];
+		
+		for(var i=0; i<positions.length; i++){
+			var terminalGeo = new THREE.CylinderGeometry(1.1,1.1, 5, 8 );
+			var terminalMat = new THREE.MeshPhongMaterial({ 
+				color: 0x00ff00,
+				side: THREE.DoubleSide,
+				wireframe: true
+				});
+			var genTerminalMesh = new THREE.Mesh(terminalGeo, terminalMat);
+			if(getParameterWireframes == "1")	
+			scene.add(genTerminalMesh);
+			genTerminalMesh.receiveShadow=true;
+			genTerminalMesh.castshadow=true;
+
+			const genTerminalAudio= new THREE.PositionalAudio( audioListener );
+			genTerminalAudio.setBuffer(terminalAudioBuffer);
+			genTerminalAudio.setRefDistance( 20 );
+			genTerminalMesh.add(genTerminalAudio);
+			
+			var genTerminalModel = terminalModel.clone();
+			var terminalModelParent = new THREE.Object3D();
+			genTerminalModel.getWorldPosition(terminalModelParent.position);
+			genTerminalModel.rotation.set(...[0,0,0]);
+			genTerminalModel.position.set(...[0,-genTerminalMesh.geometry.parameters.height/2,0]);
+			terminalModelParent.add(genTerminalModel);
+			scene.add(terminalModelParent);
+			terminalModelParent.position.set(positions[i].x, positions[i].y, positions[i].z);
+			
+			//OBSTACLES PLATFORMS (CANNON)
+			
+			var terminalBody = new CANNON.Body({
+				shape: new CANNON.Cylinder(1.1,1.1,5,8),
+				type: CANNON.Body.STATIC,
+				material: groundPhysMat,
+				position: positions[i]
+			});
+			world.addBody(terminalBody);
+			genTerminalMesh.position.set(positions[i].x, positions[i].y, positions[i].z);
+			terminalBody.quaternion.setFromEuler(0, 0, 0);
+			terminals.push({"mesh" : genTerminalMesh, "body" : terminalBody, "model": terminalModelParent, "terminalAudio" : genTerminalAudio, "triggered" : false});
+		}
+
+
+		//Here define the functions to be triggered for each terminal activated
+		function triggerTerminal0(){
+			console.log("triggerTerminal0")
+			terminals[0]["triggered"] = true;
+			obsPlat[44]["rotatePlatFloating"].stop();
+			obsPlat[45]["rotatePlatFloating"].stop();
+			new TWEEN.Tween({y:-4}).to({y:6.5}, 1000).onUpdate((object)=>{obsPlat[44]["body"].position.y = object.y; obsPlat[45]["body"].position.y = object.y;}).start();
+			setTimeout(function() {
+				new TWEEN.Tween({y:6.5}).to({y:-4}, 1000).onUpdate((object)=>{if(terminals[1]["triggered"] == false){ obsPlat[44]["body"].position.y = object.y; obsPlat[45]["body"].position.y = object.y;}}).onComplete(()=>{if(terminals[1]["triggered"]==false)terminals[0]["triggered"] = false;}).start();
+		},8000);
+	}
+
+		function triggerTerminal1(){
+			terminals[1]["triggered"] = true;
+			terminals[0]["triggered"] = true;
+			obsPlat[48]["rotatePlatFloating"].stop();
+			new TWEEN.Tween({y:obsPlat[44]["body"].position.y, yu: obsPlat[48]["body"].position.y}).to({y:6.5, yu:6.5}, 1000).onUpdate((object)=>{ obsPlat[44]["body"].position.y = object.y; obsPlat[45]["body"].position.y = object.y; obsPlat[48]["body"].position.y = object.yu;}).start();
+		}
+
+		function triggerTerminal2(){
+			//TO DEFINE
+		}
+
+		terminals[0]["trigger"] =triggerTerminal0;
+		terminals[1]["trigger"] =triggerTerminal1;
 	});
 
 	
@@ -3556,7 +3670,8 @@
 			mass: 80,
 			shape: new CANNON.Box(new CANNON.Vec3(0.7, 1.5, 1.0)),
 			// position: new CANNON.Vec3(0, 2.8 + 6., 0 + 180),
-			position: new CANNON.Vec3(0, 2.8, 0),
+			// position: new CANNON.Vec3(0, 2.8, 0),
+			position: new CANNON.Vec3(0, 2.8 +6 , 320),
 			material: cubePhysMat,
 			linearDamping: 0.5,
  		    angularDamping: 0.5,
@@ -3785,6 +3900,58 @@
 		world.addBody(level3PlatformBody);
 		level3PlatformBody.quaternion.setFromEuler(0, Math.PI/6, 0);
 
+		//LEVEL5PLATFORM (THREE)
+		const level5PlatformGeo = new THREE.CylinderGeometry( 18, 18, 1, 6 );
+		const level5PlatformMat = new THREE.MeshPhongMaterial({ 
+			color: 0x00ff00,
+			side: THREE.DoubleSide,
+			wireframe: true
+			});
+		const level5PlatformMesh = new THREE.Mesh(level5PlatformGeo, level5PlatformMat);
+		if(getParameterWireframes == "1")
+			scene.add(level5PlatformMesh);
+		level5PlatformMesh.receiveShadow=true;
+		level5PlatformMesh.castshadow=true;
+
+		//LEVEL5PLATFORM (CANNON)
+		const level5PlatformPhysMat = new CANNON.Material();
+
+
+		const level5PlatformBody = new CANNON.Body({
+			shape: new CANNON.Cylinder(18,18,1,6),
+			type: CANNON.Body.KINEMATIC,
+			material: level5PlatformPhysMat,
+			position: new CANNON.Vec3(0, 6.5, 320)
+		});
+		world.addBody(level5PlatformBody);
+		level5PlatformBody.quaternion.setFromEuler(0, Math.PI/6, 0);
+
+		//LEVEL6PLATFORM (THREE)
+		const level6PlatformGeo = new THREE.CylinderGeometry( 18, 18, 1, 6 );
+		const level6PlatformMat = new THREE.MeshPhongMaterial({ 
+			color: 0x00ff00,
+			side: THREE.DoubleSide,
+			wireframe: true
+			});
+		const level6PlatformMesh = new THREE.Mesh(level6PlatformGeo, level6PlatformMat);
+		if(getParameterWireframes == "1")
+			scene.add(level6PlatformMesh);
+		level6PlatformMesh.receiveShadow=true;
+		level6PlatformMesh.castshadow=true;
+
+		//LEVEL6PLATFORM (CANNON)
+		const level6PlatformPhysMat = new CANNON.Material();
+
+
+		const level6PlatformBody = new CANNON.Body({
+			shape: new CANNON.Cylinder(18,18,1,6),
+			type: CANNON.Body.KINEMATIC,
+			material: level6PlatformPhysMat,
+			position: new CANNON.Vec3(0, 6.5, 370)
+		});
+		world.addBody(level6PlatformBody);
+		level6PlatformBody.quaternion.setFromEuler(0, Math.PI/6, 0);
+
 		
 
 		//CONTACT MATERIALS (CANNON)
@@ -3853,6 +4020,11 @@
 						} );
 					}).start();
 					robotHoloModel.position.set(nearHoloProj["body"].position.x, nearHoloProj["body"].position.y + 1.3, nearHoloProj["body"].position.z);
+				}
+				else if(isNearTerminal){
+					if(getParameterSoundEf == "1")
+						nearTerminal["terminalAudio"].play();
+					nearTerminal["trigger"]();
 				}
 		};
 		},false);
@@ -4032,6 +4204,7 @@
 				level4Animate();
 				holoProjAnimate();
 				robotHoloAnimate();
+				terminalsAnimate();
 
 				if(groundMesh && groundPlatModelParent){
 					groundMesh.position.copy(groundBody.position);
@@ -4098,6 +4271,22 @@
 					level3PlatformModelParent.position.copy(level3PlatformBody.position);
 					level3PlatformModelParent.quaternion.copy(level3PlatformBody.quaternion);
 					level3PlatformModelParent.rotation.y-=Math.PI/6;
+				}
+
+				if(level5PlatformBody && level5PlatformMesh && level5PlatformModelParent){
+					level5PlatformMesh.position.copy(level5PlatformBody.position);
+					level5PlatformMesh.quaternion.copy(level5PlatformBody.quaternion);
+					level5PlatformModelParent.position.copy(level5PlatformBody.position);
+					level5PlatformModelParent.quaternion.copy(level5PlatformBody.quaternion);
+					level5PlatformModelParent.rotation.y-=Math.PI/6;
+				}
+
+				if(level6PlatformBody && level6PlatformMesh && level6PlatformModelParent){
+					level6PlatformMesh.position.copy(level6PlatformBody.position);
+					level6PlatformMesh.quaternion.copy(level6PlatformBody.quaternion);
+					level6PlatformModelParent.position.copy(level6PlatformBody.position);
+					level6PlatformModelParent.quaternion.copy(level6PlatformBody.quaternion);
+					level6PlatformModelParent.rotation.y-=Math.PI/6;
 				}
 
 				//if (mixer) mixer.update(time.getDelta());
@@ -4195,7 +4384,29 @@
 			});
 			if(!activated){
 				isNearHoloProj = false;
-				interactionPrompt.style.display = "none";
+				if(!isNearTerminal)
+					interactionPrompt.style.display = "none";
+			}
+		}
+
+		//Make the archer able to interact with the terminals
+		function terminalsAnimate(){
+			if(!cubeBody)return;
+			var activated = false;
+			terminals.forEach(element => {
+				var distance = new THREE.Vector3();
+				distance.subVectors( cubeBody.position, element["body"].position );
+				if(distance.dot(distance) < 30 && element["triggered"]==false){
+					activated=true;
+					isNearTerminal = true;
+					nearTerminal = element;
+					interactionPrompt.style.display = "";
+				}
+			});
+			if(!activated){
+				isNearTerminal = false;
+				if(!isNearHoloProj)
+					interactionPrompt.style.display = "none";
 			}
 		}
 

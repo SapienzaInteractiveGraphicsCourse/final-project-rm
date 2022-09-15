@@ -1,0 +1,11 @@
+Model Information:
+* title:	Sci-fi Terminal
+* source:	https://sketchfab.com/3d-models/sci-fi-terminal-04af7eacb07541fe848bc8a258577858
+* author:	jellystuff (https://sketchfab.com/jellystuff)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Sci-fi Terminal" (https://sketchfab.com/3d-models/sci-fi-terminal-04af7eacb07541fe848bc8a258577858) by jellystuff (https://sketchfab.com/jellystuff) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
