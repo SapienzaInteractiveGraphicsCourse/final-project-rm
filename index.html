@@ -259,6 +259,7 @@
 		var prevPlayerPosition;
 		var obsPlatTweens = [];
 		var obsPlat=[];
+		var presPlates=[];
 		var holoProjs = [];
 		var robots=[];
 		var robotsTweens = [];
@@ -285,6 +286,7 @@
 		var nearTerminal = null;
 		var robotHoloAppearTween, robotHoloDisappearTween;
 		var terminals = [];
+		var presPlateModel;
 
 		var getParameterShadows = findGetParameter("shadows");
 		if(getParameterShadows == null || !(["1", "2", "3"].includes(getParameterShadows)))
@@ -428,6 +430,12 @@
 
 		audioLoader.load( 'sounds/terminal.mp3', function( buffer ) {
 			terminalAudioBuffer = buffer;
+		});
+
+		var presPlateAudioBuffer;
+
+		audioLoader.load( 'sounds/pressurePlate.mp3', function( buffer ) {
+			presPlateAudioBuffer = buffer;
 		});
 
 
@@ -891,12 +899,14 @@
 		//HoloProjs positions
 		var positions = [new CANNON.Vec3(-0, 0.9, 9),
 						new CANNON.Vec3(0, 7.4, 125.5),
-						new CANNON.Vec3(0, 7.4, 310)
+						new CANNON.Vec3(0, 7.4, 310),
+						new CANNON.Vec3(0, 7.4, 360)
 					];
 
 		var texts = ["Hello champion! You're here to save the planet! I know you're good with the bow, so I provided you one. To start you have to shoot at the targets, in order to go to the next platform. If you encounter any enemy be sure to shoot him before he makes you fall! You'll have to jump onto floating platforms, but these ones are constantly moving up and down, so if you're not careful they could make you fall!",
 		"If you arrived here it means you've already killed three of these bad boys, congratulations! From here you can see two obstacles, one immediately after the other. The first one is a cannon that will try to shoot you and make you fall down. If you manage to pass the first bad experience you will start a race against the time. When you'll cross the starting line (clearly visible) the floating platforms under your feet will start to fall. Try to not fall with them, run!",
-		"Activate the first terminal (the one reachable) and run to activate the second one. You have limited time, try to be fast!"];
+		"Activate the first terminal (the one reachable) and run to activate the second one. You have limited time, try to be fast!",
+		"Near this hologram you should find a pressure plate. If you stand up onto it you activate the next obstacle in order to proceed. Try to have the best aim that you can, good luck!"];
 		
 		for(var i=0; i<positions.length; i++){
 			var holoProjGeo = new THREE.CylinderGeometry( 1, 1, 0.9, 8 );
@@ -998,6 +1008,7 @@
 			terminalBody.quaternion.setFromEuler(0, 0, 0);
 			terminals.push({"mesh" : genTerminalMesh, "body" : terminalBody, "model": terminalModelParent, "terminalAudio" : genTerminalAudio, "triggered" : false});
 		}
+		
 
 
 		//Here define the functions to be triggered for each terminal activated
@@ -1025,6 +1036,81 @@
 
 		terminals[0]["trigger"] =triggerTerminal0;
 		terminals[1]["trigger"] =triggerTerminal1;
+	});
+
+
+	gltfLoader.load("gltf/pressure_plate/scene.gltf", (gltf) => {
+			presPlateModel = gltf.scene.getObjectByName("Sketchfab_Scene");
+			presPlateModel.scale.setScalar( 0.01 );
+
+
+			gltf.scene.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.castShadow = true;
+					node.receiveShadow=true;
+					node.frustumCulled=false;
+			}
+			} );
+
+		//PresPlates positions
+		var positions = [new CANNON.Vec3(-0, 7.1, 380)];
+		
+		for(var i=0; i<positions.length; i++){
+			var presPlateGeo = new THREE.BoxGeometry(2,0.15,2 );
+			var presPlateMat = new THREE.MeshPhongMaterial({ 
+				color: 0x00ff00,
+				side: THREE.DoubleSide,
+				wireframe: true
+				});
+			var genPresPlateMesh = new THREE.Mesh(presPlateGeo, presPlateMat);
+			if(getParameterWireframes == "1")	
+			scene.add(genPresPlateMesh);
+			genPresPlateMesh.receiveShadow=true;
+			genPresPlateMesh.castshadow=true;
+
+			const genPresPlateAudio= new THREE.PositionalAudio( audioListener );
+			genPresPlateAudio.setBuffer(presPlateAudioBuffer);
+			genPresPlateAudio.setRefDistance( 20 );
+			genPresPlateMesh.add(genPresPlateAudio);
+			
+			var genPresPlateModel = presPlateModel.clone();
+			var presPlateModelParent = new THREE.Object3D();
+			genPresPlateModel.getWorldPosition(presPlateModelParent.position);
+			genPresPlateModel.rotation.set(...[0,0,0]);
+			genPresPlateModel.position.set(...[0,-genPresPlateMesh.geometry.parameters.height/2,0]);
+			presPlateModelParent.add(genPresPlateModel);
+			scene.add(presPlateModelParent);
+			presPlateModelParent.position.set(positions[i].x, positions[i].y, positions[i].z);
+			
+			//OBSTACLES PLATFORMS (CANNON)
+			
+			var presPlateBody = new CANNON.Body({
+				shape: new CANNON.Box(new CANNON.Vec3(1, 0.075, 1)),
+				type: CANNON.Body.STATIC,
+				material: groundPhysMat,
+				position: positions[i]
+			});
+			world.addBody(presPlateBody);
+			genPresPlateMesh.position.set(positions[i].x, positions[i].y, positions[i].z);
+			presPlateBody.quaternion.setFromEuler(0, 0, 0);
+			presPlates.push({"mesh" : genPresPlateMesh, "body" : presPlateBody, "model": presPlateModelParent, "presPlateAudio" : genPresPlateAudio, "triggered" : false});
+		}
+		
+
+
+		//Here define the functions to be triggered for each terminal activated
+		function activatePresPlate0(){
+			console.log("activatePresPlate0")
+			presPlates[0]["triggered"] = true;
+		};
+
+		function deactivatePresPlate0(){
+			console.log("deactivatePresPlate0")
+			presPlates[0]["triggered"] = false;
+		};
+
+		presPlates[0]["activation"] = activatePresPlate0;
+		presPlates[0]["deactivation"] = deactivatePresPlate0;
 	});
 
 	
@@ -4205,6 +4291,7 @@
 				holoProjAnimate();
 				robotHoloAnimate();
 				terminalsAnimate();
+				presPlatesAnimate();
 
 				if(groundMesh && groundPlatModelParent){
 					groundMesh.position.copy(groundBody.position);
@@ -4387,6 +4474,25 @@
 				if(!isNearTerminal)
 					interactionPrompt.style.display = "none";
 			}
+		}
+
+		//Make the archer able to interact with the presPlates
+		function presPlatesAnimate(){
+			if(!cubeBody)return;
+			presPlates.forEach(element => {
+				if(Math.abs(cubeBody.position.x - element["body"].position.x)<1 && Math.abs(cubeBody.position.z - element["body"].position.z)<1 && Math.abs(cubeBody.position.y - element["body"].position.y)<2){
+					if(element["triggered"]==false){
+						if(getParameterSoundEf = "1")element["presPlateAudio"].play();
+						element["activation"]();
+					}
+				}
+				else{
+					if(element["triggered"]==true){
+						if(getParameterSoundEf = "1")element["presPlateAudio"].play();
+						element["deactivation"]();
+					}
+				}
+			});
 		}
 
 		//Make the archer able to interact with the terminals
