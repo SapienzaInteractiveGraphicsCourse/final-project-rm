@@ -244,18 +244,18 @@
 		var relDir=0;
 		var playerState = "Idle";
 		var cameraTarget = new THREE.Vector3();
-		var mixer;
+		var mixer, mixer2;
 		var archerModel, archerModelParent;
-		var arrowModel, targetModel, targetModel1, targetModel2,targetModel3, targetModel4;
+		var arrowModel, targetModel, targetModel1, targetModel2,targetModel3, targetModel4, targetModel5; 
 		var robotHoloModel;
-		var targetModelParent1, targetModelParent2, targetModelParent3, targetModelParent4;
+		var targetModelParent1, targetModelParent2, targetModelParent3, targetModelParent4, targetModelParent5; 
 		var archerStructure = {};
 		var canShoot=true;
 		var lastExecutedAnimation = "Idle";
 		var idle, idleB, runA, runB, runC, runD, jumpA, jumpB, walkA, walkB, walkC, walkD, shootPre, shootA, shootB, shootC, targetMovement1, targetMovement2, targetMovement3, targetMovement4, level2Unlock, level3Unlock1, level3Unlock2, level3Unlock3, level3Unlock4, level3Unlock5, level3Unlock6;
 		var backObsPlat1, fwdObsPlat1, backObsPlat2, fwdObsPlat2, backObsPlat3, fwdObsPlat3;
 		var arrows =[];
-		var target1hit = false, target2hit = false, target3hit=false, target4hit=false;
+		var target1hit = false, target2hit = false, target3hit=false, target4hit=false, target5hit=false; 
 		var prevPlayerPosition;
 		var obsPlatTweens = [];
 		var obsPlat=[];
@@ -287,6 +287,12 @@
 		var robotHoloAppearTween, robotHoloDisappearTween;
 		var terminals = [];
 		var presPlateModel;
+		var cubeWeightModel, cubeWeightBody, cubeWeightMesh, cubeWeightModelParent;
+		var cubeWeightPhysMat = new CANNON.Material();
+		var animationsTry;
+		var activatePresPlate0Tween;
+		var deactivatePresPlate0Tween;
+
 
 		var getParameterShadows = findGetParameter("shadows");
 		if(getParameterShadows == null || !(["1", "2", "3"].includes(getParameterShadows)))
@@ -506,6 +512,48 @@
 		groundBody.quaternion.setFromEuler(0, Math.PI/6, 0);
 		
 
+		gltfLoader.load("gltf/cubeWeight/scene.gltf", (gltf) => {
+			cubeWeightModel = gltf.scene.getObjectByName("Sketchfab_Scene");
+			cubeWeightModel.scale.setScalar( 2 );
+
+			// console.log(dumpObject(cubeWeightModel).join('\n'));
+			// console.log(cubeWeightModel)
+
+			gltf.scene.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.castShadow = true;
+					node.receiveShadow=true;
+					node.frustumCulled=false;
+			}
+			} );
+
+			cubeWeightBody = new CANNON.Body({
+				mass: 1,
+				shape: new CANNON.Box(new CANNON.Vec3(1.05, 1.05, 1.05 )),  
+				position: new CANNON.Vec3(0, 9, 370),
+				linearDamping: 0.1,
+				angularDamping: 0.1,
+				material: cubeWeightPhysMat
+			});
+			
+			cubeWeightMesh = new THREE.Mesh( new THREE.BoxGeometry( 2.1 , 2.1, 2.1), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ));
+			
+			cubeWeightModel = cubeWeightModel.clone();
+			
+			cubeWeightModelParent = new THREE.Object3D();
+			cubeWeightModel.getWorldPosition(cubeWeightModelParent.position);
+			cubeWeightModel.position.set(0 , -cubeWeightMesh.geometry.parameters.height/2, 0);
+			cubeWeightModelParent.add(cubeWeightModel);
+			if(getParameterWireframes == "1")
+				scene.add( cubeWeightMesh );
+			scene.add( cubeWeightModelParent );
+			
+			world.addBody(cubeWeightBody);
+
+			animationsTry = gltf.animations;
+			
+		});		
+
 		gltfLoader.load("gltf/arrow/scene.gltf", (gltf) => {
 			arrowModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			arrowModel.scale.setScalar( 0.02 );
@@ -517,7 +565,7 @@
 					node.frustumCulled=false;
 			}
 			} );
-		});		
+		});	
 
 		gltfLoader.load("gltf/robot_holo/scene.gltf", (gltf) => {
 			robotHoloModel = gltf.scene.getObjectByName("Sketchfab_Scene");
@@ -881,6 +929,13 @@
 			targetModel4.rotation.set(...[Math.PI/2,0,0]);
 			targetModelParent4.add(targetModel4);
 			scene.add(targetModelParent4);
+
+			targetModelParent5 = new THREE.Object3D();
+			targetModel5 = targetModel.clone();
+			targetModel5.getWorldPosition(targetModelParent5.position);
+			targetModel5.rotation.set(...[Math.PI/2,0,0]);
+			targetModelParent5.add(targetModel5);
+			scene.add(targetModelParent5);
 		});
 
 		gltfLoader.load("gltf/holo_projector/scene.gltf", (gltf) => {
@@ -906,7 +961,7 @@
 		var texts = ["Hello champion! You're here to save the planet! I know you're good with the bow, so I provided you one. To start you have to shoot at the targets, in order to go to the next platform. If you encounter any enemy be sure to shoot him before he makes you fall! You'll have to jump onto floating platforms, but these ones are constantly moving up and down, so if you're not careful they could make you fall!",
 		"If you arrived here it means you've already killed three of these bad boys, congratulations! From here you can see two obstacles, one immediately after the other. The first one is a cannon that will try to shoot you and make you fall down. If you manage to pass the first bad experience you will start a race against the time. When you'll cross the starting line (clearly visible) the floating platforms under your feet will start to fall. Try to not fall with them, run!",
 		"Activate the first terminal (the one reachable) and run to activate the second one. You have limited time, try to be fast!",
-		"Near this hologram you should find a pressure plate. If you stand up onto it you activate the next obstacle in order to proceed. Try to have the best aim that you can, good luck!"];
+		"Near this hologram you should find a pressure plate. If you put some weight on it, it will activate the target that you've to shoot. You can't simply stand up on it, otherwise who would shoot the target? To move the cube simply walk directly to it, crashing it (come on it's not so heavy). Try using the terminal if you loose the metal cube for whatever reason."];
 		
 		for(var i=0; i<positions.length; i++){
 			var holoProjGeo = new THREE.CylinderGeometry( 1, 1, 0.9, 8 );
@@ -965,7 +1020,8 @@
 
 		//Terminals positions
 		var positions = [new CANNON.Vec3(-15, 9.5, 320),
-						new CANNON.Vec3(60, 9, 320)
+						new CANNON.Vec3(60, 9, 320),
+						new CANNON.Vec3(-15, 9, 370),
 					];
 		
 		for(var i=0; i<positions.length; i++){
@@ -1031,11 +1087,19 @@
 		}
 
 		function triggerTerminal2(){
-			//TO DEFINE
+			terminals[2]["triggered"] = true;
+			setTimeout(()=>{terminals[2]["triggered"] = false;}, 3000);
+			cubeWeightBody.position.set(0, 10, 370);
 		}
 
 		terminals[0]["trigger"] =triggerTerminal0;
 		terminals[1]["trigger"] =triggerTerminal1;
+		terminals[2]["trigger"] =triggerTerminal2;
+
+
+		terminals[1]["body"].quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), Math.PI);
+		terminals[1]["mesh"].rotation.y = Math.PI ;
+		terminals[1]["model"].rotation.y = Math.PI ;
 	});
 
 
@@ -1053,7 +1117,7 @@
 			} );
 
 		//PresPlates positions
-		var positions = [new CANNON.Vec3(-0, 7.1, 380)];
+		var positions = [new CANNON.Vec3(10, 7.0, 370)];
 		
 		for(var i=0; i<positions.length; i++){
 			var presPlateGeo = new THREE.BoxGeometry(2,0.15,2 );
@@ -1100,13 +1164,23 @@
 
 		//Here define the functions to be triggered for each terminal activated
 		function activatePresPlate0(){
-			console.log("activatePresPlate0")
 			presPlates[0]["triggered"] = true;
+			if(activatePresPlate0Tween)
+				activatePresPlate0Tween.stop();
+			activatePresPlate0Tween = new TWEEN.Tween({"y" : targetBody5.position.y}).to({"y": 7}, (targetBody5.position.y - 7)*151).easing(TWEEN.Easing.Exponential.Out).onUpdate((object)=>{
+				if(presPlates[0]["triggered"] == true)
+					targetBody5.position.y = object.y;
+			}).start();
 		};
 
 		function deactivatePresPlate0(){
-			console.log("deactivatePresPlate0")
 			presPlates[0]["triggered"] = false;
+			if(deactivatePresPlate0Tween)
+				deactivatePresPlate0Tween.stop();
+			deactivatePresPlate0Tween = new TWEEN.Tween({"y" : targetBody5.position.y}).to({"y": 40}, (40-targetBody5.position.y)*151).easing(TWEEN.Easing.Exponential.Out).onUpdate((object)=>{
+				if(presPlates[0]["triggered"] == false)
+					targetBody5.position.y = object.y;
+			}).start();
 		};
 
 		presPlates[0]["activation"] = activatePresPlate0;
@@ -1143,6 +1217,7 @@
 			}
 			} );
 
+			//Robots spawn positions
 			var positions = [new CANNON.Vec3(5, 8.7, 117.5),
 						new CANNON.Vec3(-5, 8.7, 117.5),
 						new CANNON.Vec3(0, 8.7, 122.5),
@@ -3757,7 +3832,8 @@
 			shape: new CANNON.Box(new CANNON.Vec3(0.7, 1.5, 1.0)),
 			// position: new CANNON.Vec3(0, 2.8 + 6., 0 + 180),
 			// position: new CANNON.Vec3(0, 2.8, 0),
-			position: new CANNON.Vec3(0, 2.8 +6 , 320),
+			// position: new CANNON.Vec3(0, 2.8 +6 , 320),
+			position: new CANNON.Vec3(10, 2.8 +6 , 380),
 			material: cubePhysMat,
 			linearDamping: 0.5,
  		    angularDamping: 0.5,
@@ -3888,6 +3964,18 @@
 		targetBody4.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), Math.PI / 2);
 		world.addBody(targetBody4);
 
+		var targetBody5 = new CANNON.Body({
+			shape: new CANNON.Cylinder(1,1,0.5,10),
+			position: new CANNON.Vec3(0, 40, 400),
+			type : CANNON.Body.DYNAMIC,
+			mass:0
+		});
+		const targetMesh5 = new THREE.Mesh( new THREE.CylinderGeometry( 1, 1, 0.5, 10 ), new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} ) );
+		if(getParameterWireframes == "1")	
+			scene.add(targetMesh5);
+		targetBody5.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), Math.PI / 2);
+		world.addBody(targetBody5);		
+
 		function obj1Completed(){
 			if(!target1hit || !target2hit) return;
 			// console.log("LEVEL 2");
@@ -3929,7 +4017,13 @@
 				// console.log("LEVEL 3");
 			}
 		}
-		
+
+		function obj4Completed(){
+			if(target5hit == true){
+				console.log("Obj4")
+				//MAKE THE PLATFORM APPEAR IN SOME WAY
+			}
+		}
 
 		
 
@@ -4049,6 +4143,15 @@
 			);
 
 		world.addContactMaterial(groundBoxContactMat);
+
+		const groundCubeWeightContactMat = new CANNON.ContactMaterial(
+			groundPhysMat,
+			cubeWeightPhysMat,
+			{restitution : 0},
+			{friction : 0}
+			);
+
+		world.addContactMaterial(groundCubeWeightContactMat);
 
 		//EVENT LISTENERS
 		window.addEventListener('resize', function() {
@@ -4260,6 +4363,31 @@
 			}
 		});
 
+		targetBody5.addEventListener("collide", function(e){
+			//We've to check if one of the arrows hits the target5
+			if (targetBody5 && (e.contact.bi.id == targetBody5.id || e.contact.bj.id == targetBody5.id)) {
+				var arrowRepulseVelocity = 20;
+				var impactDir = new THREE.Vector3();
+				//For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
+				impactDir.subVectors( targetBody5.position, cubeBody.position,);
+				impactDir.normalize();
+				// console.log(impactDir)
+				targetBody5.velocity.x = arrowRepulseVelocity * impactDir.x;
+				targetBody5.velocity.z = arrowRepulseVelocity * impactDir.z;
+				removeArrowByID(e.contact.bi.id);
+				removeArrowByID(e.contact.bj.id);
+				target5hit=true;
+				targetBody5.mass=100;
+				targetBody5.updateMassProperties();
+				setTimeout(function() {
+					scene.remove(targetModelParent5);
+					world.removeBody(targetBody5);
+					scene.remove(targetMesh5);
+				},10000);
+				obj4Completed();
+			}
+		});
+
 
 
 
@@ -4344,6 +4472,13 @@
 					targetMesh4.position.copy(targetBody4.position);
 				}
 
+				if(targetBody5 && targetModelParent5 && targetMesh5){
+					targetModelParent5.position.copy(targetBody5.position);
+					targetModelParent5.quaternion.copy(targetBody5.quaternion);
+					targetMesh5.quaternion.copy(targetBody5.quaternion);
+					targetMesh5.position.copy(targetBody5.position);
+				}
+
 				if(level2PlatformBody && level2PlatformMesh && level2PlatformModelParent){
 					level2PlatformMesh.position.copy(level2PlatformBody.position);
 					level2PlatformMesh.quaternion.copy(level2PlatformBody.quaternion);
@@ -4374,6 +4509,13 @@
 					level6PlatformModelParent.position.copy(level6PlatformBody.position);
 					level6PlatformModelParent.quaternion.copy(level6PlatformBody.quaternion);
 					level6PlatformModelParent.rotation.y-=Math.PI/6;
+				}
+
+				if(cubeWeightBody && cubeWeightMesh && cubeWeightModelParent){
+					cubeWeightMesh.position.copy(cubeWeightBody.position);
+					cubeWeightMesh.quaternion.copy(cubeWeightBody.quaternion);
+					cubeWeightModelParent.position.copy(cubeWeightBody.position);
+					cubeWeightModelParent.quaternion.copy(cubeWeightBody.quaternion);
 				}
 
 				//if (mixer) mixer.update(time.getDelta());
@@ -4480,10 +4622,15 @@
 		function presPlatesAnimate(){
 			if(!cubeBody)return;
 			presPlates.forEach(element => {
-				if(Math.abs(cubeBody.position.x - element["body"].position.x)<1 && Math.abs(cubeBody.position.z - element["body"].position.z)<1 && Math.abs(cubeBody.position.y - element["body"].position.y)<2){
+				if((Math.abs(cubeBody.position.x - element["body"].position.x)<1 && Math.abs(cubeBody.position.z - element["body"].position.z)<1 && Math.abs(cubeBody.position.y - element["body"].position.y)<2)
+				|| (Math.abs(cubeWeightBody.position.x - element["body"].position.x)<1 && Math.abs(cubeWeightBody.position.z - element["body"].position.z)<1 && Math.abs(cubeWeightBody.position.y - element["body"].position.y)<2)){
 					if(element["triggered"]==false){
 						if(getParameterSoundEf = "1")element["presPlateAudio"].play();
 						element["activation"]();
+
+						// mixer2 = new THREE.AnimationMixer(cubeWeightModel);
+						// mixer2.clipAction(animationsTry[0]).setLoop(THREE.LoopRepeat, 100).play();
+						// if (mixer2) mixer2.update();
 					}
 				}
 				else{
