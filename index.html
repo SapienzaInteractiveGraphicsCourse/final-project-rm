@@ -292,6 +292,7 @@
 		var animationsTry;
 		var activatePresPlate0Tween;
 		var deactivatePresPlate0Tween;
+		var endModel;
 
 
 		var getParameterShadows = findGetParameter("shadows");
@@ -419,6 +420,13 @@
 			}
 		});
 
+		const theEndAudio = new THREE.Audio( audioListener );
+
+		audioLoader.load( 'sounds/theEnd.mp3', function( buffer ) {
+			theEndAudio.setBuffer( buffer );
+			theEndAudio.setVolume( 0.1 );
+		});
+
 
 		var metalImpactAudioBuffer;
 
@@ -454,15 +462,15 @@
 		dirLight.position.set(40, 40, 0);
 		dirLight.target.position.set(-2, 0, 0);
 		dirLight.castShadow = true; 
-		dirLight.shadow.camera.left = - 200;
+		dirLight.shadow.camera.left = - 400;
 		dirLight.shadow.camera.right = 15;
 		dirLight.shadow.camera.top = 15;
-		dirLight.shadow.camera.bottom = - 15;
+		dirLight.shadow.camera.bottom = - 40;
 		dirLight.shadow.camera.far = 100;
 		dirLight.shadow.bias = - 0;
 		var shadowQuality = parseInt(getParameterShadows);
-		dirLight.shadow.mapSize.width = Math.pow(2,4 * shadowQuality); // default
-		dirLight.shadow.mapSize.height = Math.pow(2,4 * shadowQuality); // default
+		dirLight.shadow.mapSize.width = Math.pow(2,4 * shadowQuality + 1); // default
+		dirLight.shadow.mapSize.height = Math.pow(2,4 * shadowQuality + 1); // default
 		scene.add(dirLight);
 		scene.add(dirLight.target);
 
@@ -1222,7 +1230,8 @@
 						new CANNON.Vec3(-5, 8.7, 117.5),
 						new CANNON.Vec3(0, 8.7, 122.5),
 						new CANNON.Vec3(0, 8.7, 190),
-						// new CANNON.Vec3(0, 8.7, 5)
+						new CANNON.Vec3(0, 8.7, 330),
+						// new CANNON.Vec3(0, 8.7, 380)
 										];
 
 
@@ -2186,6 +2195,47 @@
 			}
 		} );
 
+		});
+
+		gltfLoader.load("gltf/end/scene.gltf", (gltf) => {
+			gltf.scene.traverse( function( node ) {
+				if (node.isMesh) { 
+					node.castShadow = true;
+					node.receiveShadow=true;
+					node.frustumCulled=false;
+			}
+		} );
+
+		var tLetter = gltf.scene.getObjectByName("BalloonT_20");
+		var hLetter = gltf.scene.getObjectByName("BalloonH_8");
+		var eLetter = gltf.scene.getObjectByName("BalloonE_5");
+
+		var e2Letter = eLetter.clone();
+		var nLetter = gltf.scene.getObjectByName("BalloonN_14");
+		var dLetter = gltf.scene.getObjectByName("BalloonD_4");
+
+		endModel = new THREE.Object3D();
+		endModel.add(tLetter);
+		endModel.add(hLetter);
+		endModel.add(eLetter);
+		endModel.add(e2Letter);
+		endModel.add(nLetter);
+		endModel.add(dLetter);
+
+		// scene.add(endModel);
+		endModel.scale.setScalar( 10 );
+		endModel.position.set(0, -30, 450);
+		endModel.rotation.y = Math.PI;
+
+		// console.log(endModel);
+		var distBetweenLetters = 0.3;
+		var startingX = -((distBetweenLetters * 6) / 2);
+		tLetter.position.set(-0.9, 0, 0); 
+		hLetter.position.set(-0.9 + distBetweenLetters * 1, 0, 0);
+		eLetter.position.set(-0.9 + distBetweenLetters * 2, 0, 0);
+		e2Letter.position.set(-0.9 + distBetweenLetters * 4, 0, 0);
+		nLetter.position.set(-0.9 + distBetweenLetters * 5, 0, 0);
+		dLetter.position.set(-0.9 + distBetweenLetters * 6, 0, 0);
 		});
 
 		gltfLoader.load("gltf/cannon/scene.gltf", (gltf) => {
@@ -4021,7 +4071,19 @@
 		function obj4Completed(){
 			if(target5hit == true){
 				console.log("Obj4")
-				//MAKE THE PLATFORM APPEAR IN SOME WAY
+				scene.add(endModel);
+				new TWEEN.Tween({"y" : endModel.position.y}).to({"y": 15},5000).easing(TWEEN.Easing.Circular.Out).onUpdate((object)=>{
+						endModel.position.y = object.y;
+					}).onStart(()=>{
+						if(mainThemeAudio.isPlaying)
+							mainThemeAudio.stop();
+						if(getParameterSoundMu == "1")
+							theEndAudio.play();
+					}).onComplete(()=>{
+						new TWEEN.Tween({"y" : endModel.position.y}).to({"y": endModel.position.y + 5},5000).easing(TWEEN.Easing.Back.InOut).onUpdate((object)=>{
+							endModel.position.y = object.y;	
+						}).repeat(Infinity).yoyo(true).start();;
+					}).start();
 			}
 		}
 
@@ -4372,6 +4434,10 @@
 				impactDir.subVectors( targetBody5.position, cubeBody.position,);
 				impactDir.normalize();
 				// console.log(impactDir)
+				if(activatePresPlate0Tween)
+					activatePresPlate0Tween.stop();
+				if(deactivatePresPlate0Tween)
+					deactivatePresPlate0Tween.stop();
 				targetBody5.velocity.x = arrowRepulseVelocity * impactDir.x;
 				targetBody5.velocity.z = arrowRepulseVelocity * impactDir.z;
 				removeArrowByID(e.contact.bi.id);
