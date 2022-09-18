@@ -2817,7 +2817,7 @@
 													"headTop_EndRx" : -0.0000, "headTop_EndRy" : 0.0000, "headTop_EndRz" : -0.0000,
 													"leftShoulderRx" : -0.0000, "leftShoulderRy" : -0.0000, "leftShoulderRz" : 0.0000 + Math.PI/6,
 													"leftArmRx" : 0.0000, "leftArmRy" : -0.0000, "leftArmRz" : -1.3659,
-													"leftForeArmRx" : -0.0000, "leftForeArmRy" : -0.0000, "leftForeArmRz" : -0.0000 - Math.PI/12,
+													"leftForeArmRx" : -0.0000, "leftForeArmRy" : -0.0000  - Math.PI/2, "leftForeArmRz" : -0.0000,
 													"leftHandRx" : 0.0005, "leftHandRy" : -0.0000, "leftHandRz" : 0.0000,
 													"leftHandThumb1Rx" : -0.0002, "leftHandThumb1Ry" : -0.0002, "leftHandThumb1Rz" : 0.0002,
 													"leftHandThumb2Rx" : 0.0000, "leftHandThumb2Ry" : 0.7854, "leftHandThumb2Rz" : 0.2618,
@@ -2841,7 +2841,7 @@
 													"leftHandPinky4Rx" : 0.0000, "leftHandPinky4Ry" : 0.0000, "leftHandPinky4Rz" : -1.0472,
 													"rightShoulderRx" : -0.0000, "rightShoulderRy" : -0.0000, "rightShoulderRz" : -0.0000 - Math.PI/6,
 													"rightArmRx" : 0.0000, "rightArmRy" : 0.0000, "rightArmRz" : 1.3659,
-													"rightForeArmRx" : -0.0000, "rightForeArmRy" : -0.0000, "rightForeArmRz" : 0.0000  + Math.PI/12,
+													"rightForeArmRx" : -0.0000, "rightForeArmRy" : -0.0000  + Math.PI/2, "rightForeArmRz" : 0.0000,
 													"rightHandRx" : 0.0005, "rightHandRy" : 0.0000, "rightHandRz" : -0.0000,
 													"rightHandPinky1Rx" : 0.0000, "rightHandPinky1Ry" : -0.0000, "rightHandPinky1Rz" : -0.0000,
 													"rightHandPinky2Rx" : 0.0000, "rightHandPinky2Ry" : 0.0000, "rightHandPinky2Rz" : 1.0472,
@@ -2873,12 +2873,12 @@
 													"rightFootRx" : -0.0010, "rightFootRy" : -0.0000, "rightFootRz" : 0.0001,
 													"rightToeBaseRx" : 0.0000, "rightToeBaseRy" : -0.0000, "rightToeBaseRz" : -0.0000,
 													"rightToe_EndRx" : 0.0000, "rightToe_EndRy" : -0.0000, "rightToe_EndRz" : -0.0000
-													}, 1100).onComplete(()=>{
+													}, 900).onComplete(()=>{
 														jumpB.start();
 													});
 
 													jumpB = new TWEEN.Tween(startRotations).to({
-													"hipsRx" : -1.5708, "hipsRy" : -0.0000, "hipsRz" : 0.0000,
+														"hipsRx" : -1.5708, "hipsRy" : -0.0000, "hipsRz" : 0.0000,
 													"spineRx" : 0.0000, "spineRy" : 0.0000, "spineRz" : -0.0000,
 													"spine1Rx" : 0.0000, "spine1Ry" : 0.0000, "spine1Rz" : -0.0000,
 													"spine2Rx" : 0.0000, "spine2Ry" : -0.0000, "spine2Rz" : -0.0000,
@@ -2887,9 +2887,9 @@
 													"rightEyeRx" : -0.0000, "rightEyeRy" : 0.0000, "rightEyeRz" : -0.0000,
 													"leftEyeRx" : -0.0000, "leftEyeRy" : 0.0000, "leftEyeRz" : -0.0000,
 													"headTop_EndRx" : -0.0000, "headTop_EndRy" : 0.0000, "headTop_EndRz" : -0.0000,
-													"leftShoulderRx" : -0.0000, "leftShoulderRy" : -0.0000, "leftShoulderRz" : 0.0000 + Math.PI/6,
+													"leftShoulderRx" : -0.0000, "leftShoulderRy" : -0.0000, "leftShoulderRz" : 0.0000,
 													"leftArmRx" : 0.0000, "leftArmRy" : -0.0000, "leftArmRz" : -1.3659,
-													"leftForeArmRx" : -0.0000, "leftForeArmRy" : -0.0000, "leftForeArmRz" : -0.0000 - Math.PI/12,
+													"leftForeArmRx" : -0.0000, "leftForeArmRy" : -0.0000, "leftForeArmRz" : -0.0000,
 													"leftHandRx" : 0.0005, "leftHandRy" : -0.0000, "leftHandRz" : 0.0000,
 													"leftHandThumb1Rx" : -0.0002, "leftHandThumb1Ry" : -0.0002, "leftHandThumb1Rz" : 0.0002,
 													"leftHandThumb2Rx" : 0.0000, "leftHandThumb2Ry" : 0.7854, "leftHandThumb2Rz" : 0.2618,
@@ -2911,9 +2911,9 @@
 													"leftHandPinky2Rx" : 0.0000, "leftHandPinky2Ry" : -0.0000, "leftHandPinky2Rz" : -1.0472,
 													"leftHandPinky3Rx" : -0.0000, "leftHandPinky3Ry" : 0.0000, "leftHandPinky3Rz" : -1.0472,
 													"leftHandPinky4Rx" : 0.0000, "leftHandPinky4Ry" : 0.0000, "leftHandPinky4Rz" : -1.0472,
-													"rightShoulderRx" : -0.0000, "rightShoulderRy" : -0.0000, "rightShoulderRz" : -0.0000 - Math.PI/6,
+													"rightShoulderRx" : -0.0000, "rightShoulderRy" : -0.0000, "rightShoulderRz" : -0.0000,
 													"rightArmRx" : 0.0000, "rightArmRy" : 0.0000, "rightArmRz" : 1.3659,
-													"rightForeArmRx" : -0.0000, "rightForeArmRy" : -0.0000, "rightForeArmRz" : 0.0000  + Math.PI/12,
+													"rightForeArmRx" : -0.0000, "rightForeArmRy" : -0.0000, "rightForeArmRz" : 0.0000,
 													"rightHandRx" : 0.0005, "rightHandRy" : 0.0000, "rightHandRz" : -0.0000,
 													"rightHandPinky1Rx" : 0.0000, "rightHandPinky1Ry" : -0.0000, "rightHandPinky1Rz" : -0.0000,
 													"rightHandPinky2Rx" : 0.0000, "rightHandPinky2Ry" : 0.0000, "rightHandPinky2Rz" : 1.0472,
@@ -2945,7 +2945,7 @@
 													"rightFootRx" : -0.0010, "rightFootRy" : -0.0000, "rightFootRz" : 0.0001,
 													"rightToeBaseRx" : 0.0000, "rightToeBaseRy" : -0.0000, "rightToeBaseRz" : -0.0000,
 													"rightToe_EndRx" : 0.0000, "rightToe_EndRy" : -0.0000, "rightToe_EndRz" : -0.0000
-													}, 200);
+													}, 500);
 
 			walkA = new TWEEN.Tween(startRotations).to({													
 													"hipsRx" : -1.5708, "hipsRy" : -0.0000, "hipsRz" : 0.0000,
@@ -3881,9 +3881,9 @@
 			mass: 80,
 			shape: new CANNON.Box(new CANNON.Vec3(0.7, 1.5, 1.0)),
 			// position: new CANNON.Vec3(0, 2.8 + 6., 0 + 180),
-			// position: new CANNON.Vec3(0, 2.8, 0),
+			position: new CANNON.Vec3(0, 2.8, 0),
 			// position: new CANNON.Vec3(0, 2.8 +6 , 320),
-			position: new CANNON.Vec3(10, 2.8 +6 , 380),
+			// position: new CANNON.Vec3(10, 2.8 +6 , 380),
 			material: cubePhysMat,
 			linearDamping: 0.5,
  		    angularDamping: 0.5,
