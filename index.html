@@ -5,127 +5,36 @@
 		<title>TheArcher</title>
 		<link rel="icon" type="image/x-icon" href="/img/favicon.png">
 		<style>
-			body { margin: 0;
+			body { 
+				margin: 0;
 				background: #000;
-				font-family: Helvetica, sans-serif; }
+				font-family: Helvetica, sans-serif; 
+			}
 			
-			.example {
-			float: left;
-			margin: 10px;
-			}
-			.inp {
-			background: rgba(0,127,128,0.68);
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
-			border: 1px solid rgba(128,255,255,0.25);
-			color: rgba(255,255,255,0.75);
-			text-shadow: 0 0 10px rgba(0,255,255,0.95);
-			font-size: 30px;
-			padding: 10px 30px;
-			text-shadow: 0 0 10px rgba(0,255,255,0.5);
-			outline: none;
-			}
-			.inp:hover {
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			border: 1px solid rgba(128,255,255,0.75);
-			}
-			.inp:focus {
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			border: 1px solid rgba(128,255,255,0.75);
-			}
-			.inp-secondary {
-			background-color: transparent;
-			color: rgba(0,127,128,0.8);
-			text-shadow: 0 0 12px rgba(0,255,255,0.3);
-			/* text-shadow: none; */
-			border: 1px solid rgba(128,255,255,0.5);
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.25);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.25);
-			}
 			.btn {
-			background: rgba(0,127,128,0.68);
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
-			border: 1px solid rgba(128,255,255,0.25);
-			color: rgba(255,255,255,1);
-			text-shadow: 0 0 10px rgba(0,255,255,0.95);
-			font-size: 30px;
-			padding: 10px 30px;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-			outline: none;
+				background: rgba(0,127,128,0.68);
+				-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+				box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+				border: 1px solid rgba(128,255,255,0.25);
+				color: rgba(255,255,255,1);
+				text-shadow: 0 0 10px rgba(0,255,255,0.95);
+				font-size: 30px;
+				padding: 10px 30px;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				outline: none;
 			}
 			.btn:hover {
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			border: 1px solid rgba(128,255,255,0.75);
+				-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+				box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+				border: 1px solid rgba(128,255,255,0.75);
 			}
 			.btn-primary:active {
-			background: rgba(0,127,128,0.9);
+				background: rgba(0,127,128,0.9);
 			}
-			.btn-secondary {
-			background-color: transparent;
-			color: rgba(0,127,128,0.8);
-			text-shadow: 0 0 12px rgba(0,255,255,0.3);
-			/* text-shadow: none; */
-			border: 1px solid rgba(128,255,255,0.5);
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.25);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.25);
-			}
-			.btn-secondary:active {
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			}
-			.element {
-			position: relative;
-			width: 120px;
-			height: 160px;
-			color: #fff;
-			text-align: center;
-			background: rgba(0,127,128,0.68);
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
-			border: 1px solid rgba(128,255,255,0.25);
-			cursor: default;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-			}
-			.element:hover {
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			border: 1px solid rgba(128,255,255,0.75);
-			}
-			.element .number {
-			font-size: 12px;
-			color: rgba(128,255,255,0.75);
-			position: absolute;
-			top: 20px;
-			right: 20px;
-			}
-			.element .symbol {
-			color: rgba(255,255,255,0.75);
-			text-shadow: 0 0 10px rgba(0,255,255,0.95);
-			position: absolute;
-			font-size: 60px;
-			font-weight: bold;
-			top: 40px;
-			left: 0px;
-			right: 0px;
-			}
-			.element .details {
-			font-size: 12px;
-			color: rgba(128,255,255,0.75);
-			position: absolute;
-			bottom: 15px;
-			left: 0px;
-			right: 0px;
-			}
+
 
 		</style>
 	</head>
@@ -151,7 +60,8 @@
 				<progress  id="gameLoading_fg_bar" style="width: 100%; height: 3em;" max="100" ></progress>
 			</div>
 		</div>
-
+		
+		<!-- Prompt used to show interaction result text -->
 		<div id="showText_prompt" style=" width: 70%; position: fixed; top: 50%; left: 50%; transform: translate(-40%, -50%); height: auto; text-align: center; cursor: pointer; padding: 20pt; display:none;">
 			<div class="btn btn-primary example" style=" display:block; width: 70%; height: auto; text-align: center; ">
 				<div id="close_showText_prompt_btn" style="display:inline-block; margin-left: 96%; color: white; font-weight: bold; cursor: pointer;">
@@ -164,21 +74,23 @@
 			</div>
 		</div>
 
+		<!-- Prompt used to show "Press E for interaction" when near the interaction object -->
 		<div id="interaction_prompt" class="btn btn-primary example" style=" width: 70%; position: fixed; top: 90%; left: 50%; transform: translate(-50%, -50%); height: auto; text-align: center; cursor: pointer; padding: 20pt; display:none;">
 			<span style="vertical-align: middle;">PRESS </span><img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/e-key.png" width="50px"><span style="vertical-align: middle;"> TO INTERACT</span>
 		</div>
 
 		<!-- Pause Menu -->
+		<!-- Pause Menu background -->
 		<div id="pause_bg" style = "position:fixed; width : 100%; height : 100%; background-color: rgba(0,0,0,0.7); display:none;" >
 
+			<!-- Main logo of the game -->
 			<div style = "width: 100%; position: fixed; top: 19%; left: 50%; transform: translate(-280pt, -50%);">
 				<span >
 					<img src="img/logo.png" width="800pt" >
 				</span>
-			</button>
 			</div>
 
-
+			<!-- Pause foreground to show the effective content -->
 			<button id="pause_fg" class="btn btn-primary example" style=" width: 70%; position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); height: auto; text-align: center; cursor: pointer; padding: 20pt; display:none;">
 				<p style="margin:10pt; font-size: 50px; vertical-align: top;">
 					<b>PAUSE</b>
@@ -187,40 +99,44 @@
 				<p style="font-size:100px;">
 					<b>CLICK TO RESUME</b>
 				</p>
+
+				<!-- Commands table -->
 				<span style="text-align: center;">
 				<table style="border: 2px solid white; border-collapse: collapse; margin-left:auto; margin-right:auto; -webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
 				box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
 				border: 1px solid rgba(128,255,255,0.25);">
 					<tr>
 						<th style="padding: 15pt;border: 2px solid white; border-collapse: collapse;">
-					<span>
-						<span style="vertical-align:middle">Move: </span>
-						<img style="vertical-align:middle" src="img/wasd.png" width="60pt">
-					</span>
+							<span>
+								<span style="vertical-align:middle">Move: </span>
+								<img style="vertical-align:middle" src="img/wasd.png" width="60pt">
+							</span>
 						</th>
 						<th style="padding-left: 10pt; padding-right: 20pt;;border: 2px solid white; border-collapse: collapse;">
-					<span>
-						<span style="vertical-align:middle">Jump: </span>
-						<img style="vertical-align:middle" src="img/space-bar.png" width="60pt">
-					</span>
+							<span>
+								<span style="vertical-align:middle">Jump: </span>
+								<img style="vertical-align:middle" src="img/space-bar.png" width="60pt">
+							</span>
 						</th>
 						<th style="padding-left: 10pt; padding-right: 20pt;;border: 2px solid white; border-collapse: collapse;">
-					<span>
-						<span style="vertical-align:middle">Look: </span>
-						<img style="vertical-align:middle" src="img/mouse.png" width="60pt">
-					</span>
+							<span>
+								<span style="vertical-align:middle">Look: </span>
+								<img style="vertical-align:middle" src="img/mouse.png" width="60pt">
+							</span>
 						</th>
 						<th style="padding-left: 10pt; padding-right: 20pt;border: 2px solid white; border-collapse: collapse;">
-					<span>
-						<span style="vertical-align:middle">Shoot an arrow: </span>
-						<img style="vertical-align:middle" src="img/f-key.png" width="60pt">
-					</span>
+							<span>
+								<span style="vertical-align:middle">Shoot an arrow: </span>
+								<img style="vertical-align:middle" src="img/f-key.png" width="60pt">
+							</span>
+						</th>
 				</tr>
 				</table>
 				</span>
-			  </button>
-				
-			  <div style = "width: 100%; position: fixed; top: 94%; left: 10%;  ">
+			</button>
+
+			 <!-- Home button -->
+			<div style = "width: 100%; position: fixed; top: 94%; left: 10%;  ">
 				<button id="home_btn" class="btn btn-primary example" style="width: 20%; height: auto; text-align: center; cursor: pointer;  padding: 20pt; transform: translate(-50%, -50%);">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/home.png" width="50px">
@@ -293,8 +209,12 @@
 		var activatePresPlate0Tween;
 		var deactivatePresPlate0Tween;
 		var endModel;
+		var lastUnlockTime = null;
+		var currentObsPlat = 24;
+		var canFallPlatform = true;
+		var pressed = {"SHIFT" : false, "W" : false, "A" : false, "S" : false, "D" : false, "F" : false};
 
-
+		//Considering the parameters sent by the menu through the URL
 		var getParameterShadows = findGetParameter("shadows");
 		if(getParameterShadows == null || !(["1", "2", "3"].includes(getParameterShadows)))
 			getParameterShadows=3;
@@ -311,20 +231,19 @@
 		if(getParameterClouds == null || !["1","0"].includes(getParameterClouds))
 			getParameterClouds=1;
 
-		// console.log(getParameterShadows +" "+ getParameterSoundEf +" " + getParameterSoundMu +" "+ getParameterWireframes + " " + getParameterClouds)
-
-
-		//CANNON AND THREE SETUP
+		//Creating the world for CANNON-ES
 		const world = new CANNON.World({
 			gravity: new CANNON.Vec3(0, -20, 0)
 		});
 
+		//Creating the scene for THREEJS
 		const scene = new THREE.Scene();
+
+		//Importing the Sky from THREEJS examples and setting the parameters to obtain the desired result
 		var sky = new Sky();
 		sky.scale.setScalar( 450000 );
 		scene.add( sky );
 		var sunPosition = new THREE.Vector3();
-
 		sky.material.uniforms[ 'turbidity' ].value =20;
 		sky.material.uniforms[ 'mieCoefficient' ].value =0;
 		sky.material.uniforms[ 'mieDirectionalG' ].value =1;
@@ -332,36 +251,25 @@
 		sunPosition.setFromSphericalCoords( 1, THREE.MathUtils.degToRad( 90 - 45 ), THREE.MathUtils.degToRad( 90 ) );
 		sky.material.uniforms[ 'sunPosition' ].value.copy( sunPosition );
 
-		
+		//Configuring initial position for camera (immediately overwritten to follow the player)
 		const camera = new THREE.PerspectiveCamera(
 			45,
 			window.innerWidth / window.innerHeight,
 			0.1,
 			1000
-			);
+		);
+		camera.position.set(0,10,-20);
+		camera.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), Math.PI);
 			
-			
-			const renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			renderer.shadowMap.enabled = true;
-			document.body.appendChild( renderer.domElement );
-			renderer.toneMappingExposure = 0.5;
-			
-			var orbit = new OrbitControls(camera,renderer.domElement);
-			camera.position.set(0,10,-20);
-			camera.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), Math.PI);
-
-			var lastUnlockTime = null;
-
-			pause_fg.addEventListener( 'click', function () {
-				if ( !gameLoaded || (lastUnlockTime && (performance.now() - lastUnlockTime) < 1250)) {
-					return
-				}
-				else
-					orbit.lock();
-			}, false );
-
-
+		//Configuring the renderer
+		const renderer = new THREE.WebGLRenderer();
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.shadowMap.enabled = true;
+		document.body.appendChild( renderer.domElement );
+		renderer.toneMappingExposure = 0.5;
+		
+		//Importing a modified version of the Orbit controls modified by me. In this way the player is able to lock the camera and move the camera according to a classical third person game
+		var orbit = new OrbitControls(camera,renderer.domElement);
 
 		//SOUND SETUP
 		const audioListener = new THREE.AudioListener();
@@ -428,6 +336,7 @@
 		});
 
 
+		//These are only buffers not audios (not playable) because these buffers have to be used in multiple audios, e.g. multiple enemies emitting the same sound
 		var metalImpactAudioBuffer;
 
 		audioLoader.load( 'sounds/metalImpact.mp3', function( buffer ) {
@@ -455,9 +364,11 @@
 
 		//LIGHT SETUP
 
+		//Configuring ambient light, otherwise the shadow of the directional light would be too dark
 		const ambLight = new THREE.AmbientLight(0xFFFFFF, 0.8);
 		scene.add(ambLight);
 
+		//Configuring the directional light
 		const dirLight = new THREE.DirectionalLight(0xFFFFFF, 10);
 		dirLight.position.set(40, 40, 0);
 		dirLight.target.position.set(-2, 0, 0);
@@ -468,16 +379,19 @@
 		dirLight.shadow.camera.bottom = - 40;
 		dirLight.shadow.camera.far = 100;
 		dirLight.shadow.bias = - 0;
+		//The shadow quality must be based on the menu settings (too give the possibility of improving shadow qualities)
 		var shadowQuality = parseInt(getParameterShadows);
-		dirLight.shadow.mapSize.width = Math.pow(2,4 * shadowQuality + 1); // default
-		dirLight.shadow.mapSize.height = Math.pow(2,4 * shadowQuality + 1); // default
+		dirLight.shadow.mapSize.width = Math.pow(2,4 * shadowQuality + 1);
+		dirLight.shadow.mapSize.height = Math.pow(2,4 * shadowQuality + 1);
 		scene.add(dirLight);
 		scene.add(dirLight.target);
 
+		//Tool useful to show the area of the directional light (activated only if the "wireframes" flag is set on 1)
 		const helper = new THREE.CameraHelper( dirLight.shadow.camera );
 		if(getParameterWireframes == "1")
 			scene.add( helper )
-		//CUBE (THREE)
+			
+		//Creating the THREEJS mesh of the archer (called cube because it's wireframed as a cube)
 		const cubeGeometry = new THREE.BoxGeometry( 1.4, 3.0, 2.0 );
 		const cubeMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, wireframe: true} );
 		const cubeMesh = new THREE.Mesh( cubeGeometry, cubeMaterial );
@@ -488,13 +402,16 @@
 		if(getParameterWireframes == "1")
 			scene.add( cubeMesh );
 		cubeMesh.castShadow=true;
+
+		//Configuring the GLTFLoader and the loading bar
 		const loadingManager = new THREE.LoadingManager();
 		const gltfLoader = new GLTFLoader(loadingManager);
 		loadingManager.onLoad = () => {gameLoaded = true; createArrowAnimation(); document.querySelector('#gameLoading_fg').style.display = 'none'; document.querySelector('#gameLoading_bg').style.display = 'none'; pause_fg.style.display = ''; pause_bg.style.display = '';};
 		loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
 			document.querySelector('#gameLoading_fg_bar').setAttribute("value",`${itemsLoaded / itemsTotal * 100 | 0}`);
 		};
-		//GROUND (THREE)
+
+		//Creating the THREEJS mesh of the ground (the first big platform)
 		const groundGeo = new THREE.CylinderGeometry( 18, 18, 1, 6 );
 		const groundMat = new THREE.MeshPhongMaterial({ 
 			color: 0x00ff00,
@@ -507,10 +424,9 @@
 		groundMesh.receiveShadow=true;
 		groundMesh.castshadow=true;
 		
-		//GROUND (CANNON)
+		//Creating the CANNON ES body of the ground
 		const groundPhysMat = new CANNON.Material();
 
-		
 		const groundBody = new CANNON.Body({
 			shape: new CANNON.Cylinder(18,18,1,6),
 			type: CANNON.Body.KINEMATIC,
@@ -520,12 +436,14 @@
 		groundBody.quaternion.setFromEuler(0, Math.PI/6, 0);
 		
 
+		//LOADING GLTF MODELS
+		//All of these models are loaded without considering the animations provided with them. It is forbidden to import animations for the purpose of this project.
+		//GENERAL COMMENT: For each model imported it has been created a THREEJS wireframe (mesh) visible only if the option "wireframes" is flagged. It also has been created a body for the CANNON-ES library that has to manage the physics of the objects. In most cases, the components of the hierarchical models have been animated using the library TWEENJS, that provides interpolation functions for keyframe animations.
+
+		//Loading the model of the cube used to activate the pressure plates.
 		gltfLoader.load("gltf/cubeWeight/scene.gltf", (gltf) => {
 			cubeWeightModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			cubeWeightModel.scale.setScalar( 2 );
-
-			// console.log(dumpObject(cubeWeightModel).join('\n'));
-			// console.log(cubeWeightModel)
 
 			gltf.scene.traverse( function( node ) {
 				if (node.isMesh) { 
@@ -559,9 +477,9 @@
 			world.addBody(cubeWeightBody);
 
 			animationsTry = gltf.animations;
-			
-		});		
+		});
 
+		//Loading the model of the arrows shot by the archer (this model will be cloned for every arrow that the archer will shoot)
 		gltfLoader.load("gltf/arrow/scene.gltf", (gltf) => {
 			arrowModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			arrowModel.scale.setScalar( 0.02 );
@@ -575,6 +493,7 @@
 			} );
 		});	
 
+		//Loading the model of the robot shown as an hologram
 		gltfLoader.load("gltf/robot_holo/scene.gltf", (gltf) => {
 			robotHoloModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			robotHoloModel.scale.setScalar( 2 );
@@ -584,9 +503,6 @@
 			var shoulderR = gltf.scene.getObjectByName("Shoulder_R_04") ;
 			var head = gltf.scene.getObjectByName("Head_M_033") ;
 
-			// console.log(dumpObject(robotHoloModel).join('\n'));
-
-			// scene.add(robotHoloModel)
 			var eye = gltf.scene.getObjectByName("Head_M_033") ;
 			var mouthOpened = gltf.scene.getObjectByName("mouth_054") ;
 			mouthOpened.scale.setScalar(0);
@@ -631,16 +547,16 @@
 			}
 			} );
 
-			
+			//Animating with simple animations the robot hologram
 			var tween = new TWEEN.Tween({shoulderRRX : shoulderR.rotation.x, headRX : head.rotation.x}).to({shoulderRRX:shoulderR.rotation.x - Math.PI/12, headRX : head.rotation.x+ Math.PI/12},800).onUpdate((object) => {
 						shoulderR.rotation.x = object.shoulderRRX;
 						head.rotation.x = object.headRX;
 					});
-					tween.repeat(Infinity);
-					tween.yoyo(true);
-					tween.delay(200);
-					tween.start();
-			
+			tween.repeat(Infinity);
+			tween.yoyo(true);
+			tween.delay(200);
+			tween.start();
+	
 			function updateMouth(){
 				if(mouthClosed.scale.x == 1){
 					mouthClosed.scale.setScalar(0);
@@ -673,7 +589,7 @@
 			},2000);
 		});	
 
-		
+		//Loading the starting line model, used to indicate to the player when the platform will start to fall. For this model no CANNON-ES body has been created, because it is a secondary element, not effectively useful for the game mechanics.
 		gltfLoader.load("gltf/starting_line/scene.gltf", (gltf) => {
 			slModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			slModel.scale.setScalar( 90 );
@@ -688,7 +604,6 @@
 
 			var genSlModel = slModel.clone();
 			slModelParent = new THREE.Object3D();
-			//slModel.getWorldPosition(slModelParent.position);
 			genSlModel.rotation.set(...[0,0,0]);
 			genSlModel.position.set(47.5,0.5,-17.5);
 			slModelParent.add(genSlModel);
@@ -701,6 +616,8 @@
 			slFloating.start();
 		});
 
+
+		//Loading the model used to characterize every big platform in the game. The floating platforms (the smaller ones) use another model
 		gltfLoader.load("gltf/main_plat/scene.gltf", (gltf) => {
 			mainPlatModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			mainPlatModel.scale.setScalar( 4.5 );
@@ -750,10 +667,11 @@
 			scene.add(level6PlatformModelParent);
 		});
 
+		//Loading the skybox model that will rotate slowly simulating moving windows
 		gltfLoader.load("gltf/skybox/scene.gltf", (gltf) => {
 			skyboxModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			skyboxModel.scale.setScalar( 3 );
-			//Removing the sky (it causes issues with directional light)
+			//Removing the background of the model (it causes issues with directional light)
 			var sky= gltf.scene.getObjectByName("hoth_sky");
 			sky.visible=false;
 			skyboxModel.traverse( function( node ) {
@@ -768,6 +686,7 @@
 			}
 		});
 
+		//Loading the (small) floating platforms, the most replicated element in the game.
 		gltfLoader.load("gltf/floating_platform/scene.gltf", (gltf) => {
 			rotatingPlatModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			rotatingPlatModel.scale.setScalar( 0.05 );
@@ -781,9 +700,7 @@
 			} );
 
 
-
-			//OBSTACLES PLATFORMS (THREE)
-		//ObsPlat positions
+		//(Small) Floating platforms positions
 		var positions = [new CANNON.Vec3(-15, -4, 48),
 						new CANNON.Vec3(15, -4, 54),
 						new CANNON.Vec3(0, -1, 75),
@@ -836,6 +753,7 @@
 					];
 
 		
+		//Velocities used only for some floating platforms, it's useful (together with the phase) to define correct moving animations
 		var obsPlatVelocities = [15, 15, 10, 0, 0, 0, 0, 0, 0];
 		var obsPlatPhases = [true, false, false, true, true, true, true, true, true];
 		for(var i=0; i<positions.length; i++){
@@ -858,8 +776,6 @@
 			rotatingPlatModelParent.add(genPlatModel);
 			scene.add(rotatingPlatModelParent);
 
-			//OBSTACLES PLATFORMS (CANNON)
-
 			var genPlatBody = new CANNON.Body({
 				shape: new CANNON.Cylinder(2.5,2.5,0.5,8),
 				type: CANNON.Body.DYNAMIC,
@@ -874,6 +790,7 @@
 			obsPlat.push({"mesh" : genPlatMesh, "body" : genPlatBody, "model": rotatingPlatModelParent, "velocityMax": obsPlatVelocities[i], "phase": obsPlatPhases[i], "animating": false});
 		}
 
+		//Managing the TWEENJS animations of the (small) floating platforms
 		obsPlat.forEach(element => {
 			var helix = element["model"].getObjectByName("Helix");
 
@@ -897,6 +814,7 @@
 			rotateHelixTween.start();
 		});
 
+		//Loading the target that the player has to shoot
 		gltfLoader.load("gltf/target/scene.gltf", (gltf) => {
 			targetModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			targetModel.scale.setScalar( 0.3 );
@@ -946,6 +864,7 @@
 			scene.add(targetModelParent5);
 		});
 
+		//Loading the base (only the base with a cone of light on top) of the hologram projectors
 		gltfLoader.load("gltf/holo_projector/scene.gltf", (gltf) => {
 			holoProjModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			holoProjModel.scale.setScalar( 2 );
@@ -959,13 +878,14 @@
 			}
 			} );
 
-		//HoloProjs positions
+		//Holo projectors base positions
 		var positions = [new CANNON.Vec3(-0, 0.9, 9),
 						new CANNON.Vec3(0, 7.4, 125.5),
 						new CANNON.Vec3(0, 7.4, 310),
 						new CANNON.Vec3(0, 7.4, 360)
 					];
 
+		//Texts that has to be shown when interacting with each hologram projector
 		var texts = ["Hello champion! You're here to save the planet! I know you're good with the bow, so I provided you one. To start you have to shoot at the targets, in order to go to the next platform. If you encounter any enemy be sure to shoot him before he makes you fall! You'll have to jump onto floating platforms, but these ones are constantly moving up and down, so if you're not careful they could make you fall!",
 		"If you arrived here it means you've already killed three of these bad boys, congratulations! From here you can see two obstacles, one immediately after the other. The first one is a cannon that will try to shoot you and make you fall down. If you manage to pass the first bad experience you will start a race against the time. When you'll cross the starting line (clearly visible) the floating platforms under your feet will start to fall. Try to not fall with them, run!",
 		"Activate the first terminal (the one reachable) and run to activate the second one. You have limited time, try to be fast!",
@@ -997,9 +917,7 @@
 			holoProjModelParent.add(genHoloProjModel);
 			scene.add(holoProjModelParent);
 			holoProjModelParent.position.set(positions[i].x, positions[i].y, positions[i].z);
-			
-			//OBSTACLES PLATFORMS (CANNON)
-			
+						
 			var holoProjBody = new CANNON.Body({
 				shape: new CANNON.Cylinder(1,1,0.9,8),
 				type: CANNON.Body.STATIC,
@@ -1013,6 +931,7 @@
 		}
 	});
 
+	//Loading the model for the terminal with which the player can interact to trigger events and animations
 	gltfLoader.load("gltf/terminal/scene.gltf", (gltf) => {
 			terminalModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			terminalModel.scale.setScalar( 2 );
@@ -1058,9 +977,7 @@
 			terminalModelParent.add(genTerminalModel);
 			scene.add(terminalModelParent);
 			terminalModelParent.position.set(positions[i].x, positions[i].y, positions[i].z);
-			
-			//OBSTACLES PLATFORMS (CANNON)
-			
+						
 			var terminalBody = new CANNON.Body({
 				shape: new CANNON.Cylinder(1.1,1.1,5,8),
 				type: CANNON.Body.STATIC,
@@ -1075,9 +992,9 @@
 		
 
 
-		//Here define the functions to be triggered for each terminal activated
+		//Here defining the functions to be triggered for each terminal activated
 		function triggerTerminal0(){
-			console.log("triggerTerminal0")
+			// console.log("triggerTerminal0")
 			terminals[0]["triggered"] = true;
 			obsPlat[44]["rotatePlatFloating"].stop();
 			obsPlat[45]["rotatePlatFloating"].stop();
@@ -1085,7 +1002,7 @@
 			setTimeout(function() {
 				new TWEEN.Tween({y:6.5}).to({y:-4}, 1000).onUpdate((object)=>{if(terminals[1]["triggered"] == false){ obsPlat[44]["body"].position.y = object.y; obsPlat[45]["body"].position.y = object.y;}}).onComplete(()=>{if(terminals[1]["triggered"]==false)terminals[0]["triggered"] = false;}).start();
 		},8000);
-	}
+		}
 
 		function triggerTerminal1(){
 			terminals[1]["triggered"] = true;
@@ -1105,12 +1022,13 @@
 		terminals[2]["trigger"] =triggerTerminal2;
 
 
+		//The second terminal has to be rotated due to the location in which it has been positioned
 		terminals[1]["body"].quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), Math.PI);
 		terminals[1]["mesh"].rotation.y = Math.PI ;
 		terminals[1]["model"].rotation.y = Math.PI ;
 	});
 
-
+	//Loading the pressure plates used to trigger events and scenarios
 	gltfLoader.load("gltf/pressure_plate/scene.gltf", (gltf) => {
 			presPlateModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			presPlateModel.scale.setScalar( 0.01 );
@@ -1124,7 +1042,7 @@
 			}
 			} );
 
-		//PresPlates positions
+		//Pressure plates positions
 		var positions = [new CANNON.Vec3(10, 7.0, 370)];
 		
 		for(var i=0; i<positions.length; i++){
@@ -1153,9 +1071,7 @@
 			presPlateModelParent.add(genPresPlateModel);
 			scene.add(presPlateModelParent);
 			presPlateModelParent.position.set(positions[i].x, positions[i].y, positions[i].z);
-			
-			//OBSTACLES PLATFORMS (CANNON)
-			
+						
 			var presPlateBody = new CANNON.Body({
 				shape: new CANNON.Box(new CANNON.Vec3(1, 0.075, 1)),
 				type: CANNON.Body.STATIC,
@@ -1170,7 +1086,7 @@
 		
 
 
-		//Here define the functions to be triggered for each terminal activated
+		//Here define the functions to be triggered for each pressure plate activated
 		function activatePresPlate0(){
 			presPlates[0]["triggered"] = true;
 			if(activatePresPlate0Tween)
@@ -1181,6 +1097,7 @@
 			}).start();
 		};
 
+		//Here define the functions to be triggered for each pressure plate deactivated
 		function deactivatePresPlate0(){
 			presPlates[0]["triggered"] = false;
 			if(deactivatePresPlate0Tween)
@@ -1195,7 +1112,7 @@
 		presPlates[0]["deactivation"] = deactivatePresPlate0;
 	});
 
-	
+		//Loading the enemies (robots) models
 		gltfLoader.load("gltf/robot/scene.gltf", (gltf) => {
 			var robotModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			robotModel.scale.setScalar( 1 );
@@ -1214,9 +1131,6 @@
 			rightFoot.rotation.set(...[rightFoot.rotation.x - Math.PI,rightFoot.rotation.y,rightFoot.rotation.z]);
 
 
-
-			// console.log(dumpObject(robotModel).join('\n'));
-
 			gltf.scene.traverse( function( node ) {
 				if (node.isMesh) { 
 					node.castShadow = true;
@@ -1231,7 +1145,6 @@
 						new CANNON.Vec3(0, 8.7, 122.5),
 						new CANNON.Vec3(0, 8.7, 190),
 						new CANNON.Vec3(0, 8.7, 330),
-						// new CANNON.Vec3(0, 8.7, 380)
 										];
 
 
@@ -1247,17 +1160,16 @@
 			}
 			
 
-			//Function that returns the listener for the collision event of the robots (can't create the listener directly in the loop)
+			//Function that returns the listener for the collision event of the robots (can't create the listener directly in the loop because foreach doesn't behave well with asynchronous functions, e.g. addEventListener)
 			function robotColliderEvent(genRobot){
 				return (e) => {
+					//When the robot collides with an arrow which is able to kill (it hasn't touched the ground yet), then the robot is repulsed in the opposite direction of impact
 					if (genRobot["body"] && ((e.contact.bi.id == genRobot["body"].id && checkArrowKiller(e.contact.bj.id)) || (e.contact.bj.id == genRobot["body"].id && checkArrowKiller(e.contact.bi.id)))) {
-						// console.log("ci sono");
 						var arrowRepulseVelocity = 40;
 						var impactDir = new THREE.Vector3();
 						//For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
 						impactDir.subVectors(genRobot["body"].position, cubeBody.position);
 						impactDir.normalize();
-						// console.log(impactDir)
 						genRobot["body"].velocity.x = arrowRepulseVelocity * impactDir.x;
 						genRobot["body"].velocity.z = arrowRepulseVelocity * impactDir.z;
 						genRobot["active"] = false;
@@ -1267,6 +1179,7 @@
 							genRobot["active"]=true;
 						},1000);
 					}
+					//When the robot collides with the archer, so the archer is repulsed in the opposite direction of impact
 					else if((justRepulsedArcher == false && genRobot["body"] && cubeBody) && ((e.contact.bi.id == genRobot["body"].id && e.contact.bj.id == cubeBody.id || (e.contact.bj.id == genRobot["body"].id && e.contact.bi.id == cubeBody.id)))){
 						justRepulsedArcher = true;
 						//Must repulse after some time otherwise too many activations
@@ -1277,7 +1190,6 @@
 						var impactDir = new THREE.Vector3();
 						impactDir.subVectors( cubeBody.position, genRobot["body"].position);
 						impactDir.normalize();
-						// console.log(impactDir)
 						if(getParameterSoundEf == "1")
 							genRobot["metalImpactAudio"].play();
 						cubeBody.velocity.x = enemyRepulseVelocity * impactDir.x;
@@ -1287,7 +1199,7 @@
 			}
 
 
-			//Tween onComplete function to make the next (the one in the argument) tween start
+			//Tween onComplete function to make the next tween (the one in the argument) start
 			function getOnCompleteHandler (tween) {
 					return function () {tween.start()};
 			};
@@ -1452,8 +1364,6 @@
 
 				scene.add(robotModelParent);
 
-				//OBSTACLES PLATFORMS (CANNON)
-
 				var genRobotBody = new CANNON.Body({
 					mass: 180,
 					shape: new CANNON.Box(new CANNON.Vec3(1.25, 2.2, 1)),
@@ -1465,10 +1375,12 @@
 				});
 				world.addBody(genRobotBody);
 				genRobotBody.quaternion.setFromEuler(0, 0, 0);
+
+				//Create the structure with all the bones of the body in the model
 				var genRobotStructure = populateRobotStructure(genRobotModel);
 				var tweens = {};
-				//console.log('"rootJointRx" : ' + genRobotStructure["rootJoint"].rotation.x.toFixed(4) + ',\n"rootJointRy" : ' + genRobotStructure["rootJoint"].rotation.y.toFixed(4) + ',\n"rootJointRz" : ' +genRobotStructure["rootJoint"].rotation.z.toFixed(4) + ',\n"boneRx" : ' + genRobotStructure["bone"].rotation.x.toFixed(4) + ',\n"boneRy" : ' + genRobotStructure["bone"].rotation.y.toFixed(4) + ',\n"boneRz" : ' +genRobotStructure["bone"].rotation.z.toFixed(4) + ',\n"footLRx" : ' + genRobotStructure["footL"].rotation.x.toFixed(4) + ',\n"footLRy" : ' + genRobotStructure["footL"].rotation.y.toFixed(4) + ',\n"footLRz" : ' +genRobotStructure["footL"].rotation.z.toFixed(4) + ',\n"bodyRx" : ' + genRobotStructure["body"].rotation.x.toFixed(4) + ',\n"bodyRy" : ' + genRobotStructure["body"].rotation.y.toFixed(4) + ',\n"bodyRz" : ' +genRobotStructure["body"].rotation.z.toFixed(4) + ',\n"upperLegLRx" : ' + genRobotStructure["upperLegL"].rotation.x.toFixed(4) + ',\n"upperLegLRy" : ' + genRobotStructure["upperLegL"].rotation.y.toFixed(4) + ',\n"upperLegLRz" : ' +genRobotStructure["upperLegL"].rotation.z.toFixed(4) + ',\n"lowerLegLRx" : ' + genRobotStructure["lowerLegL"].rotation.x.toFixed(4) + ',\n"lowerLegLRy" : ' + genRobotStructure["lowerLegL"].rotation.y.toFixed(4) + ',\n"lowerLegLRz" : ' +genRobotStructure["lowerLegL"].rotation.z.toFixed(4) + ',\n"upperLegRRx" : ' + genRobotStructure["upperLegR"].rotation.x.toFixed(4) + ',\n"upperLegRRy" : ' + genRobotStructure["upperLegR"].rotation.y.toFixed(4) + ',\n"upperLegRRz" : ' +genRobotStructure["upperLegR"].rotation.z.toFixed(4) + ',\n"lowerLegRRx" : ' + genRobotStructure["lowerLegR"].rotation.x.toFixed(4) + ',\n"lowerLegRRy" : ' + genRobotStructure["lowerLegR"].rotation.y.toFixed(4) + ',\n"lowerLegRRz" : ' +genRobotStructure["lowerLegR"].rotation.z.toFixed(4) + ',\n"hipsRx" : ' + genRobotStructure["hips"].rotation.x.toFixed(4) + ',\n"hipsRy" : ' + genRobotStructure["hips"].rotation.y.toFixed(4) + ',\n"hipsRz" : ' +genRobotStructure["hips"].rotation.z.toFixed(4) + ',\n"abdomenRx" : ' + genRobotStructure["abdomen"].rotation.x.toFixed(4) + ',\n"abdomenRy" : ' + genRobotStructure["abdomen"].rotation.y.toFixed(4) + ',\n"abdomenRz" : ' +genRobotStructure["abdomen"].rotation.z.toFixed(4) + ',\n"torsoRx" : ' + genRobotStructure["torso"].rotation.x.toFixed(4) + ',\n"torsoRy" : ' + genRobotStructure["torso"].rotation.y.toFixed(4) + ',\n"torsoRz" : ' +genRobotStructure["torso"].rotation.z.toFixed(4) + ',\n"neckRx" : ' + genRobotStructure["neck"].rotation.x.toFixed(4) + ',\n"neckRy" : ' + genRobotStructure["neck"].rotation.y.toFixed(4) + ',\n"neckRz" : ' +genRobotStructure["neck"].rotation.z.toFixed(4) + ',\n"headRx" : ' + genRobotStructure["head"].rotation.x.toFixed(4) + ',\n"headRy" : ' + genRobotStructure["head"].rotation.y.toFixed(4) + ',\n"headRz" : ' +genRobotStructure["head"].rotation.z.toFixed(4) + ',\n"shoulderRRx" : ' + genRobotStructure["shoulderR"].rotation.x.toFixed(4) + ',\n"shoulderRRy" : ' + genRobotStructure["shoulderR"].rotation.y.toFixed(4) + ',\n"shoulderRRz" : ' +genRobotStructure["shoulderR"].rotation.z.toFixed(4) + ',\n"upperArmRRx" : ' + genRobotStructure["upperArmR"].rotation.x.toFixed(4) + ',\n"upperArmRRy" : ' + genRobotStructure["upperArmR"].rotation.y.toFixed(4) + ',\n"upperArmRRz" : ' +genRobotStructure["upperArmR"].rotation.z.toFixed(4) + ',\n"lowerArmRRx" : ' + genRobotStructure["lowerArmR"].rotation.x.toFixed(4) + ',\n"lowerArmRRy" : ' + genRobotStructure["lowerArmR"].rotation.y.toFixed(4) + ',\n"lowerArmRRz" : ' +genRobotStructure["lowerArmR"].rotation.z.toFixed(4) + ',\n"thumbRRx" : ' + genRobotStructure["thumbR"].rotation.x.toFixed(4) + ',\n"thumbRRy" : ' + genRobotStructure["thumbR"].rotation.y.toFixed(4) + ',\n"thumbRRz" : ' +genRobotStructure["thumbR"].rotation.z.toFixed(4) + ',\n"thumb2RRx" : ' + genRobotStructure["thumb2R"].rotation.x.toFixed(4) + ',\n"thumb2RRy" : ' + genRobotStructure["thumb2R"].rotation.y.toFixed(4) + ',\n"thumb2RRz" : ' +genRobotStructure["thumb2R"].rotation.z.toFixed(4) + ',\n"palm2RRx" : ' + genRobotStructure["palm2R"].rotation.x.toFixed(4) + ',\n"palm2RRy" : ' + genRobotStructure["palm2R"].rotation.y.toFixed(4) + ',\n"palm2RRz" : ' +genRobotStructure["palm2R"].rotation.z.toFixed(4) + ',\n"middle1RRx" : ' + genRobotStructure["middle1R"].rotation.x.toFixed(4) + ',\n"middle1RRy" : ' + genRobotStructure["middle1R"].rotation.y.toFixed(4) + ',\n"middle1RRz" : ' +genRobotStructure["middle1R"].rotation.z.toFixed(4) + ',\n"middle2RRx" : ' + genRobotStructure["middle2R"].rotation.x.toFixed(4) + ',\n"middle2RRy" : ' + genRobotStructure["middle2R"].rotation.y.toFixed(4) + ',\n"middle2RRz" : ' +genRobotStructure["middle2R"].rotation.z.toFixed(4) + ',\n"palm1RRx" : ' + genRobotStructure["palm1R"].rotation.x.toFixed(4) + ',\n"palm1RRy" : ' + genRobotStructure["palm1R"].rotation.y.toFixed(4) + ',\n"palm1RRz" : ' +genRobotStructure["palm1R"].rotation.z.toFixed(4) + ',\n"indexRRx" : ' + genRobotStructure["indexR"].rotation.x.toFixed(4) + ',\n"indexRRy" : ' + genRobotStructure["indexR"].rotation.y.toFixed(4) + ',\n"indexRRz" : ' +genRobotStructure["indexR"].rotation.z.toFixed(4) + ',\n"index2RRx" : ' + genRobotStructure["index2R"].rotation.x.toFixed(4) + ',\n"index2RRy" : ' + genRobotStructure["index2R"].rotation.y.toFixed(4) + ',\n"index2RRz" : ' +genRobotStructure["index2R"].rotation.z.toFixed(4) + ',\n"palm3RRx" : ' + genRobotStructure["palm3R"].rotation.x.toFixed(4) + ',\n"palm3RRy" : ' + genRobotStructure["palm3R"].rotation.y.toFixed(4) + ',\n"palm3RRz" : ' +genRobotStructure["palm3R"].rotation.z.toFixed(4) + ',\n"ring1RRx" : ' + genRobotStructure["ring1R"].rotation.x.toFixed(4) + ',\n"ring1RRy" : ' + genRobotStructure["ring1R"].rotation.y.toFixed(4) + ',\n"ring1RRz" : ' +genRobotStructure["ring1R"].rotation.z.toFixed(4) + ',\n"ring2RRx" : ' + genRobotStructure["ring2R"].rotation.x.toFixed(4) + ',\n"ring2RRy" : ' + genRobotStructure["ring2R"].rotation.y.toFixed(4) + ',\n"ring2RRz" : ' +genRobotStructure["ring2R"].rotation.z.toFixed(4) + ',\n"shoulderLRx" : ' + genRobotStructure["shoulderL"].rotation.x.toFixed(4) + ',\n"shoulderLRy" : ' + genRobotStructure["shoulderL"].rotation.y.toFixed(4) + ',\n"shoulderLRz" : ' +genRobotStructure["shoulderL"].rotation.z.toFixed(4) + ',\n"upperArmLRx" : ' + genRobotStructure["upperArmL"].rotation.x.toFixed(4) + ',\n"upperArmLRy" : ' + genRobotStructure["upperArmL"].rotation.y.toFixed(4) + ',\n"upperArmLRz" : ' +genRobotStructure["upperArmL"].rotation.z.toFixed(4) + ',\n"lowerArmLRx" : ' + genRobotStructure["lowerArmL"].rotation.x.toFixed(4) + ',\n"lowerArmLRy" : ' + genRobotStructure["lowerArmL"].rotation.y.toFixed(4) + ',\n"lowerArmLRz" : ' +genRobotStructure["lowerArmL"].rotation.z.toFixed(4) + ',\n"palm2LRx" : ' + genRobotStructure["palm2L"].rotation.x.toFixed(4) + ',\n"palm2LRy" : ' + genRobotStructure["palm2L"].rotation.y.toFixed(4) + ',\n"palm2LRz" : ' +genRobotStructure["palm2L"].rotation.z.toFixed(4) + ',\n"middle1LRx" : ' + genRobotStructure["middle1L"].rotation.x.toFixed(4) + ',\n"middle1LRy" : ' + genRobotStructure["middle1L"].rotation.y.toFixed(4) + ',\n"middle1LRz" : ' +genRobotStructure["middle1L"].rotation.z.toFixed(4) + ',\n"middle2LRx" : ' + genRobotStructure["middle2L"].rotation.x.toFixed(4) + ',\n"middle2LRy" : ' + genRobotStructure["middle2L"].rotation.y.toFixed(4) + ',\n"middle2LRz" : ' +genRobotStructure["middle2L"].rotation.z.toFixed(4) + ',\n"thumbLRx" : ' + genRobotStructure["thumbL"].rotation.x.toFixed(4) + ',\n"thumbLRy" : ' + genRobotStructure["thumbL"].rotation.y.toFixed(4) + ',\n"thumbLRz" : ' +genRobotStructure["thumbL"].rotation.z.toFixed(4) + ',\n"thumb2LRx" : ' + genRobotStructure["thumb2L"].rotation.x.toFixed(4) + ',\n"thumb2LRy" : ' + genRobotStructure["thumb2L"].rotation.y.toFixed(4) + ',\n"thumb2LRz" : ' +genRobotStructure["thumb2L"].rotation.z.toFixed(4) + ',\n"palm1LRx" : ' + genRobotStructure["palm1L"].rotation.x.toFixed(4) + ',\n"palm1LRy" : ' + genRobotStructure["palm1L"].rotation.y.toFixed(4) + ',\n"palm1LRz" : ' +genRobotStructure["palm1L"].rotation.z.toFixed(4) + ',\n"indexLRx" : ' + genRobotStructure["indexL"].rotation.x.toFixed(4) + ',\n"indexLRy" : ' + genRobotStructure["indexL"].rotation.y.toFixed(4) + ',\n"indexLRz" : ' +genRobotStructure["indexL"].rotation.z.toFixed(4) + ',\n"index2LRx" : ' + genRobotStructure["index2L"].rotation.x.toFixed(4) + ',\n"index2LRy" : ' + genRobotStructure["index2L"].rotation.y.toFixed(4) + ',\n"index2LRz" : ' +genRobotStructure["index2L"].rotation.z.toFixed(4) + ',\n"palm3LRx" : ' + genRobotStructure["palm3L"].rotation.x.toFixed(4) + ',\n"palm3LRy" : ' + genRobotStructure["palm3L"].rotation.y.toFixed(4) + ',\n"palm3LRz" : ' +genRobotStructure["palm3L"].rotation.z.toFixed(4) + ',\n"ring1LRx" : ' + genRobotStructure["ring1L"].rotation.x.toFixed(4) + ',\n"ring1LRy" : ' + genRobotStructure["ring1L"].rotation.y.toFixed(4) + ',\n"ring1LRz" : ' +genRobotStructure["ring1L"].rotation.z.toFixed(4) + ',\n"ring2LRx" : ' + genRobotStructure["ring2L"].rotation.x.toFixed(4) + ',\n"ring2LRy" : ' + genRobotStructure["ring2L"].rotation.y.toFixed(4) + ',\n"ring2LRz" : ' +genRobotStructure["ring2L"].rotation.z.toFixed(4) + ',\n"poleTargetLRx" : ' + genRobotStructure["poleTargetL"].rotation.x.toFixed(4) + ',\n"poleTargetLRy" : ' + genRobotStructure["poleTargetL"].rotation.y.toFixed(4) + ',\n"poleTargetLRz" : ' +genRobotStructure["poleTargetL"].rotation.z.toFixed(4) + ',\n"footRRx" : ' + genRobotStructure["footR"].rotation.x.toFixed(4) + ',\n"footRRy" : ' + genRobotStructure["footR"].rotation.y.toFixed(4) + ',\n"footRRz" : ' +genRobotStructure["footR"].rotation.z.toFixed(4) + ',\n"poleTargetRRx" : ' + genRobotStructure["poleTargetR"].rotation.x.toFixed(4) + ',\n"poleTargetRRy" : ' + genRobotStructure["poleTargetR"].rotation.y.toFixed(4) + ',\n"poleTargetRRz" : ' +genRobotStructure["poleTargetR"].rotation.z.toFixed(4));
 
+				//Setting the initial rotations for the tweens
 				var initialRotations = {
 					"rootJointRx" : genRobotStructure["rootJoint"].rotation.x, 
 					"rootJointRy" : genRobotStructure["rootJoint"].rotation.y, 
@@ -1605,6 +1517,8 @@
 				};
 
 				var updateFunction = createUpdateFunction(genRobotStructure);
+
+				//Creating the tweens for the animations of the robot's states
 
 				var idleAEnemy = new TWEEN.Tween(initialRotations).to({
 					"rootJointRx" : 0.0000,
@@ -2175,6 +2089,7 @@
 			}
 		});
 
+		//Positioning the (initially invisible) arrow useful for the shooting animation
 		function createArrowAnimation(){
 				arrowAnimation = arrowModel.clone();
 				arrowAnimation.scale.setScalar( 1 );
@@ -2182,6 +2097,7 @@
 				arrowAnimation.rotation.set(...[0,0,0]);
 			}
 
+		//Loading the iron ball shot by the cannon
 		gltfLoader.load("gltf/iron_ball/scene.gltf", (gltf) => {
 			bombModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 
@@ -2197,6 +2113,7 @@
 
 		});
 
+		//Loading the end balloons for the ending scene (no body and so wireframe needed)
 		gltfLoader.load("gltf/end/scene.gltf", (gltf) => {
 			gltf.scene.traverse( function( node ) {
 				if (node.isMesh) { 
@@ -2206,6 +2123,7 @@
 			}
 		} );
 
+		//Initially this model contains all the letters, so it must be copied in some parts to obtain the "the end" sentence into another object3D
 		var tLetter = gltf.scene.getObjectByName("BalloonT_20");
 		var hLetter = gltf.scene.getObjectByName("BalloonH_8");
 		var eLetter = gltf.scene.getObjectByName("BalloonE_5");
@@ -2222,12 +2140,10 @@
 		endModel.add(nLetter);
 		endModel.add(dLetter);
 
-		// scene.add(endModel);
 		endModel.scale.setScalar( 10 );
 		endModel.position.set(0, -30, 450);
 		endModel.rotation.y = Math.PI;
 
-		// console.log(endModel);
 		var distBetweenLetters = 0.3;
 		var startingX = -((distBetweenLetters * 6) / 2);
 		tLetter.position.set(-0.9, 0, 0); 
@@ -2238,6 +2154,7 @@
 		dLetter.position.set(-0.9 + distBetweenLetters * 6, 0, 0);
 		});
 
+		//Loading the automated cannon model
 		gltfLoader.load("gltf/cannon/scene.gltf", (gltf) => {
 			cannonModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 
@@ -2253,7 +2170,6 @@
 
 		var genCannonModel = cannonModel.clone();
 
-		//CANNON (CANNON)
 		cannonBody = new CANNON.Body({
 			shape: new CANNON.Box(new CANNON.Vec3(1.5, 1.5, 1.5)),
 			position: new CANNON.Vec3(0, 8.4, 164),
@@ -2267,7 +2183,6 @@
 			scene.add(cannonMesh);
 		
 		cannonModelParent = new THREE.Object3D();
-		//genBombModel.getWorldPosition(cannonModelParent.position);
 		genCannonModel.position.set(0 , -cannonMesh.geometry.parameters.height/2, -8.8);
 		genCannonModel.rotation.set(...[0,Math.PI/2,0]);
 		cannonModelParent.add(genCannonModel);
@@ -2275,6 +2190,7 @@
 		scene.add( cannonModelParent );
 		});
 
+		//Loading the archer model (the most complex one and the most animated one, since it's the player's model)
 		gltfLoader.load("gltf/archer/scene.gltf", (gltf) => {
 			archerModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			archerRightHand = gltf.scene.getObjectByName("RightHand_49");
@@ -2287,7 +2203,6 @@
 			archerModel.rotation.set(...[0,Math.PI,0]);
 			archerModelParent.add(archerModel);
 			scene.add(archerModelParent);
-			// console.log(dumpObject(archerModel).join('\n'));
 
 			gltf.scene.traverse( function( node ) {
 				if (node.isMesh) { 
@@ -2297,69 +2212,18 @@
 			}
 			} );
 
-			//Setting only the basic animation, after we're going to animate it ourserlves
-			const animations = gltf.animations;
-			mixer = new THREE.AnimationMixer(archerModel);
-
-			mixer.clipAction(animations[2]).play();
-			if (mixer) mixer.update();
+			
 			
 			//Set the components useful for creating animations with TweenJS
 			populateArcherStructure();
 
+			//Set the initial state of the player
 			changePlayerState("Idle");
-			archerStructure["rightArm"].rotation.z += Math.PI/2.3;
-			archerStructure["leftArm"].rotation.z -= Math.PI/2.3;
-			archerStructure["rightHandPinky2"].rotation.z = Math.PI/3;
-			archerStructure["rightHandPinky3"].rotation.z = Math.PI/3; 
-			archerStructure["rightHandPinky4"].rotation.z = Math.PI/3; 
-			archerStructure["rightHandRing2"].rotation.z = Math.PI/3; 
-			archerStructure["rightHandRing3"].rotation.z = Math.PI/3; 
-			archerStructure["rightHandRing4"].rotation.z = Math.PI/3; 
-			archerStructure["rightHandMiddle2"].rotation.z = Math.PI/3; 
-			archerStructure["rightHandMiddle3"].rotation.z = Math.PI/3; 
-			archerStructure["rightHandMiddle4"].rotation.z = Math.PI/3; 
-			archerStructure["rightHandIndex2"].rotation.z = Math.PI/3; 
-			archerStructure["rightHandIndex3"].rotation.z = Math.PI/3; 
-			archerStructure["rightHandIndex4"].rotation.z = Math.PI/3; 
-			archerStructure["rightHandThumb2"].rotation.y = -Math.PI/4; 
-			archerStructure["rightHandThumb3"].rotation.y = -Math.PI/4; 
-			archerStructure["rightHandThumb4"].rotation.y = -Math.PI/4;
-			archerStructure["rightHandThumb2"].rotation.z = -Math.PI/12; 
-			archerStructure["rightHandThumb3"].rotation.z = -Math.PI/12; 
-			archerStructure["rightHandThumb4"].rotation.z = -Math.PI/12; 
-			archerStructure["leftHandPinky2"].rotation.z = -Math.PI/3; 
-			archerStructure["leftHandPinky3"].rotation.z = -Math.PI/3; 
-			archerStructure["leftHandPinky4"].rotation.z = -Math.PI/3; 
-			archerStructure["leftHandRing2"].rotation.z = -Math.PI/3; 
-			archerStructure["leftHandRing3"].rotation.z = -Math.PI/3; 
-			archerStructure["leftHandRing4"].rotation.z = -Math.PI/3; 
-			archerStructure["leftHandMiddle2"].rotation.z = -Math.PI/3; 
-			archerStructure["leftHandMiddle3"].rotation.z = -Math.PI/3; 
-			archerStructure["leftHandMiddle4"].rotation.z = -Math.PI/3; 
-			archerStructure["leftHandIndex2"].rotation.z = -Math.PI/3; 
-			archerStructure["leftHandIndex3"].rotation.z = -Math.PI/3; 
-			archerStructure["leftHandIndex4"].rotation.z = -Math.PI/3; 
-			archerStructure["leftHandThumb2"].rotation.y = Math.PI/4; 
-			archerStructure["leftHandThumb3"].rotation.y = Math.PI/4; 
-			archerStructure["leftHandThumb4"].rotation.y = Math.PI/4;
-			archerStructure["leftHandThumb2"].rotation.z = Math.PI/12; 
-			archerStructure["leftHandThumb3"].rotation.z = Math.PI/12; 
-			archerStructure["leftHandThumb4"].rotation.z = Math.PI/12; 
-			var out = "";
-			// Object.keys(archerStructure).forEach(key => {
-			// out += ('"'+ key + 'Rx": ' + archerStructure[key].rotation.x.toFixed(4) + ',' +'"'+ key + 'Ry": ' + archerStructure[key].rotation.y.toFixed(4) + ',' + '"'+ key + 'Rz": ' + archerStructure[key].rotation.z.toFixed(4) + ', \n');				
-			// });			
-			// Object.keys(archerStructure).forEach(key => {
-			// out += ('"'+ key + 'Rx": ' + 'archerStructure["'+ key + '"].rotation.x' + ',' +'"'+ key + 'Ry": ' + 'archerStructure["'+ key + '"].rotation.y' + ',' + '"'+ key + 'Rz": ' + 'archerStructure["'+ key + '"].rotation.z'+ ', \n');				
-			// });			
-			// Object.keys(archerStructure).forEach(key => {
-			// out += ('archerStructure["'+ key + '"].rotation.x = ' + 'object["'+ key + 'Rx"]' +  ';' +'archerStructure["'+ key + '"].rotation.y = ' + 'object["'+ key + 'Ry"]' + ';' + 'archerStructure["'+ key + '"].rotation.z = ' + 'object["'+ key + 'Rz"]' +  '; \n');				
-			// });
-
 			
-			//TWEEN ANIMATIONS
-			//var groupPlayer = new TWEEN.Group();
+			
+			// SOME TWEEN ANIMATIONS
+
+			//Tween animations moving the targets
 			targetMovement1 = new TWEEN.Tween({x:-10}).to({x:-2}, 4000).onUpdate((object)=>{if(targetBody1){
 				targetBody1.position.x= object.x;
 			}
@@ -2391,7 +2255,7 @@
 
 
 
-
+			//Tween animations that has to be started when unlocking the different levels, the first one (level2Unlock) simply rotate a main platform, the other one (level3Unlock*) set some floating platforms as stairs
 			level2Unlock = new TWEEN.Tween({theta:Math.PI/2}).to({theta:0}, 4000).onUpdate((object)=>{		level2PlatformBody.quaternion.setFromEuler(object.theta, Math.PI/6, 0)});
 			level2Unlock.easing(TWEEN.Easing.Bounce.Out);
 
@@ -2407,7 +2271,8 @@
 			level3Unlock5.easing(TWEEN.Easing.Bounce.Out);
 			level3Unlock6 = new TWEEN.Tween({y:0, x: 20}).to({y:4, x: 2.5}, 4000).onUpdate((object)=>{obsPlat[8]["body"].position.y= object.y;obsPlat[8]["body"].position.x= object.x;});
 			level3Unlock6.easing(TWEEN.Easing.Bounce.Out);
-			
+
+			//Starting rotations for archer's tweens
 			var startRotations ={"hipsRx" : archerStructure["hips"].rotation.x, "hipsRy" : archerStructure["hips"].rotation.y, "hipsRz" : archerStructure["hips"].rotation.z,
 								"spineRx" : archerStructure["spine"].rotation.x, "spineRy" : archerStructure["spine"].rotation.y, "spineRz" : archerStructure["spine"].rotation.z,
 								"spine1Rx" : archerStructure["spine1"].rotation.x, "spine1Ry" : archerStructure["spine1"].rotation.y, "spine1Rz" : archerStructure["spine1"].rotation.z,
@@ -2477,6 +2342,7 @@
 								"rightToe_EndRx" : archerStructure["rightToe_End"].rotation.x, "rightToe_EndRy" : archerStructure["rightToe_End"].rotation.y, "rightToe_EndRz" : archerStructure["rightToe_End"].rotation.z
 								};
 			
+			//Standard updateFunction for the tweens of the archer
 			const updateFunction = function (object, elapsedTime) {
 				//If the player is not shooting then you can move the upper part of the body
 				if(canShoot){
@@ -2550,62 +2416,8 @@
 				archerStructure["rightToe_End"].rotation.x = object["rightToe_EndRx"];  archerStructure["rightToe_End"].rotation.y = object["rightToe_EndRy"];  archerStructure["rightToe_End"].rotation.z = object["rightToe_EndRz"]; 
 			};
 
-			const updateFunctionUpper = function (object, elapsedTime) {
-				if(canShoot){
-					archerStructure["neck"].rotation.x = object["neckRx"];  archerStructure["neck"].rotation.y = object["neckRy"];  archerStructure["neck"].rotation.z = object["neckRz"];  
-					archerStructure["head"].rotation.x = object["headRx"];  archerStructure["head"].rotation.y = object["headRy"];  archerStructure["head"].rotation.z = object["headRz"];  
-					archerStructure["headTop_End"].rotation.x = object["headTop_EndRx"];  archerStructure["headTop_End"].rotation.y = object["headTop_EndRy"];  archerStructure["headTop_End"].rotation.z = object["headTop_EndRz"];  
-					archerStructure["leftShoulder"].rotation.x = object["leftShoulderRx"];  archerStructure["leftShoulder"].rotation.y = object["leftShoulderRy"];  archerStructure["leftShoulder"].rotation.z = object["leftShoulderRz"];  
-					archerStructure["leftArm"].rotation.x = object["leftArmRx"];  archerStructure["leftArm"].rotation.y = object["leftArmRy"];  archerStructure["leftArm"].rotation.z = object["leftArmRz"];  
-					archerStructure["leftForeArm"].rotation.x = object["leftForeArmRx"];  archerStructure["leftForeArm"].rotation.y = object["leftForeArmRy"];  archerStructure["leftForeArm"].rotation.z = object["leftForeArmRz"];  
-					archerStructure["leftHand"].rotation.x = object["leftHandRx"];  archerStructure["leftHand"].rotation.y = object["leftHandRy"];  archerStructure["leftHand"].rotation.z = object["leftHandRz"];  
-					archerStructure["leftHandThumb1"].rotation.x = object["leftHandThumb1Rx"];  archerStructure["leftHandThumb1"].rotation.y = object["leftHandThumb1Ry"];  archerStructure["leftHandThumb1"].rotation.z = object["leftHandThumb1Rz"];  
-					archerStructure["leftHandThumb2"].rotation.x = object["leftHandThumb2Rx"];  archerStructure["leftHandThumb2"].rotation.y = object["leftHandThumb2Ry"];  archerStructure["leftHandThumb2"].rotation.z = object["leftHandThumb2Rz"];  
-					archerStructure["leftHandThumb3"].rotation.x = object["leftHandThumb3Rx"];  archerStructure["leftHandThumb3"].rotation.y = object["leftHandThumb3Ry"];  archerStructure["leftHandThumb3"].rotation.z = object["leftHandThumb3Rz"];  
-					archerStructure["leftHandThumb4"].rotation.x = object["leftHandThumb4Rx"];  archerStructure["leftHandThumb4"].rotation.y = object["leftHandThumb4Ry"];  archerStructure["leftHandThumb4"].rotation.z = object["leftHandThumb4Rz"];  
-					archerStructure["leftHandIndex1"].rotation.x = object["leftHandIndex1Rx"];  archerStructure["leftHandIndex1"].rotation.y = object["leftHandIndex1Ry"];  archerStructure["leftHandIndex1"].rotation.z = object["leftHandIndex1Rz"];  
-					archerStructure["leftHandIndex2"].rotation.x = object["leftHandIndex2Rx"];  archerStructure["leftHandIndex2"].rotation.y = object["leftHandIndex2Ry"];  archerStructure["leftHandIndex2"].rotation.z = object["leftHandIndex2Rz"];  
-					archerStructure["leftHandIndex3"].rotation.x = object["leftHandIndex3Rx"];  archerStructure["leftHandIndex3"].rotation.y = object["leftHandIndex3Ry"];  archerStructure["leftHandIndex3"].rotation.z = object["leftHandIndex3Rz"];  
-					archerStructure["leftHandIndex4"].rotation.x = object["leftHandIndex4Rx"];  archerStructure["leftHandIndex4"].rotation.y = object["leftHandIndex4Ry"];  archerStructure["leftHandIndex4"].rotation.z = object["leftHandIndex4Rz"];  
-					archerStructure["leftHandMiddle1"].rotation.x = object["leftHandMiddle1Rx"];  archerStructure["leftHandMiddle1"].rotation.y = object["leftHandMiddle1Ry"];  archerStructure["leftHandMiddle1"].rotation.z = object["leftHandMiddle1Rz"];  
-					archerStructure["leftHandMiddle2"].rotation.x = object["leftHandMiddle2Rx"];  archerStructure["leftHandMiddle2"].rotation.y = object["leftHandMiddle2Ry"];  archerStructure["leftHandMiddle2"].rotation.z = object["leftHandMiddle2Rz"];  
-					archerStructure["leftHandMiddle3"].rotation.x = object["leftHandMiddle3Rx"];  archerStructure["leftHandMiddle3"].rotation.y = object["leftHandMiddle3Ry"];  archerStructure["leftHandMiddle3"].rotation.z = object["leftHandMiddle3Rz"];  
-					archerStructure["leftHandMiddle4"].rotation.x = object["leftHandMiddle4Rx"];  archerStructure["leftHandMiddle4"].rotation.y = object["leftHandMiddle4Ry"];  archerStructure["leftHandMiddle4"].rotation.z = object["leftHandMiddle4Rz"];  
-					archerStructure["leftHandRing1"].rotation.x = object["leftHandRing1Rx"];  archerStructure["leftHandRing1"].rotation.y = object["leftHandRing1Ry"];  archerStructure["leftHandRing1"].rotation.z = object["leftHandRing1Rz"];  
-					archerStructure["leftHandRing2"].rotation.x = object["leftHandRing2Rx"];  archerStructure["leftHandRing2"].rotation.y = object["leftHandRing2Ry"];  archerStructure["leftHandRing2"].rotation.z = object["leftHandRing2Rz"];  
-					archerStructure["leftHandRing3"].rotation.x = object["leftHandRing3Rx"];  archerStructure["leftHandRing3"].rotation.y = object["leftHandRing3Ry"];  archerStructure["leftHandRing3"].rotation.z = object["leftHandRing3Rz"];  
-					archerStructure["leftHandRing4"].rotation.x = object["leftHandRing4Rx"];  archerStructure["leftHandRing4"].rotation.y = object["leftHandRing4Ry"];  archerStructure["leftHandRing4"].rotation.z = object["leftHandRing4Rz"];  
-					archerStructure["leftHandPinky1"].rotation.x = object["leftHandPinky1Rx"];  archerStructure["leftHandPinky1"].rotation.y = object["leftHandPinky1Ry"];  archerStructure["leftHandPinky1"].rotation.z = object["leftHandPinky1Rz"];  
-					archerStructure["leftHandPinky2"].rotation.x = object["leftHandPinky2Rx"];  archerStructure["leftHandPinky2"].rotation.y = object["leftHandPinky2Ry"];  archerStructure["leftHandPinky2"].rotation.z = object["leftHandPinky2Rz"];  
-					archerStructure["leftHandPinky3"].rotation.x = object["leftHandPinky3Rx"];  archerStructure["leftHandPinky3"].rotation.y = object["leftHandPinky3Ry"];  archerStructure["leftHandPinky3"].rotation.z = object["leftHandPinky3Rz"];  
-					archerStructure["leftHandPinky4"].rotation.x = object["leftHandPinky4Rx"];  archerStructure["leftHandPinky4"].rotation.y = object["leftHandPinky4Ry"];  archerStructure["leftHandPinky4"].rotation.z = object["leftHandPinky4Rz"];  
-					archerStructure["rightShoulder"].rotation.x = object["rightShoulderRx"];  archerStructure["rightShoulder"].rotation.y = object["rightShoulderRy"];  archerStructure["rightShoulder"].rotation.z = object["rightShoulderRz"];  
-					archerStructure["rightArm"].rotation.x = object["rightArmRx"];  archerStructure["rightArm"].rotation.y = object["rightArmRy"];  archerStructure["rightArm"].rotation.z = object["rightArmRz"];  
-					archerStructure["rightForeArm"].rotation.x = object["rightForeArmRx"];  archerStructure["rightForeArm"].rotation.y = object["rightForeArmRy"];  archerStructure["rightForeArm"].rotation.z = object["rightForeArmRz"];  
-					archerStructure["rightHand"].rotation.x = object["rightHandRx"];  archerStructure["rightHand"].rotation.y = object["rightHandRy"];  archerStructure["rightHand"].rotation.z = object["rightHandRz"];  
-					archerStructure["rightHandPinky1"].rotation.x = object["rightHandPinky1Rx"];  archerStructure["rightHandPinky1"].rotation.y = object["rightHandPinky1Ry"];  archerStructure["rightHandPinky1"].rotation.z = object["rightHandPinky1Rz"];  
-					archerStructure["rightHandPinky2"].rotation.x = object["rightHandPinky2Rx"];  archerStructure["rightHandPinky2"].rotation.y = object["rightHandPinky2Ry"];  archerStructure["rightHandPinky2"].rotation.z = object["rightHandPinky2Rz"];  
-					archerStructure["rightHandPinky3"].rotation.x = object["rightHandPinky3Rx"];  archerStructure["rightHandPinky3"].rotation.y = object["rightHandPinky3Ry"];  archerStructure["rightHandPinky3"].rotation.z = object["rightHandPinky3Rz"];  
-					archerStructure["rightHandPinky4"].rotation.x = object["rightHandPinky4Rx"];  archerStructure["rightHandPinky4"].rotation.y = object["rightHandPinky4Ry"];  archerStructure["rightHandPinky4"].rotation.z = object["rightHandPinky4Rz"];  
-					archerStructure["rightHandRing1"].rotation.x = object["rightHandRing1Rx"];  archerStructure["rightHandRing1"].rotation.y = object["rightHandRing1Ry"];  archerStructure["rightHandRing1"].rotation.z = object["rightHandRing1Rz"];  
-					archerStructure["rightHandRing2"].rotation.x = object["rightHandRing2Rx"];  archerStructure["rightHandRing2"].rotation.y = object["rightHandRing2Ry"];  archerStructure["rightHandRing2"].rotation.z = object["rightHandRing2Rz"];  
-					archerStructure["rightHandRing3"].rotation.x = object["rightHandRing3Rx"];  archerStructure["rightHandRing3"].rotation.y = object["rightHandRing3Ry"];  archerStructure["rightHandRing3"].rotation.z = object["rightHandRing3Rz"];  
-					archerStructure["rightHandRing4"].rotation.x = object["rightHandRing4Rx"];  archerStructure["rightHandRing4"].rotation.y = object["rightHandRing4Ry"];  archerStructure["rightHandRing4"].rotation.z = object["rightHandRing4Rz"];  
-					archerStructure["rightHandMiddle1"].rotation.x = object["rightHandMiddle1Rx"];  archerStructure["rightHandMiddle1"].rotation.y = object["rightHandMiddle1Ry"];  archerStructure["rightHandMiddle1"].rotation.z = object["rightHandMiddle1Rz"];  
-					archerStructure["rightHandMiddle2"].rotation.x = object["rightHandMiddle2Rx"];  archerStructure["rightHandMiddle2"].rotation.y = object["rightHandMiddle2Ry"];  archerStructure["rightHandMiddle2"].rotation.z = object["rightHandMiddle2Rz"];  
-					archerStructure["rightHandMiddle3"].rotation.x = object["rightHandMiddle3Rx"];  archerStructure["rightHandMiddle3"].rotation.y = object["rightHandMiddle3Ry"];  archerStructure["rightHandMiddle3"].rotation.z = object["rightHandMiddle3Rz"];  
-					archerStructure["rightHandMiddle4"].rotation.x = object["rightHandMiddle4Rx"];  archerStructure["rightHandMiddle4"].rotation.y = object["rightHandMiddle4Ry"];  archerStructure["rightHandMiddle4"].rotation.z = object["rightHandMiddle4Rz"];  
-					archerStructure["rightHandIndex1"].rotation.x = object["rightHandIndex1Rx"];  archerStructure["rightHandIndex1"].rotation.y = object["rightHandIndex1Ry"];  archerStructure["rightHandIndex1"].rotation.z = object["rightHandIndex1Rz"];  
-					archerStructure["rightHandIndex2"].rotation.x = object["rightHandIndex2Rx"];  archerStructure["rightHandIndex2"].rotation.y = object["rightHandIndex2Ry"];  archerStructure["rightHandIndex2"].rotation.z = object["rightHandIndex2Rz"];  
-					archerStructure["rightHandIndex3"].rotation.x = object["rightHandIndex3Rx"];  archerStructure["rightHandIndex3"].rotation.y = object["rightHandIndex3Ry"];  archerStructure["rightHandIndex3"].rotation.z = object["rightHandIndex3Rz"];  
-					archerStructure["rightHandIndex4"].rotation.x = object["rightHandIndex4Rx"];  archerStructure["rightHandIndex4"].rotation.y = object["rightHandIndex4Ry"];  archerStructure["rightHandIndex4"].rotation.z = object["rightHandIndex4Rz"];  
-					archerStructure["rightHandThumb1"].rotation.x = object["rightHandThumb1Rx"];  archerStructure["rightHandThumb1"].rotation.y = object["rightHandThumb1Ry"];  archerStructure["rightHandThumb1"].rotation.z = object["rightHandThumb1Rz"];  
-					archerStructure["rightHandThumb2"].rotation.x = object["rightHandThumb2Rx"];  archerStructure["rightHandThumb2"].rotation.y = object["rightHandThumb2Ry"];  archerStructure["rightHandThumb2"].rotation.z = object["rightHandThumb2Rz"];  
-					archerStructure["rightHandThumb3"].rotation.x = object["rightHandThumb3Rx"];  archerStructure["rightHandThumb3"].rotation.y = object["rightHandThumb3Ry"];  archerStructure["rightHandThumb3"].rotation.z = object["rightHandThumb3Rz"];  
-					archerStructure["rightHandThumb4"].rotation.x = object["rightHandThumb4Rx"];  archerStructure["rightHandThumb4"].rotation.y = object["rightHandThumb4Ry"];  archerStructure["rightHandThumb4"].rotation.z = object["rightHandThumb4Rz"];   	
-				}
-			};
 
+			//updateFunction for the tweens of the archer concerning only the upper part of the body, like when shooting
 			const updateFunctionUpperShoot = function (object, elapsedTime) {
 				archerStructure["neck"].rotation.x = object["neckRx"];  archerStructure["neck"].rotation.y = object["neckRy"];  archerStructure["neck"].rotation.z = object["neckRz"];  
 				archerStructure["head"].rotation.x = object["headRx"];  archerStructure["head"].rotation.y = object["headRy"];  archerStructure["head"].rotation.z = object["headRz"];  
@@ -2660,7 +2472,7 @@
 				archerStructure["rightHandThumb4"].rotation.x = object["rightHandThumb4Rx"];  archerStructure["rightHandThumb4"].rotation.y = object["rightHandThumb4Ry"];  archerStructure["rightHandThumb4"].rotation.z = object["rightHandThumb4Rz"];   	
 			};
 
-
+			//Now a list of tweens that characterize the main states of the archer
 			idle = new TWEEN.Tween(startRotations).to({
 													"hipsRx" : -1.5708, "hipsRy" : -0.0000, "hipsRz" : 0.0000,
 													"spineRx" : 0.0000, "spineRy" : 0.0000, "spineRz" : -0.0000,
@@ -3671,6 +3483,7 @@
 														"rightHandThumb3Rx" : 0.0000, "rightHandThumb3Ry" : -0.7854, "rightHandThumb3Rz" : -0.2618,
 														"rightHandThumb4Rx" : 0.0000, "rightHandThumb4Ry" : -0.7854, "rightHandThumb4Rz" : -0.2618,
 														}, 200).onComplete(() => {
+															//When completing the second phase of the animation then the arrow can be emitted
 															throwArrow();
 															shootC.start()		
 														});
@@ -3747,25 +3560,29 @@
 			shootA.onUpdate(updateFunctionUpperShoot);
 			shootB.onUpdate(updateFunctionUpperShoot);
 			shootC.onUpdate(updateFunctionUpperShoot);
+
+			//In the beginning the player must be in the idle pose
+			idle.start()
 		});
 
-		var currentObsPlat = 24;
-		var canFallPlatform = true;
+		//Function that make the floating platforms fall once the archer goes through the starting line
 		function level4Animate(){
 			if(cubeBody.position.z > 190 && cubeBody.position.z < 295 && canFallPlatform && obsPlat[currentObsPlat]){
 					canFallPlatform=false;
 					setTimeout(function() {
 						canFallPlatform = true;
 					},2000);
-					
 					obsPlat[currentObsPlat]["rotatePlatFloating"].stop();
+					//Makes the floating platform selected fall
 					obsPlat[currentObsPlat]["body"].mass=100;
 					obsPlat[currentObsPlat]["body"].updateMassProperties();
 					currentObsPlat++;
 				}
 		}
 
+			//Function that makes the cannon shoot the archer
 			function cannonShootArcher(){
+				//Utility function to see if a bomb is a killer one (it didn't touch the ground yet)
 				function checkBombKiller(id){
 					var ret=false;
 					bombs.forEach(element => {
@@ -3779,34 +3596,35 @@
 				//Function that returns the listener for the collision event of the bombs (can't create the listener directly in the loop)
 				function bombColliderEvent(genBomb){
 					return (e) => {
+						//If the bomb is bi and not bj negate the normal of the impact
 						if ( e.contact.bi.id == genBomb["can"].id ) {
 						e.contact.ni.negate( e.contact.ni );
 						}
-
+						//If the normal of contact is vertical within a certain threshold then the bomb touched the ground (so it's not able to kill anymore)
 						if ( e.contact.ni.dot( new CANNON.Vec3( 0, 1, 0 ) ) > 0.5) {
 							genBomb["killer"] = false;
 						}
+						//If a bomb who is able to kill thouches the player, then repulse him
 						if (cubeBody && cannonBody && ((e.contact.bi.id == cubeBody.id && checkBombKiller(e.contact.bj.id)) || (e.contact.bj.id == cubeBody.id && checkBombKiller(e.contact.bi.id)))) {
-							// console.log("preso")
 							var bombRepulseVelocity = 80;
 							var impactDir = new THREE.Vector3();
 							//For simplicity I consider the position of the cannon to calculate the direction of the impact (should be near the bomb impact direction)
 							impactDir.subVectors(  cubeBody.position,cannonBody.position);
 							impactDir.normalize();
-							// console.log(impactDir)
 							cubeBody.velocity.x = bombRepulseVelocity * impactDir.x;
 							cubeBody.velocity.z = bombRepulseVelocity * impactDir.z;
 						}
 					} 
 				}
 
-				
+				//If the player is within a certain zone then start shooting cannon balls
 				if(cubeBody.position.z > 135 && cubeBody.position.z < 172 && !justShotCannon1){
 					justShotCannon1=true;
 					setTimeout(function() {
 						justShotCannon1 = false;
 					},3000);
 
+					//Cannon must shoot only horizzontally in the direction of the player
 					var desAngle = new THREE.Vector3()
 					desAngle.x = -(cannonBody.position.x - cubeBody.position.x);
 					desAngle.y = 0;
@@ -3814,7 +3632,7 @@
 					desAngle.normalize();
 
 
-					//TO FIX THE SPAWN POSITION
+					//Fixing the bomb spawn position, it should spawn at the end of the barrel
 					var bombSpawnPosition = new THREE.Vector3(cannonBody.position.x + desAngle.x * 2, cannonBody.position.y, cannonBody.position.z + desAngle.z * 2);
 
 					var genBombCan = new CANNON.Body({
@@ -3833,7 +3651,6 @@
 					var genBombModel = bombModel.clone();
 					
 					var genBombModelParent = new THREE.Object3D();
-					//genBombModel.getWorldPosition(genBombModelParent.position);
 					genBombModel.position.set(0 , -0.4, 0);
 					genBombModelParent.add(genBombModel);
 					scene.add( genBombModelParent );
@@ -3847,7 +3664,8 @@
 					var bombVelocity = 1;
 
 					var impactDir = new THREE.Vector3();
-					// //For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
+
+					//For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
 					impactDir.subVectors( cubeBody.position, cannonBody.position);
 
 					var startPosition = bombSpawnPosition;
@@ -3868,13 +3686,13 @@
 		}
 
 
-		
+		//Cannon basic movement animation
 		new TWEEN.Tween({"z": 150}).to({"z": 162},1500).repeat(Infinity).yoyo(true).onUpdate((object)=>{cannonBody.position.z=object["z"]; obsPlat[18].body.position.z=object["z"]}).start();
 		
 
 
 
-		//CUBE (CANNON)
+		//Setting up the body of the archer (a cube is sufficiently precise for the purpose of this project)
 		const cubePhysMat = new CANNON.Material();
 
 		const cubeBody = new CANNON.Body({
@@ -3893,14 +3711,16 @@
 		
 		world.addBody(cubeBody);
 
+
+		//Shooting function for the archer (to start the shooting animation)
 		function shoot(){
 			shootPre.start();
 		}
 
-
+		//Function to effectively generate the arrow when shooting (in the correct direction and using physics)
 		function throwArrow(){
 					
-			//Function that returns the listener for the collision event of the arrows (can't create the listener directly in the loop)
+			//Function that returns the listener for the collision event of the arrows (can't create the listener directly in the loop, foreach not behaving well with async functions like addEventListener)
 			function arrowColliderEvent(genArrow){
 				return (e) => {
 					if ( e.contact.bi.id == genArrow["can"].id ) {
@@ -3913,6 +3733,7 @@
 				} 
 			}
 
+			//Getting the camera direction to see where we have to shoot the arrow
 			var cameraDirection= new THREE.Vector3();
 			camera.getWorldDirection(cameraDirection);
 
@@ -3965,7 +3786,7 @@
 
 		}
 
-
+		//Creating CANNON-ES bodies and the THREEJS wireframes for the targets
 		var targetBody1 = new CANNON.Body({
 			shape: new CANNON.Cylinder(1,1,0.5,10),
 			position: new CANNON.Vec3(-2, 2.5, 20),
@@ -4026,17 +3847,18 @@
 		targetBody5.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), Math.PI / 2);
 		world.addBody(targetBody5);		
 
+
+		//Function called when the first objective is reached (playing audio and rotating the next platform)
 		function obj1Completed(){
 			if(!target1hit || !target2hit) return;
-			// console.log("LEVEL 2");
 			level2Unlock.start();
 			if(getParameterSoundEf == "1")
 				tadaAudio.play();
 		}
 
+		//Function called when the second objective is reached (moving the floating platform to make stairs)
 		function obj2Completed(){
 			if(!target3hit || !target4hit) return;
-			// console.log("LEVEL 3");
 			rotatePlatFloatingTweens.forEach(element => {
 				element.stop();
 				rotatePlatFloatingTweens = rotatePlatFloatingTweens.filter(function(ele){ 
@@ -4062,15 +3884,10 @@
 			level3Unlock6.start();
 		}
 
-		function obj3Completed(){
-			if(robots.length == 0){
-				// console.log("LEVEL 3");
-			}
-		}
-
+		//Function called when the fourth objective is reached (end of the game, showing the endModel balloons)
 		function obj4Completed(){
 			if(target5hit == true){
-				console.log("Obj4")
+				// console.log("Obj4")
 				scene.add(endModel);
 				new TWEEN.Tween({"y" : endModel.position.y}).to({"y": 15},5000).easing(TWEEN.Easing.Circular.Out).onUpdate((object)=>{
 						endModel.position.y = object.y;
@@ -4088,8 +3905,7 @@
 		}
 
 		
-
-		//LEVEL2PLATFORM (THREE)
+		//Creating the main platforms mesh wireframes and bodies
 		const level2PlatformGeo = new THREE.CylinderGeometry( 18, 18, 1, 6 );
 		const level2PlatformMat = new THREE.MeshPhongMaterial({ 
 			color: 0x00ff00,
@@ -4102,7 +3918,6 @@
 		level2PlatformMesh.receiveShadow=true;
 		level2PlatformMesh.castshadow=true;
 
-		//LEVEL2PLATFORM (CANNON)
 		const level2PlatformPhysMat = new CANNON.Material();
 
 
@@ -4116,7 +3931,6 @@
 		level2PlatformBody.quaternion.setFromEuler(Math.PI/2, Math.PI/6, 0);
 
 
-		//LEVEL3PLATFORM (THREE)
 		const level3PlatformGeo = new THREE.CylinderGeometry( 18, 18, 1, 6 );
 		const level3PlatformMat = new THREE.MeshPhongMaterial({ 
 			color: 0x00ff00,
@@ -4129,7 +3943,6 @@
 		level3PlatformMesh.receiveShadow=true;
 		level3PlatformMesh.castshadow=true;
 
-		//LEVEL3PLATFORM (CANNON)
 		const level3PlatformPhysMat = new CANNON.Material();
 
 
@@ -4142,7 +3955,6 @@
 		world.addBody(level3PlatformBody);
 		level3PlatformBody.quaternion.setFromEuler(0, Math.PI/6, 0);
 
-		//LEVEL5PLATFORM (THREE)
 		const level5PlatformGeo = new THREE.CylinderGeometry( 18, 18, 1, 6 );
 		const level5PlatformMat = new THREE.MeshPhongMaterial({ 
 			color: 0x00ff00,
@@ -4155,7 +3967,6 @@
 		level5PlatformMesh.receiveShadow=true;
 		level5PlatformMesh.castshadow=true;
 
-		//LEVEL5PLATFORM (CANNON)
 		const level5PlatformPhysMat = new CANNON.Material();
 
 
@@ -4168,7 +3979,6 @@
 		world.addBody(level5PlatformBody);
 		level5PlatformBody.quaternion.setFromEuler(0, Math.PI/6, 0);
 
-		//LEVEL6PLATFORM (THREE)
 		const level6PlatformGeo = new THREE.CylinderGeometry( 18, 18, 1, 6 );
 		const level6PlatformMat = new THREE.MeshPhongMaterial({ 
 			color: 0x00ff00,
@@ -4181,7 +3991,6 @@
 		level6PlatformMesh.receiveShadow=true;
 		level6PlatformMesh.castshadow=true;
 
-		//LEVEL6PLATFORM (CANNON)
 		const level6PlatformPhysMat = new CANNON.Material();
 
 
@@ -4196,7 +4005,7 @@
 
 		
 
-		//CONTACT MATERIALS (CANNON)
+		//Defining contact materials, how two object have to interact physically between them
 		const groundBoxContactMat = new CANNON.ContactMaterial(
 			groundPhysMat,
 			cubePhysMat,
@@ -4215,24 +4024,36 @@
 
 		world.addContactMaterial(groundCubeWeightContactMat);
 
-		//EVENT LISTENERS
+		//Defining the general event listeners
+
+		//When the pause menu is clicked then the controls are locked
+		pause_fg.addEventListener( 'click', function () {
+			if ( !gameLoaded || (lastUnlockTime && (performance.now() - lastUnlockTime) < 1250)) {
+				return
+			}
+			else
+				orbit.lock();
+		}, false );
+
+		//Listener to make the renderer change the resolution
 		window.addEventListener('resize', function() {
 			camera.aspect = window.innerWidth / window.innerHeight;
 			camera.updateProjectionMatrix();
 			renderer.setSize(window.innerWidth, window.innerHeight);
 		});
 
+		//Listener to go to the main start menu
 		document.getElementById("home_btn").addEventListener('click',function(){
 			if(confirm("Going to the home you will loose the current progress in the game.\nDo you want to continue?"))
 				window.location.href = ("menu.html");
 		});
 
+		//Listener to close the textual prompt for interaction
 		document.getElementById("close_showText_prompt_btn").addEventListener('click',function(){
 			document.getElementById("showText_prompt").style.display = "none";
 		})
 
-		var pressed = {"SHIFT" : false, "W" : false, "A" : false, "S" : false, "D" : false, "F" : false};
-		
+		//Listener to detect every key pressed
 		document.addEventListener('keydown',(event) => {
 			if(event.key.toLowerCase() == " ") pressed["SPACE"] = true;
 			if(event.key.toLowerCase() == "shift") pressed["SHIFT"] = true;
@@ -4244,6 +4065,7 @@
 			if(event.key.toLowerCase() == "e") {
 				pressed["E"] = true
 				if(animateScene == true)return;
+				//If the interaction prompt text is showed, then hide it
 				if(document.getElementById("showText_prompt").style.display == ""){
 					document.getElementById("showText_prompt").style.display = "none";
 					robotHoloDisappearTween = new TWEEN.Tween({"opacity" : 0.5}).to({"opacity": 0},500).easing(TWEEN.Easing.Bounce.InOut).onUpdate((object)=>{
@@ -4256,6 +4078,7 @@
 						scene.remove(robotHoloModel);
 					}).start();
 				}
+				//If we are near a hologram projection then show the text attached and show the hologram onto it with an animation
 				else if(isNearHoloProj){
 					if(getParameterSoundEf == "1")
 						nearHoloProj["robotBlipAudio"].play();
@@ -4272,6 +4095,7 @@
 					}).start();
 					robotHoloModel.position.set(nearHoloProj["body"].position.x, nearHoloProj["body"].position.y + 1.3, nearHoloProj["body"].position.z);
 				}
+				//If we are near to a terminal then trigger its dedicated function
 				else if(isNearTerminal){
 					if(getParameterSoundEf == "1")
 						nearTerminal["terminalAudio"].play();
@@ -4280,6 +4104,7 @@
 		};
 		},false);
 		
+		//Listener for when the keys are released
 		document.addEventListener('keyup',(event) => {
 			if(event.key.toLowerCase() == " ") pressed["SPACE"] = false;
 			if(event.key.toLowerCase() == "shift") pressed["SHIFT"] = false;
@@ -4291,22 +4116,25 @@
 			if(event.key.toLowerCase() == "e") pressed["E"] = false;
 		},false);
 
+		//Listener for archer's collisions
 		cubeBody.addEventListener( "collide", function (e) {
 			//Since e.contact.bi and e.contact.bj are the bodies colliding we would like to discover which is the player, in order to know if he is colliding with a floor or something else looking at the collision normal of the other object
 			//the normal of collision with respect to the body e.contact.bi is contained inside e.contact.ni
 			
-			//if e.contact.ni is the collision normal of the player then we negate it to obtain the collision normal of the other object
+			//If e.contact.ni is the collision normal of the player then we negate it to obtain the collision normal of the other object
 			if ( e.contact.bi.id == cubeBody.id ) {
 			e.contact.ni.negate( e.contact.ni );
 			}
 
-			// If the dot product between the vertical positive axis and the contact normal is between 0 and 1 then we know that the player is hitting a floor (or a surface to which he could stand)
+			//If the dot product between the vertical positive axis and the contact normal is between 0 and 1 then we know that the player is hitting a floor (or a surface to which he could stand)
 			if ( e.contact.ni.dot( new CANNON.Vec3( 0, 1, 0 ) ) > 0.5){
 				playerState = "Idle";
+				//Set velocity to 0 to avoid bouncing when hitting the ground
 				cubeBody.velocity.y = 0;
 			}
 		});
 
+		//Remove the arrow considering its ID
 		function removeArrowByID(id){
 			arrows.forEach(element => {
 				if(element["can"].id == id){
@@ -4321,6 +4149,8 @@
 				}
 			});
 		}
+
+		//Collision listeners for each target
 		targetBody1.addEventListener("collide", function(e){
 			//We've to check if one of the arrows hits the target1
 			if (targetBody1 && (e.contact.bi.id == targetBody1.id || e.contact.bj.id == targetBody1.id)) {
@@ -4329,7 +4159,6 @@
 				//For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
 				impactDir.subVectors( targetBody1.position, cubeBody.position,);
 				impactDir.normalize();
-				// console.log(impactDir)
 				targetBody1.velocity.x = arrowRepulseVelocity * impactDir.x;
 				targetBody1.velocity.z = arrowRepulseVelocity * impactDir.z;
 				removeArrowByID(e.contact.bi.id);
@@ -4355,7 +4184,6 @@
 				//For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
 				impactDir.subVectors( targetBody2.position, cubeBody.position,);
 				impactDir.normalize();
-				// console.log(impactDir)
 				targetBody2.velocity.x = arrowRepulseVelocity * impactDir.x;
 				targetBody2.velocity.z = arrowRepulseVelocity * impactDir.z;
 				removeArrowByID(e.contact.bi.id);
@@ -4381,7 +4209,6 @@
 				//For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
 				impactDir.subVectors( targetBody3.position, cubeBody.position,);
 				impactDir.normalize();
-				// console.log(impactDir)
 				targetBody3.velocity.x = arrowRepulseVelocity * impactDir.x;
 				targetBody3.velocity.z = arrowRepulseVelocity * impactDir.z;
 				removeArrowByID(e.contact.bi.id);
@@ -4407,7 +4234,6 @@
 				//For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
 				impactDir.subVectors( targetBody4.position, cubeBody.position,);
 				impactDir.normalize();
-				// console.log(impactDir)
 				targetBody4.velocity.x = arrowRepulseVelocity * impactDir.x;
 				targetBody4.velocity.z = arrowRepulseVelocity * impactDir.z;
 				removeArrowByID(e.contact.bi.id);
@@ -4433,7 +4259,6 @@
 				//For simplicity I consider the position of the player to calculate the direction of the impact (should be near the arrow impact direction)
 				impactDir.subVectors( targetBody5.position, cubeBody.position,);
 				impactDir.normalize();
-				// console.log(impactDir)
 				if(activatePresPlate0Tween)
 					activatePresPlate0Tween.stop();
 				if(deactivatePresPlate0Tween)
@@ -4454,28 +4279,29 @@
 			}
 		});
 
-
-
-
+		//Orbit locking and unlocking listeners
 		orbit.addEventListener('lock', function() {animateScene=false; pause_bg.style.display = 'none'; pause_fg.style.display = 'none';});
-		orbit.addEventListener('unlock', function() {lastUnlockTime = performance.now(); animateScene=true; pause_fg.style.display = ''; pause_bg.style.display = '';
-				//console.log('"hipsRx" : ' + archerStructure["hips"].rotation.x.toFixed(4) + ', "hipsRy" : ' + archerStructure["hips"].rotation.y.toFixed(4) + ', "hipsRz" : ' + archerStructure["hips"].rotation.z.toFixed(4) + ',\n"spineRx" : ' + archerStructure["spine"].rotation.x.toFixed(4) + ', "spineRy" : ' + archerStructure["spine"].rotation.y.toFixed(4) + ', "spineRz" : ' + archerStructure["spine"].rotation.z.toFixed(4) + ',\n"spine1Rx" : ' + archerStructure["spine1"].rotation.x.toFixed(4) + ', "spine1Ry" : ' + archerStructure["spine1"].rotation.y.toFixed(4) + ', "spine1Rz" : ' + archerStructure["spine1"].rotation.z.toFixed(4) + ',\n"spine2Rx" : ' + archerStructure["spine2"].rotation.x.toFixed(4) + ', "spine2Ry" : ' + archerStructure["spine2"].rotation.y.toFixed(4) + ', "spine2Rz" : ' + archerStructure["spine2"].rotation.z.toFixed(4) + ',\n"neckRx" : ' + archerStructure["neck"].rotation.x.toFixed(4) + ', "neckRy" : ' + archerStructure["neck"].rotation.y.toFixed(4) + ', "neckRz" : ' + archerStructure["neck"].rotation.z.toFixed(4) + ',\n"headRx" : ' + archerStructure["head"].rotation.x.toFixed(4) + ', "headRy" : ' + archerStructure["head"].rotation.y.toFixed(4) + ', "headRz" : ' + archerStructure["head"].rotation.z.toFixed(4) + ',\n"rightEyeRx" : ' + archerStructure["rightEye"].rotation.x.toFixed(4) + ', "rightEyeRy" : ' + archerStructure["rightEye"].rotation.y.toFixed(4) + ', "rightEyeRz" : ' + archerStructure["rightEye"].rotation.z.toFixed(4) + ',\n"leftEyeRx" : ' + archerStructure["leftEye"].rotation.x.toFixed(4) + ', "leftEyeRy" : ' + archerStructure["leftEye"].rotation.y.toFixed(4) + ', "leftEyeRz" : ' + archerStructure["leftEye"].rotation.z.toFixed(4) + ',\n"headTop_EndRx" : ' + archerStructure["headTop_End"].rotation.x.toFixed(4) + ', "headTop_EndRy" : ' + archerStructure["headTop_End"].rotation.y.toFixed(4) + ', "headTop_EndRz" : ' + archerStructure["headTop_End"].rotation.z.toFixed(4) + ',\n"leftShoulderRx" : ' + archerStructure["leftShoulder"].rotation.x.toFixed(4) + ', "leftShoulderRy" : ' + archerStructure["leftShoulder"].rotation.y.toFixed(4) + ', "leftShoulderRz" : ' + archerStructure["leftShoulder"].rotation.z.toFixed(4) + ',\n"leftArmRx" : ' + archerStructure["leftArm"].rotation.x.toFixed(4) + ', "leftArmRy" : ' + archerStructure["leftArm"].rotation.y.toFixed(4) + ', "leftArmRz" : ' + archerStructure["leftArm"].rotation.z.toFixed(4) + ',\n"leftForeArmRx" : ' + archerStructure["leftForeArm"].rotation.x.toFixed(4) + ', "leftForeArmRy" : ' + archerStructure["leftForeArm"].rotation.y.toFixed(4) + ', "leftForeArmRz" : ' + archerStructure["leftForeArm"].rotation.z.toFixed(4) + ',\n"leftHandRx" : ' + archerStructure["leftHand"].rotation.x.toFixed(4) + ', "leftHandRy" : ' + archerStructure["leftHand"].rotation.y.toFixed(4) + ', "leftHandRz" : ' + archerStructure["leftHand"].rotation.z.toFixed(4) + ',\n"leftHandThumb1Rx" : ' + archerStructure["leftHandThumb1"].rotation.x.toFixed(4) + ', "leftHandThumb1Ry" : ' + archerStructure["leftHandThumb1"].rotation.y.toFixed(4) + ', "leftHandThumb1Rz" : ' + archerStructure["leftHandThumb1"].rotation.z.toFixed(4) + ',\n"leftHandThumb2Rx" : ' + archerStructure["leftHandThumb2"].rotation.x.toFixed(4) + ', "leftHandThumb2Ry" : ' + archerStructure["leftHandThumb2"].rotation.y.toFixed(4) + ', "leftHandThumb2Rz" : ' + archerStructure["leftHandThumb2"].rotation.z.toFixed(4) + ',\n"leftHandThumb3Rx" : ' + archerStructure["leftHandThumb3"].rotation.x.toFixed(4) + ', "leftHandThumb3Ry" : ' + archerStructure["leftHandThumb3"].rotation.y.toFixed(4) + ', "leftHandThumb3Rz" : ' + archerStructure["leftHandThumb3"].rotation.z.toFixed(4) + ',\n"leftHandThumb4Rx" : ' + archerStructure["leftHandThumb4"].rotation.x.toFixed(4) + ', "leftHandThumb4Ry" : ' + archerStructure["leftHandThumb4"].rotation.y.toFixed(4) + ', "leftHandThumb4Rz" : ' + archerStructure["leftHandThumb4"].rotation.z.toFixed(4) + ',\n"leftHandIndex1Rx" : ' + archerStructure["leftHandIndex1"].rotation.x.toFixed(4) + ', "leftHandIndex1Ry" : ' + archerStructure["leftHandIndex1"].rotation.y.toFixed(4) + ', "leftHandIndex1Rz" : ' + archerStructure["leftHandIndex1"].rotation.z.toFixed(4) + ',\n"leftHandIndex2Rx" : ' + archerStructure["leftHandIndex2"].rotation.x.toFixed(4) + ', "leftHandIndex2Ry" : ' + archerStructure["leftHandIndex2"].rotation.y.toFixed(4) + ', "leftHandIndex2Rz" : ' + archerStructure["leftHandIndex2"].rotation.z.toFixed(4) + ',\n"leftHandIndex3Rx" : ' + archerStructure["leftHandIndex3"].rotation.x.toFixed(4) + ', "leftHandIndex3Ry" : ' + archerStructure["leftHandIndex3"].rotation.y.toFixed(4) + ', "leftHandIndex3Rz" : ' + archerStructure["leftHandIndex3"].rotation.z.toFixed(4) + ',\n"leftHandIndex4Rx" : ' + archerStructure["leftHandIndex4"].rotation.x.toFixed(4) + ', "leftHandIndex4Ry" : ' + archerStructure["leftHandIndex4"].rotation.y.toFixed(4) + ', "leftHandIndex4Rz" : ' + archerStructure["leftHandIndex4"].rotation.z.toFixed(4) + ',\n"leftHandMiddle1Rx" : ' + archerStructure["leftHandMiddle1"].rotation.x.toFixed(4) + ', "leftHandMiddle1Ry" : ' + archerStructure["leftHandMiddle1"].rotation.y.toFixed(4) + ', "leftHandMiddle1Rz" : ' + archerStructure["leftHandMiddle1"].rotation.z.toFixed(4) + ',\n"leftHandMiddle2Rx" : ' + archerStructure["leftHandMiddle2"].rotation.x.toFixed(4) + ', "leftHandMiddle2Ry" : ' + archerStructure["leftHandMiddle2"].rotation.y.toFixed(4) + ', "leftHandMiddle2Rz" : ' + archerStructure["leftHandMiddle2"].rotation.z.toFixed(4) + ',\n"leftHandMiddle3Rx" : ' + archerStructure["leftHandMiddle3"].rotation.x.toFixed(4) + ', "leftHandMiddle3Ry" : ' + archerStructure["leftHandMiddle3"].rotation.y.toFixed(4) + ', "leftHandMiddle3Rz" : ' + archerStructure["leftHandMiddle3"].rotation.z.toFixed(4) + ',\n"leftHandMiddle4Rx" : ' + archerStructure["leftHandMiddle4"].rotation.x.toFixed(4) + ', "leftHandMiddle4Ry" : ' + archerStructure["leftHandMiddle4"].rotation.y.toFixed(4) + ', "leftHandMiddle4Rz" : ' + archerStructure["leftHandMiddle4"].rotation.z.toFixed(4) + ',\n"leftHandRing1Rx" : ' + archerStructure["leftHandRing1"].rotation.x.toFixed(4) + ', "leftHandRing1Ry" : ' + archerStructure["leftHandRing1"].rotation.y.toFixed(4) + ', "leftHandRing1Rz" : ' + archerStructure["leftHandRing1"].rotation.z.toFixed(4) + ',\n"leftHandRing2Rx" : ' + archerStructure["leftHandRing2"].rotation.x.toFixed(4) + ', "leftHandRing2Ry" : ' + archerStructure["leftHandRing2"].rotation.y.toFixed(4) + ', "leftHandRing2Rz" : ' + archerStructure["leftHandRing2"].rotation.z.toFixed(4) + ',\n"leftHandRing3Rx" : ' + archerStructure["leftHandRing3"].rotation.x.toFixed(4) + ', "leftHandRing3Ry" : ' + archerStructure["leftHandRing3"].rotation.y.toFixed(4) + ', "leftHandRing3Rz" : ' + archerStructure["leftHandRing3"].rotation.z.toFixed(4) + ',\n"leftHandRing4Rx" : ' + archerStructure["leftHandRing4"].rotation.x.toFixed(4) + ', "leftHandRing4Ry" : ' + archerStructure["leftHandRing4"].rotation.y.toFixed(4) + ', "leftHandRing4Rz" : ' + archerStructure["leftHandRing4"].rotation.z.toFixed(4) + ',\n"leftHandPinky1Rx" : ' + archerStructure["leftHandPinky1"].rotation.x.toFixed(4) + ', "leftHandPinky1Ry" : ' + archerStructure["leftHandPinky1"].rotation.y.toFixed(4) + ', "leftHandPinky1Rz" : ' + archerStructure["leftHandPinky1"].rotation.z.toFixed(4) + ',\n"leftHandPinky2Rx" : ' + archerStructure["leftHandPinky2"].rotation.x.toFixed(4) + ', "leftHandPinky2Ry" : ' + archerStructure["leftHandPinky2"].rotation.y.toFixed(4) + ', "leftHandPinky2Rz" : ' + archerStructure["leftHandPinky2"].rotation.z.toFixed(4) + ',\n"leftHandPinky3Rx" : ' + archerStructure["leftHandPinky3"].rotation.x.toFixed(4) + ', "leftHandPinky3Ry" : ' + archerStructure["leftHandPinky3"].rotation.y.toFixed(4) + ', "leftHandPinky3Rz" : ' + archerStructure["leftHandPinky3"].rotation.z.toFixed(4) + ',\n"leftHandPinky4Rx" : ' + archerStructure["leftHandPinky4"].rotation.x.toFixed(4) + ', "leftHandPinky4Ry" : ' + archerStructure["leftHandPinky4"].rotation.y.toFixed(4) + ', "leftHandPinky4Rz" : ' + archerStructure["leftHandPinky4"].rotation.z.toFixed(4) + ',\n"rightShoulderRx" : ' + archerStructure["rightShoulder"].rotation.x.toFixed(4) + ', "rightShoulderRy" : ' + archerStructure["rightShoulder"].rotation.y.toFixed(4) + ', "rightShoulderRz" : ' + archerStructure["rightShoulder"].rotation.z.toFixed(4) + ',\n"rightArmRx" : ' + archerStructure["rightArm"].rotation.x.toFixed(4) + ', "rightArmRy" : ' + archerStructure["rightArm"].rotation.y.toFixed(4) + ', "rightArmRz" : ' + archerStructure["rightArm"].rotation.z.toFixed(4) + ',\n"rightForeArmRx" : ' + archerStructure["rightForeArm"].rotation.x.toFixed(4) + ', "rightForeArmRy" : ' + archerStructure["rightForeArm"].rotation.y.toFixed(4) + ', "rightForeArmRz" : ' + archerStructure["rightForeArm"].rotation.z.toFixed(4) + ',\n"rightHandRx" : ' + archerStructure["rightHand"].rotation.x.toFixed(4) + ', "rightHandRy" : ' + archerStructure["rightHand"].rotation.y.toFixed(4) + ', "rightHandRz" : ' + archerStructure["rightHand"].rotation.z.toFixed(4) + ',\n"rightHandPinky1Rx" : ' + archerStructure["rightHandPinky1"].rotation.x.toFixed(4) + ', "rightHandPinky1Ry" : ' + archerStructure["rightHandPinky1"].rotation.y.toFixed(4) + ', "rightHandPinky1Rz" : ' + archerStructure["rightHandPinky1"].rotation.z.toFixed(4) + ',\n"rightHandPinky2Rx" : ' + archerStructure["rightHandPinky2"].rotation.x.toFixed(4) + ', "rightHandPinky2Ry" : ' + archerStructure["rightHandPinky2"].rotation.y.toFixed(4) + ', "rightHandPinky2Rz" : ' + archerStructure["rightHandPinky2"].rotation.z.toFixed(4) + ',\n"rightHandPinky3Rx" : ' + archerStructure["rightHandPinky3"].rotation.x.toFixed(4) + ', "rightHandPinky3Ry" : ' + archerStructure["rightHandPinky3"].rotation.y.toFixed(4) + ', "rightHandPinky3Rz" : ' + archerStructure["rightHandPinky3"].rotation.z.toFixed(4) + ',\n"rightHandPinky4Rx" : ' + archerStructure["rightHandPinky4"].rotation.x.toFixed(4) + ', "rightHandPinky4Ry" : ' + archerStructure["rightHandPinky4"].rotation.y.toFixed(4) + ', "rightHandPinky4Rz" : ' + archerStructure["rightHandPinky4"].rotation.z.toFixed(4) + ',\n"rightHandRing1Rx" : ' + archerStructure["rightHandRing1"].rotation.x.toFixed(4) + ', "rightHandRing1Ry" : ' + archerStructure["rightHandRing1"].rotation.y.toFixed(4) + ', "rightHandRing1Rz" : ' + archerStructure["rightHandRing1"].rotation.z.toFixed(4) + ',\n"rightHandRing2Rx" : ' + archerStructure["rightHandRing2"].rotation.x.toFixed(4) + ', "rightHandRing2Ry" : ' + archerStructure["rightHandRing2"].rotation.y.toFixed(4) + ', "rightHandRing2Rz" : ' + archerStructure["rightHandRing2"].rotation.z.toFixed(4) + ',\n"rightHandRing3Rx" : ' + archerStructure["rightHandRing3"].rotation.x.toFixed(4) + ', "rightHandRing3Ry" : ' + archerStructure["rightHandRing3"].rotation.y.toFixed(4) + ', "rightHandRing3Rz" : ' + archerStructure["rightHandRing3"].rotation.z.toFixed(4) + ',\n"rightHandRing4Rx" : ' + archerStructure["rightHandRing4"].rotation.x.toFixed(4) + ', "rightHandRing4Ry" : ' + archerStructure["rightHandRing4"].rotation.y.toFixed(4) + ', "rightHandRing4Rz" : ' + archerStructure["rightHandRing4"].rotation.z.toFixed(4) + ',\n"rightHandMiddle1Rx" : ' + archerStructure["rightHandMiddle1"].rotation.x.toFixed(4) + ', "rightHandMiddle1Ry" : ' + archerStructure["rightHandMiddle1"].rotation.y.toFixed(4) + ', "rightHandMiddle1Rz" : ' + archerStructure["rightHandMiddle1"].rotation.z.toFixed(4) + ',\n"rightHandMiddle2Rx" : ' + archerStructure["rightHandMiddle2"].rotation.x.toFixed(4) + ', "rightHandMiddle2Ry" : ' + archerStructure["rightHandMiddle2"].rotation.y.toFixed(4) + ', "rightHandMiddle2Rz" : ' + archerStructure["rightHandMiddle2"].rotation.z.toFixed(4) + ',\n"rightHandMiddle3Rx" : ' + archerStructure["rightHandMiddle3"].rotation.x.toFixed(4) + ', "rightHandMiddle3Ry" : ' + archerStructure["rightHandMiddle3"].rotation.y.toFixed(4) + ', "rightHandMiddle3Rz" : ' + archerStructure["rightHandMiddle3"].rotation.z.toFixed(4) + ',\n"rightHandMiddle4Rx" : ' + archerStructure["rightHandMiddle4"].rotation.x.toFixed(4) + ', "rightHandMiddle4Ry" : ' + archerStructure["rightHandMiddle4"].rotation.y.toFixed(4) + ', "rightHandMiddle4Rz" : ' + archerStructure["rightHandMiddle4"].rotation.z.toFixed(4) + ',\n"rightHandIndex1Rx" : ' + archerStructure["rightHandIndex1"].rotation.x.toFixed(4) + ', "rightHandIndex1Ry" : ' + archerStructure["rightHandIndex1"].rotation.y.toFixed(4) + ', "rightHandIndex1Rz" : ' + archerStructure["rightHandIndex1"].rotation.z.toFixed(4) + ',\n"rightHandIndex2Rx" : ' + archerStructure["rightHandIndex2"].rotation.x.toFixed(4) + ', "rightHandIndex2Ry" : ' + archerStructure["rightHandIndex2"].rotation.y.toFixed(4) + ', "rightHandIndex2Rz" : ' + archerStructure["rightHandIndex2"].rotation.z.toFixed(4) + ',\n"rightHandIndex3Rx" : ' + archerStructure["rightHandIndex3"].rotation.x.toFixed(4) + ', "rightHandIndex3Ry" : ' + archerStructure["rightHandIndex3"].rotation.y.toFixed(4) + ', "rightHandIndex3Rz" : ' + archerStructure["rightHandIndex3"].rotation.z.toFixed(4) + ',\n"rightHandIndex4Rx" : ' + archerStructure["rightHandIndex4"].rotation.x.toFixed(4) + ', "rightHandIndex4Ry" : ' + archerStructure["rightHandIndex4"].rotation.y.toFixed(4) + ', "rightHandIndex4Rz" : ' + archerStructure["rightHandIndex4"].rotation.z.toFixed(4) + ',\n"rightHandThumb1Rx" : ' + archerStructure["rightHandThumb1"].rotation.x.toFixed(4) + ', "rightHandThumb1Ry" : ' + archerStructure["rightHandThumb1"].rotation.y.toFixed(4) + ', "rightHandThumb1Rz" : ' + archerStructure["rightHandThumb1"].rotation.z.toFixed(4) + ',\n"rightHandThumb2Rx" : ' + archerStructure["rightHandThumb2"].rotation.x.toFixed(4) + ', "rightHandThumb2Ry" : ' + archerStructure["rightHandThumb2"].rotation.y.toFixed(4) + ', "rightHandThumb2Rz" : ' + archerStructure["rightHandThumb2"].rotation.z.toFixed(4) + ',\n"rightHandThumb3Rx" : ' + archerStructure["rightHandThumb3"].rotation.x.toFixed(4) + ', "rightHandThumb3Ry" : ' + archerStructure["rightHandThumb3"].rotation.y.toFixed(4) + ', "rightHandThumb3Rz" : ' + archerStructure["rightHandThumb3"].rotation.z.toFixed(4) + ',\n"rightHandThumb4Rx" : ' + archerStructure["rightHandThumb4"].rotation.x.toFixed(4) + ', "rightHandThumb4Ry" : ' + archerStructure["rightHandThumb4"].rotation.y.toFixed(4) + ', "rightHandThumb4Rz" : ' + archerStructure["rightHandThumb4"].rotation.z.toFixed(4) + ',\n"leftUpLegRx" : ' + archerStructure["leftUpLeg"].rotation.x.toFixed(4) + ', "leftUpLegRy" : ' + archerStructure["leftUpLeg"].rotation.y.toFixed(4) + ', "leftUpLegRz" : ' + archerStructure["leftUpLeg"].rotation.z.toFixed(4) + ',\n"leftLegRx" : ' + archerStructure["leftLeg"].rotation.x.toFixed(4) + ', "leftLegRy" : ' + archerStructure["leftLeg"].rotation.y.toFixed(4) + ', "leftLegRz" : ' + archerStructure["leftLeg"].rotation.z.toFixed(4) + ',\n"leftFootRx" : ' + archerStructure["leftFoot"].rotation.x.toFixed(4) + ', "leftFootRy" : ' + archerStructure["leftFoot"].rotation.y.toFixed(4) + ', "leftFootRz" : ' + archerStructure["leftFoot"].rotation.z.toFixed(4) + ',\n"leftToeBaseRx" : ' + archerStructure["leftToeBase"].rotation.x.toFixed(4) + ', "leftToeBaseRy" : ' + archerStructure["leftToeBase"].rotation.y.toFixed(4) + ', "leftToeBaseRz" : ' + archerStructure["leftToeBase"].rotation.z.toFixed(4) + ',\n"leftToe_EndRx" : ' + archerStructure["leftToe_End"].rotation.x.toFixed(4) + ', "leftToe_EndRy" : ' + archerStructure["leftToe_End"].rotation.y.toFixed(4) + ', "leftToe_EndRz" : ' + archerStructure["leftToe_End"].rotation.z.toFixed(4) + ',\n"rightUpLegRx" : ' + archerStructure["rightUpLeg"].rotation.x.toFixed(4) + ', "rightUpLegRy" : ' + archerStructure["rightUpLeg"].rotation.y.toFixed(4) + ', "rightUpLegRz" : ' + archerStructure["rightUpLeg"].rotation.z.toFixed(4) + ',\n"rightLegRx" : ' + archerStructure["rightLeg"].rotation.x.toFixed(4) + ', "rightLegRy" : ' + archerStructure["rightLeg"].rotation.y.toFixed(4) + ', "rightLegRz" : ' + archerStructure["rightLeg"].rotation.z.toFixed(4) + ',\n"rightFootRx" : ' + archerStructure["rightFoot"].rotation.x.toFixed(4) + ', "rightFootRy" : ' + archerStructure["rightFoot"].rotation.y.toFixed(4) + ', "rightFootRz" : ' + archerStructure["rightFoot"].rotation.z.toFixed(4) + ',\n"rightToeBaseRx" : ' + archerStructure["rightToeBase"].rotation.x.toFixed(4) + ', "rightToeBaseRy" : ' + archerStructure["rightToeBase"].rotation.y.toFixed(4) + ', "rightToeBaseRz" : ' + archerStructure["rightToeBase"].rotation.z.toFixed(4) + ',\n"rightToe_EndRx" : ' + archerStructure["rightToe_End"].rotation.x.toFixed(4) + ', "rightToe_EndRy" : ' + archerStructure["rightToe_End"].rotation.y.toFixed(4) + ', "rightToe_EndRz" : ' + archerStructure["rightToe_End"].rotation.z.toFixed(4) + ',\n')
-		});
+		orbit.addEventListener('unlock', function() {lastUnlockTime = performance.now(); animateScene=true; pause_fg.style.display = ''; pause_bg.style.display = '';});
 
 
-
+		//Using time utility to get time deltas and currentTime
 		const time = new THREE.Clock();
 		var deltaTime = 0;
 		var elapsedTime = 0;
+
+		//Animate function called for every frame
 		function animate() {
 			deltaTime = time.getDelta();
+			//AnimateScene tells wether game must be blocked or resumed
 			if(animateScene == false){
 				elapsedTime = time.getElapsedTime() * 1000;
+
+				//Updating functions for every library
 				TWEEN.update();
 				world.step(1/60,deltaTime,10);
 				orbit.update(deltaTime);
 
-
+				//Updating functions for every element of the game
 				playerAnimate(deltaTime);
 				enemiesAnimate(deltaTime);
 				obsPlatAnimate();
@@ -4486,6 +4312,8 @@
 				robotHoloAnimate();
 				terminalsAnimate();
 				presPlatesAnimate();
+
+				//Now there are copy functions following, that make the bodies, the meshes and the models be in the same positions
 
 				if(groundMesh && groundPlatModelParent){
 					groundMesh.position.copy(groundBody.position);
@@ -4584,16 +4412,16 @@
 					cubeWeightModelParent.quaternion.copy(cubeWeightBody.quaternion);
 				}
 
-				//if (mixer) mixer.update(time.getDelta());
 				arrows.forEach(element => {
 					element["mesh"].position.copy(element["can"].position);
 					element["model"].position.copy(element["can"].position);
 					element["can"].quaternion.copy(element["model"].quaternion);
 					element["mesh"].quaternion.copy(element["model"].quaternion);
 
-					//Check if the arrow is falling down
+					//Check if the arrow is falling down, if it is then delete it
 					if(element["can"].position.y < -5){
 							scene.remove(element["model"]);
+							//Can't remove it immediately from the CANNON world, otherwise error
 							setTimeout(function() {
 								world.removeBody(element["can"]);
 							},0);
@@ -4610,9 +4438,10 @@
 					element["can"].quaternion.copy(element["model"].quaternion);
 					element["mesh"].quaternion.copy(element["model"].quaternion);
 
-					//Check if the bomb is falling down
+					//Check if the bomb is falling down, if it is then delete it
 					if(element["can"].position.y < -5){
 							scene.remove(element["model"]);
+							//Can't remove it immediately from the CANNON world, otherwise error
 							setTimeout(function() {
 								world.removeBody(element["can"]);
 							},0);
@@ -4629,8 +4458,10 @@
 					element["model"].position.copy(element["body"].position);
 					element["model"].quaternion.copy(element["body"].quaternion);
 
+					//Check if the floating platform is falling down, if it is then delete it
 					if(element["body"].position.y < -10){
 						scene.remove(element["model"]);
+						//Can't remove it immediately from the CANNON world, otherwise error
 						setTimeout(function() {
 							world.removeBody(element["body"]);
 						},0);
@@ -4649,10 +4480,7 @@
 					element["model"].quaternion.copy(element["body"].quaternion);
 				});
 
-
-				// console.log(camera.position)
-
-
+				//Make the skyboxModel rotate to make the clouds move
 				if(getParameterClouds == "1" && skyboxModel){
 					skyboxModel.rotation.y -= (deltaTime * 1000 * 0.00001);
 				}
@@ -4663,13 +4491,14 @@
 			requestAnimationFrame(animate);
 		};
 
-		//Make the archer able to interact with the holoProjectors
+		//Make the archer able to interact with the hologram projectors
 		function holoProjAnimate(){
 			if(!cubeBody)return;
 			var activated = false;
 			holoProjs.forEach(element => {
 				var distance = new THREE.Vector3();
 				distance.subVectors( cubeBody.position, element["body"].position );
+				//Archer can interact only if it is sufficiently near
 				if(distance.dot(distance) < 30){
 					activated=true;
 					isNearHoloProj = true;
@@ -4684,19 +4513,16 @@
 			}
 		}
 
-		//Make the archer able to interact with the presPlates
+		//Make the archer able to interact with the pressure plates
 		function presPlatesAnimate(){
 			if(!cubeBody)return;
+			//Better to see if archer or cubeWeight is in the same position (within a certain threshold) of the pressure plate than using the collision listener, since there could be multiple collision and the cubeWeight could be not fully on the pressure plate
 			presPlates.forEach(element => {
 				if((Math.abs(cubeBody.position.x - element["body"].position.x)<1 && Math.abs(cubeBody.position.z - element["body"].position.z)<1 && Math.abs(cubeBody.position.y - element["body"].position.y)<2)
 				|| (Math.abs(cubeWeightBody.position.x - element["body"].position.x)<1 && Math.abs(cubeWeightBody.position.z - element["body"].position.z)<1 && Math.abs(cubeWeightBody.position.y - element["body"].position.y)<2)){
 					if(element["triggered"]==false){
 						if(getParameterSoundEf = "1")element["presPlateAudio"].play();
 						element["activation"]();
-
-						// mixer2 = new THREE.AnimationMixer(cubeWeightModel);
-						// mixer2.clipAction(animationsTry[0]).setLoop(THREE.LoopRepeat, 100).play();
-						// if (mixer2) mixer2.update();
 					}
 				}
 				else{
@@ -4715,6 +4541,7 @@
 			terminals.forEach(element => {
 				var distance = new THREE.Vector3();
 				distance.subVectors( cubeBody.position, element["body"].position );
+				//Archer can interact only if it is sufficiently near
 				if(distance.dot(distance) < 30 && element["triggered"]==false){
 					activated=true;
 					isNearTerminal = true;
@@ -4729,7 +4556,7 @@
 			}
 		}
 
-		//Make the robotHolo rotate towards the archer
+		//Make the robot hologram rotate towards the archer
 		function robotHoloAnimate(){
 			var desAngle = Math.atan2(
 						(robotHoloModel.position.x - cubeBody.position.x),
@@ -4739,7 +4566,7 @@
 			robotHoloModel.quaternion.rotateTowards((new THREE.Quaternion()).setFromAxisAngle(new THREE.Vector3(0,1,0), desAngle - Math.PI/1.5), 0.2);
 		}
 
-		//Animate the cannon
+		//Animate the cannon, make it rotate towards the player (while moving and shooting)
 		function cannonAnimate(){
 			var desAngle = Math.atan2(
 						(cannonBody.position.x - cubeBody.position.x),
@@ -4820,6 +4647,7 @@
 			archerStructure["rightToe_End"] = archerModel.getObjectByName("RightToe_End_61")
 		};
 
+		//Set elements of robots (enemies) useful for animations
 		function populateRobotStructure(genRobotModel){
 			var struct = {};
 			struct["rootJoint"] = genRobotModel.getObjectByName("GLTF_created_0_rootJoint")
@@ -4870,10 +4698,11 @@
 		}		
 		//Set the correct player animation
 		function changePlayerState(){
+			//Only if player state changed continue
 			if(lastExecutedAnimation == playerState) return;
 			lastExecutedAnimation = playerState;
 			
-			//Animations
+			//Stop all the animations to avoid overlapping (stopping an already stopped animation gives no error)
 			idle.stop();
 			idleB.stop();
 			walkA.stop();
@@ -4887,11 +4716,13 @@
 			jumpA.stop();
 			jumpB.stop();
 
-			//Sounds
+			//Stop all the sounds emitted from the player to avoid overlapping
 			if(playerWalkAudio.isPlaying)
 				playerWalkAudio.stop();
 			if(playerRunAudio.isPlaying)
 				playerRunAudio.stop();
+
+			//Start the correct animation based on the player current state
 			switch(playerState){
 				case "Idle":
 					idle.start();
@@ -4915,7 +4746,7 @@
 		}
 
 	
-
+		//Function that animates the floating platform (different platform requires different animations)
 		function obsPlatAnimate(){
 			//ObsPlat1
 			var xMax = 15;
@@ -5019,12 +4850,8 @@
 			}
 		}
 
-		//Functions that applies the updates to the player through each frame (animation, movement, etc.)
+		//Functions that applies the updates to the player and the camera through each frame (animation, movement, etc.)
 		function playerAnimate(delta){
-			// console.log(playerState)
-
-			//Degree of desired direction
-			
 			if(pressed["SPACE"] && playerState!="Jump"){
 				playerState = "Jump";
 				cubeBody.velocity.y = 15;
@@ -5088,7 +4915,6 @@
 			cubeMesh.quaternion.rotateTowards(desQuat, 0.2);
 
 			if(moving == true){
-
 				//Obtain the world direction of the camera
 				var cameraDirection= new THREE.Vector3();
 				camera.getWorldDirection(cameraDirection);
@@ -5102,20 +4928,14 @@
 
 				cubeBody.position.x += moveX;
 				cubeBody.position.z += moveZ;
-
-
-
-				
-				
-				
 			}
 			//To make the camera move effectively only if the player moves (not if he encounters obstacles)
 			camera.position.x += cubeBody.position.x - oldx;
 			camera.position.z += cubeBody.position.z - oldz;
 
-			// update camera target
+			//Update camera target
 			cameraTarget.x += cubeBody.position.x -oldx;
-			//Update y easing only if "standing on a platform at different height"
+			//Update y easing only if "standing on a platform at different height
 			if(playerState!="Jump" && oldy<cubeBody.position.y-0.1 || oldy>cubeBody.position.y+0.1){
 				oldy = cubeBody.position.y;
 				cameraMoveY();
@@ -5184,7 +5004,6 @@
 					robots = robots.filter(function(ele){ 
 						return ele != enemy; 
 					});
-					obj3Completed();
 				}
 			});
 			// console.log(str);
