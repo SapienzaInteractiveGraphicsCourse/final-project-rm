@@ -5,128 +5,34 @@
 		<title>TheArcher</title>
 		<link rel="icon" type="image/x-icon" href="/img/favicon.png">
 		<style>
-			body { margin: 0;
+			/* General style settings of the page */	
+			body { 
+				margin: 0;
 				background: #000;
-				font-family: Helvetica, sans-serif; }
-			
-			.example {
-			float: left;
-			margin: 10px;
+				font-family: Helvetica, sans-serif; 
 			}
-			.inp {
-			background: rgba(0,127,128,0.68);
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
-			border: 1px solid rgba(128,255,255,0.25);
-			color: rgba(255,255,255,0.75);
-			text-shadow: 0 0 10px rgba(0,255,255,0.95);
-			font-size: 30px;
-			padding: 10px 30px;
-			text-shadow: 0 0 10px rgba(0,255,255,0.5);
-			outline: none;
-			}
-			.inp:hover {
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			border: 1px solid rgba(128,255,255,0.75);
-			}
-			.inp:focus {
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			border: 1px solid rgba(128,255,255,0.75);
-			}
-			.inp-secondary {
-			background-color: transparent;
-			color: rgba(0,127,128,0.8);
-			text-shadow: 0 0 12px rgba(0,255,255,0.3);
-			/* text-shadow: none; */
-			border: 1px solid rgba(128,255,255,0.5);
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.25);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.25);
-			}
+			/* Style of the start menu buttons */
 			.btn {
-			background: rgba(0,127,128,1);
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
-			border: 1px solid rgba(128,255,255,0.25);
-			color: rgba(255,255,255,1);
-			text-shadow: 0 0 10px rgba(0,255,255,0.95);
-			font-size: 30px;
-			padding: 10px 30px;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-			outline: none;
+				background: rgba(0,127,128,0.68);
+				-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+				box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+				border: 1px solid rgba(128,255,255,0.25);
+				color: rgba(255,255,255,1);
+				text-shadow: 0 0 10px rgba(0,255,255,0.95);
+				font-size: 30px;
+				padding: 10px 30px;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				outline: none;
 			}
+			/* Style of the start menu buttons going over with pointer */	
 			.btn:hover {
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			border: 1px solid rgba(128,255,255,0.75);
+				-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+				box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+				border: 1px solid rgba(128,255,255,0.75);
 			}
-			.btn-primary:active {
-			background: rgba(0,127,128,0.9);
-			}
-			.btn-secondary {
-			background-color: transparent;
-			color: rgba(0,127,128,0.8);
-			text-shadow: 0 0 12px rgba(0,255,255,0.3);
-			/* text-shadow: none; */
-			border: 1px solid rgba(128,255,255,0.5);
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.25);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.25);
-			}
-			.btn-secondary:active {
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			}
-			.element {
-			position: relative;
-			width: 120px;
-			height: 160px;
-			color: #fff;
-			text-align: center;
-			background: rgba(0,127,128,0.68);
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
-			border: 1px solid rgba(128,255,255,0.25);
-			cursor: default;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-			}
-			.element:hover {
-			-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-			border: 1px solid rgba(128,255,255,0.75);
-			}
-			.element .number {
-			font-size: 12px;
-			color: rgba(128,255,255,0.75);
-			position: absolute;
-			top: 20px;
-			right: 20px;
-			}
-			.element .symbol {
-			color: rgba(255,255,255,0.75);
-			text-shadow: 0 0 10px rgba(0,255,255,0.95);
-			position: absolute;
-			font-size: 60px;
-			font-weight: bold;
-			top: 40px;
-			left: 0px;
-			right: 0px;
-			}
-			.element .details {
-			font-size: 12px;
-			color: rgba(128,255,255,0.75);
-			position: absolute;
-			bottom: 15px;
-			left: 0px;
-			right: 0px;
-			}
-
 		</style>
 	</head>
 	<body>
@@ -144,7 +50,7 @@
 		</script>
 
         <!-- Initial loading bar -->
-        <div id="gameLoading_bg" style="position:fixed; width : 100%; height : 100%; background-color: rgba(0,0,0,1);">
+        <div id="gameLoading_bg" style="position:fixed; width : 100%; height : 100%; background-color: rgba(0,0,0,0.7);">
 			<div id="gameLoading_fg" style="width: 70%; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); height: auto; text-align: center; cursor: pointer; padding: 2%;">
 				<label id="gameLoading_label" style=" font-size: 3em; color:white;" for="gameLoading_fb_bar">Loading in progress:</label><br>
 				<progress  id="gameLoading_fg_bar" style="width: 100%; height: 3em;" max="100" ></progress>
@@ -152,7 +58,7 @@
 		</div>
 
 		
-		
+		<!-- Buttons composing the home menu -->
 		<div id="start-menu" style="display:none">
 			<div style = "width: 100%; position: fixed; top: 19%; left: 50%; transform: translate(-280pt, -50%);">
 					<span >
@@ -161,7 +67,7 @@
 				</button>
 			</div>
 			<div style = "width: 100%; position: fixed; top: 50%; left: 50%; transform: translate(-30%, -50%);">
-				<button id="start_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;   padding: 30pt;">
+				<button id="start_btn" class="btn" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;   padding: 30pt;">
 					<span >
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/start.png" width="50px">
 						<span style="vertical-align:middle; font-size: 50px;"><b>START</b> </span>
@@ -169,7 +75,7 @@
 				</button>
 			</div>
 			<div style = "width: 100%; position: fixed; top: 70%; left: 50%; transform: translate(-30%, -50%);">
-				<button id="settings_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
+				<button id="settings_btn" class="btn" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/settings.png" width="50px">
 						<span style="vertical-align:middle; font-size: 50px;"><b>OPTIONS</b> </span>
@@ -177,7 +83,7 @@
 				</button>
 			</div>
 			<div style = "width: 100%; position: fixed; top: 90%; left: 50%; transform: translate(-30%, -50%); ">
-				<button id="credits_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
+				<button id="credits_btn" class="btn" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/credits.png" width="50px">
 						<span style="vertical-align:middle; font-size: 50px;"><b>CREDITS</b> </span>
@@ -186,22 +92,31 @@
 			</div>
 		</div>
 
+		<div style = "width: 100%; position: fixed; top: 98%; left: 50%; transform: translate(-50%, -50%);">
+			<span style="opacity:0.95; width: 100%; height: auto; text-align: center;">
+				<p style = "color: rgba(255,255,255,1); text-shadow: 0 0 10px rgba(0,255,255,0.95); font-size: 20px; padding: 10px 30px; "><b>(Click the background targets to make them fall!)</b></p>>
+			</span>
+		</button>
+		</div>
+
+		<!-- Menu showing the credits -->
 		<div id="credits" style = "position:fixed; width : 100%; height : 100%; background-color: rgba(0,0,0,0.7); display:none;" >
 			<div style = "width: 100%; position: fixed; top: 50%; left: 50%; transform: translate(-35%, -25%); ">
-				<div class="btn btn-primary example" style=" display:block; opacity:0.95; width: 70%; height: 50%; text-align: center; ">
+				<div class="btn" style=" display:block; opacity:0.95; width: 70%; height: 50%; text-align: center; ">
 					<div id="close_credits_btn" style="display:inline-block; margin-left: 96%; color: white; font-weight: bold; cursor: pointer;">
 						x
 					</div>
 					<span style="display:inline-block;width:100%;overflow: auto;">
-						<span style=" vertical-align:middle; font-size: 50px;">Game created by: Riccardo Mascello<br>Models imported from Sketchfab, from the authors: </span>
+						<span style=" vertical-align:middle; font-size: 50px;">Game created by: <b><i>Riccardo Mascello, 1853552</i></b><br><br> Models imported from SketchFab and audios imported from SoundBible. Authors of all the items imported are included in the report document attached to the project. Please be sure to check it out.<br><br> <b><i>Interactive Graphics Final Project 2022</i></b></span>
 					</span>
 				</div>
 			</div>
-
 		</div>
+
+		<!-- Menu showing the settings -->
 		<div id="settings-menu" style="display:none">
 			<div style = "width: 100%; position: fixed; top: 10%; left: 50%; transform: translate(-30%, -50%);">
-				<button id="shadows_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;   padding: 30pt;">
+				<button id="shadows_btn" class="btn" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;   padding: 30pt;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/shadows.png" width="50px">
 						<span id = "shadows_btn_txt" style="vertical-align:middle; font-size: 50px;"><b>SHADOWS</b> : MAX</span>
@@ -209,7 +124,7 @@
 				</button>
 			</div>
 			<div style = "width: 75%; position: fixed; top: 70%; left: 25%; transform: translate(-30%, -50%);">
-				<button id="soundef_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
+				<button id="soundef_btn" class="btn" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/soundef.png" width="50px">
 						<span id = "soundef_btn_txt" style="vertical-align:middle; font-size: 50px;"><b>EFFECTS</b> : ON</span>
@@ -217,7 +132,7 @@
 				</button>
 			</div>
 			<div style = "width: 75%; position: fixed; top: 70%; left: 75%; transform: translate(-30%, -50%);">
-				<button id="soundmu_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
+				<button id="soundmu_btn" class="btn" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/soundmu.png" width="50px">
 						<span id = "soundmu_btn_txt" style="vertical-align:middle; font-size: 50px;"><b>MUSIC</b> : ON</span>
@@ -225,7 +140,7 @@
 				</button>
 			</div>
 			<div style = "width: 100%; position: fixed; top: 50%; left: 50%; transform: translate(-30%, -50%); ">
-				<button id="wireframes_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
+				<button id="wireframes_btn" class="btn" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/wireframes.png" width="50px">
 						<span id = "wireframes_btn_txt" style="vertical-align:middle; font-size: 50px;"><b>WIREFRAMES</b> : OFF</span>
@@ -233,7 +148,7 @@
 				</button>
 			</div>
 			<div style = "width: 100%; position: fixed; top: 30%; left: 50%; transform: translate(-30%, -50%); ">
-				<button id="clouds_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
+				<button id="clouds_btn" class="btn" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/clouds.png" width="50px">
 						<span id = "clouds_btn_txt" style="vertical-align:middle; font-size: 50px;"><b>CLOUDS</b> : ON</span>
@@ -241,17 +156,16 @@
 				</button>
 			</div>
 			<div style = "width: 100%; position: fixed; top: 90%; left: 50%; transform: translate(-30%, -50%); ">
-				<button id="back_btn" class="btn btn-primary example" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
+				<button id="back_btn" class="btn" style="opacity:0.95; width: 60%; height: auto; text-align: center; cursor: pointer;  padding: 30pt;">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/back.png" width="50px">
 						<span style="vertical-align:middle; font-size: 50px;"><b>BACK</b></span>
 					</span>
 				</button>
 			</div>
-
-			
-
 		</div>
+
+
 
 		<script type="module">
         import * as THREE from './node_modules/three/build/three.module.js';
@@ -306,19 +220,21 @@
         var targetsDepth = 20;
 		var addedTarget = 0;
 
-		//SETTINGS PARAMETERS
+		//Settings parameters
 		var shadows = 3;
 		var soundef = 1;
 		var soundmu = 1;
 		var wireframes = 0;
 		var clouds = 1;
 
+		//Click listener for start button
 		function start(){
 			if(soundef == 1)clickAudio.play();
 			window.location.href = 'index.html?shadows='+shadows+'&soundef='+soundef+'&soundmu='+soundmu+'&wireframes='+wireframes;
 		}
 		document.querySelector("#start_btn").addEventListener("click",start);
 		
+		//Click listener for settings button
 		function openSettings(){
 			if(soundef == 1)clickAudio.play();
 			document.querySelector("#start-menu").style.display = "none";
@@ -326,6 +242,7 @@
 		}
 		document.querySelector("#settings_btn").addEventListener("click",openSettings);
 
+		//Click listener for close settings button
 		function closeSettings(){
 			if(soundef == 1)clickAudio.play();
 			document.querySelector("#start-menu").style.display = "";
@@ -333,19 +250,21 @@
 		}
 		document.querySelector("#back_btn").addEventListener("click",closeSettings);
 
+		//Click listener for credits button
 		function openCredits(){
 			if(soundef == 1)clickAudio.play();
 			document.querySelector("#credits").style.display = "";
 		}
 		document.querySelector("#credits_btn").addEventListener("click",openCredits);
 
+		//Click listener for close credits button
 		function closeCredits(){
 			if(soundef == 1)clickAudio.play();
 			document.querySelector("#credits").style.display = "none";
 		}
 		document.querySelector("#close_credits_btn").addEventListener("click",closeCredits);
 
-
+		//Click listener for shadows button
 		function changeShadows(){
 			if(soundef == 1)clickAudio.play();
 			if(shadows == 3){
@@ -365,6 +284,7 @@
 		}
 		document.querySelector("#shadows_btn").addEventListener("click",changeShadows);
 
+		//Click listener for sound effect button
 		function changeSoundEf(){
 			if(soundef == 1)clickAudio.play();
 			if(soundef == 1){
@@ -378,6 +298,7 @@
 		}
 		document.querySelector("#soundef_btn").addEventListener("click",changeSoundEf);
 
+		//Click listener for sound music button
 		function changeSoundMu(){
 			if(soundef == 1)clickAudio.play();
 			if(soundmu == 1){
@@ -394,6 +315,7 @@
 		}
 		document.querySelector("#soundmu_btn").addEventListener("click",changeSoundMu);
 
+		//Click listener for clouds button
 		function changeClouds(){
 			if(soundef == 1)clickAudio.play();
 			if(clouds == 1){
@@ -411,6 +333,7 @@
 		}
 		document.querySelector("#clouds_btn").addEventListener("click",changeClouds);
 
+		//Click listener for wireframes button
 		function changeWireframes(){
 			if(soundef == 1)clickAudio.play();
 			if(wireframes == 1){
@@ -432,26 +355,27 @@
 				document.querySelector("#wireframes_btn_txt").innerHTML = "<b>WIREFRAMES</b> : ON";
 			}
 		}
-
-
 		document.querySelector("#wireframes_btn").addEventListener("click",changeWireframes);
+
+
+		//Implementing the clicking function to make the targets fall on touch
         const raycaster = new THREE.Raycaster();
         const pointer = new THREE.Vector2();
 
         function onPointerClick( event ) {
 			if(!mainThemeAudio.isPlaying && soundmu == "1") mainThemeAudio.play();
-            // calculate pointer position in normalized device coordinates
-            // (-1 to +1) for both components
 
+            //Calculate pointer position in normalized device coordinates (-1 to +1) for both components
             pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
             pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-            // update the picking ray with the camera and pointer position
+            //Update the picking ray with the camera and pointer position
             raycaster.setFromCamera( pointer, camera );
 
-            // calculate objects intersecting the picking ray
+            //Calculate objects intersecting the picking ray
             const intersects = raycaster.intersectObjects( scene.children );
 
+			//If there is at least an element intersected then see if it is a target and then modify its mass to make it fall
             if(intersects[0]){
                 targets.forEach(element => {
                     if(element["mesh"] == intersects[0].object){
@@ -460,11 +384,11 @@
                     }
                 });
             }
-
         }
-
         window.addEventListener( 'pointerdown', onPointerClick );
 		
+
+		//Listener that allow the window for resizing when necessary
 		window.addEventListener('resize', function() {
 			camera.aspect = window.innerWidth / window.innerHeight;
 			camera.updateProjectionMatrix();
@@ -472,21 +396,19 @@
 		});
 
 
-
-
-		//CANNON AND THREE SETUP
+		//Creating the world for CANNON-ES
 		const world = new CANNON.World({
 			gravity: new CANNON.Vec3(0, -20, 0)
 		});
 
+		//Creating the scene for THREEJS
 		const scene = new THREE.Scene();
-		// scene.background = new THREE.Color( 0x00C0F0 );
 		
+		//Importing the Sky from THREEJS examples and setting the parameters to obtain the desired result
 		var sky = new Sky();
 		sky.scale.setScalar( 450000 );
 		scene.add( sky );
 		var sunPosition = new THREE.Vector3();
-
 		sky.material.uniforms[ 'turbidity' ].value =20;
 		sky.material.uniforms[ 'mieCoefficient' ].value =0;
 		sky.material.uniforms[ 'mieDirectionalG' ].value =1;
@@ -494,25 +416,25 @@
 		sunPosition.setFromSphericalCoords( 1, THREE.MathUtils.degToRad( 90 - 45 ), THREE.MathUtils.degToRad( 90 ) );
 		sky.material.uniforms[ 'sunPosition' ].value.copy( sunPosition );
 
+		//Configuring settings and initial position for camera
 		const camera = new THREE.PerspectiveCamera(
 			45,
 			window.innerWidth / window.innerHeight,
 			0.1,
 			1000
 			);
+		camera.position.set(0,0,-5);
+		camera.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), Math.PI);
 			
-			
-			const renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			renderer.shadowMap.enabled = true;
-			document.body.appendChild( renderer.domElement );
-			renderer.toneMappingExposure = 0.5;
-			
-			camera.position.set(0,0,-5);
-			camera.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), Math.PI);
+		//Configuring the renderer
+		const renderer = new THREE.WebGLRenderer();
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.shadowMap.enabled = true;
+		document.body.appendChild( renderer.domElement );
+		renderer.toneMappingExposure = 0.5;
+		
 
-		//AUDIO
-
+		//Adding click effects and music
 		const audioListener = new THREE.AudioListener();
 		camera.add( audioListener );
 		const audioLoader = new THREE.AudioLoader();
@@ -534,29 +456,30 @@
 		
 		//LIGHT SETUP
 
-		const ambLight = new THREE.AmbientLight(0xFFFFFF, 1);
+		//Configuring ambient light, otherwise the shadow of the directional light would be too dark
+		const ambLight = new THREE.AmbientLight(0xFFFFFF, 0.8);
 		scene.add(ambLight);
 		
+		//Configuring the directional light
 		const dirLight = new THREE.DirectionalLight(0xFFFFFF, 10);
 		dirLight.position.set(0, 50, -5);
 		dirLight.target.position.set(0, 0, 20);
 		dirLight.castShadow = true; 
-		dirLight.shadow.camera.left = - 200;
+		dirLight.shadow.camera.left = - 50;
 		dirLight.shadow.camera.right = 15;
 		dirLight.shadow.camera.top = 15;
 		dirLight.shadow.camera.bottom = - 15;
 		dirLight.shadow.camera.far = 100;
 		dirLight.shadow.bias = - 0;
-		dirLight.shadow.mapSize.width = Math.pow(2,12); // default
-		dirLight.shadow.mapSize.height = Math.pow(2,12); // default
+		dirLight.shadow.mapSize.width = Math.pow(2,12);
+		dirLight.shadow.mapSize.height = Math.pow(2,12);
 		scene.add(dirLight);
 		scene.add(dirLight.target);
 
+		//Tool useful to show the area of the directional light (activated only if the "wireframes" flag is set on 1)
 		const helper = new THREE.CameraHelper( dirLight.shadow.camera );
 
-		//CUBE (THREE)
-
-		
+		//Configuring the GLTFLoader and the loading bar
 		const loadingManager = new THREE.LoadingManager();
         const gltfLoader = new GLTFLoader(loadingManager);
 		loadingManager.onLoad = () => {gameLoaded = true; document.querySelector('#gameLoading_fg').style.display = 'none'; document.querySelector('#gameLoading_bg').style.display = 'none'; animateScene=false; document.querySelector('#start-menu').style.display = '';};
@@ -564,8 +487,7 @@
 			document.querySelector('#gameLoading_fg_bar').setAttribute("value",`${itemsLoaded / itemsTotal * 100 | 0}`);
 		};
 
-		
-
+		//Generating the spawn positions of the background targets
         var positions = [];
         for(var i = 0 ; i <= (horizontalMax*2) / generatingStep; i++){
             for(var j = 0 ; j <= (verticalMax*2) / generatingStep; j++){
@@ -573,10 +495,11 @@
             }
         }
 
+		//Loading the skybox model that will rotate slowly simulating moving windows
 		gltfLoader.load("gltf/skybox/scene.gltf", (gltf) => {
 			skyboxModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			skyboxModel.scale.setScalar( 1 );
-			//Removing the sky (it causes issues with directional light)
+			//Removing the background of the model (it causes issues with directional light)
 			var sky= gltf.scene.getObjectByName("hoth_sky");
 			sky.visible=false;
 			skyboxModel.traverse( function( node ) {
@@ -590,11 +513,11 @@
 			skyboxModel.rotation.y = -0.50;
 		});
 
+		//Loading the target that the player has to shoot
 		gltfLoader.load("gltf/target/scene.gltf", (gltf) => {
 			targetModel = gltf.scene.getObjectByName("Sketchfab_Scene");
 			targetModel.scale.setScalar( 0.3 );
 
-			
 			gltf.scene.traverse( function( node ) {
 				if (node.isMesh) { 
 					node.castShadow = true;
@@ -603,12 +526,12 @@
 			}
 			} );
 
-
             for(var i=0; i<positions.length; i++){
                createTarget(positions[i]);
             }
 		});
 
+	//Function to fully create a target and add it to the main array given a position
 	function createTarget(position){
         var genTargetModelParent = new THREE.Object3D();
         var genTargetModel = targetModel.clone();
@@ -636,46 +559,55 @@
     }
 
 
-
+		//Using time utility to get time deltas and currentTime
 		const time = new THREE.Clock();
 		var deltaTime = 0;
 		var elapsedTime = 0;
+
+		//Animate function called for every frame
 		function animate() {
 			deltaTime = time.getDelta();
+			//AnimateScene tells wether game must be blocked or resumed
 			if(animateScene == false){
 				elapsedTime = time.getElapsedTime() * 1000;
+
+				//Updating functions for every library
 				TWEEN.update();
 				world.step(1/60,deltaTime,10);
 
-				if(targets[0])
-					addedTarget += (deltaTime * 1000 * targetSpeed);
-				
+				//Make the skyboxModel rotate to make the clouds move
 				if(skyboxModel){
 					skyboxModel.rotation.y -= (deltaTime * 1000 * targetRotation);
 				}
 								
 
 				targets.forEach(element => {
+					//Moving the target in the background constantly
 					element["body"].position.x -= (deltaTime * 1000 * targetSpeed);
 
                     element["model"].position.copy(element["body"].position);
 					element["model"].quaternion.copy(element["body"].quaternion);
 					element["mesh"].quaternion.copy(element["body"].quaternion);
 					element["mesh"].position.copy(element["body"].position);
-
-					//Check if the target is falling down or out of scene
+					
+					//Check if the target is falling down or out of scene, if it is then remove it
 					if(element["body"].position.y < -verticalMax || element["body"].position.x < -horizontalMax){
-							scene.remove(element["model"]);
-							setTimeout(function() {
-								world.removeBody(element["body"]);
-							},0);
-							scene.remove(element["mesh"]);
-							targets = targets.filter(function(ele){ 
-								return ele != element; 
-							});
-						}
+						scene.remove(element["model"]);
+						setTimeout(function() {
+							world.removeBody(element["body"]);
+						},0);
+						scene.remove(element["mesh"]);
+						targets = targets.filter(function(ele){ 
+							return ele != element; 
+						});
+					}
                 });
-
+				
+				//Variable that takes into account when we have to spawn new targets
+				if(targets[0])
+					addedTarget += (deltaTime * 1000 * targetSpeed);
+				
+				//If it's the time then spawn a new set of targets (a new column)
 				if(addedTarget > generatingStep){
 					var newPositions =[];
 					for(var j=0; j<(verticalMax*2)/generatingStep; j++){
@@ -686,28 +618,13 @@
 					}
 					addedTarget = 0;
 				}
-   
             }
-
-
 			renderer.render( scene, camera );
 
 			requestAnimationFrame(animate);
 		};
 
 		requestAnimationFrame(animate);
-
-		function dumpObject(obj, lines = [], isLast = true, prefix = '') {
-            const localPrefix = isLast ? '└─' : '├─';
-            lines.push(`${prefix}${prefix ? localPrefix : ''}${obj.name || '*no-name*'} [${obj.type}]`);
-            const newPrefix = prefix + (isLast ? '  ' : '│ ');
-            const lastNdx = obj.children.length - 1;
-            obj.children.forEach((child, ndx) => {
-                const isLast = ndx === lastNdx;
-                dumpObject(child, lines, isLast, newPrefix);
-            });
-            return lines;
-        }
 
 		</script>
 	</body>

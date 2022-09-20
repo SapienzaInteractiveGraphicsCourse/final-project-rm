@@ -5,12 +5,13 @@
 		<title>TheArcher</title>
 		<link rel="icon" type="image/x-icon" href="/img/favicon.png">
 		<style>
+			/* General style settings of the page */	
 			body { 
 				margin: 0;
 				background: #000;
 				font-family: Helvetica, sans-serif; 
 			}
-			
+			/* Style of the start menu buttons */
 			.btn {
 				background: rgba(0,127,128,0.68);
 				-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
@@ -26,16 +27,12 @@
 				user-select: none;
 				outline: none;
 			}
+			/* Style of the start menu buttons going over with pointer */	
 			.btn:hover {
 				-webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
 				box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
 				border: 1px solid rgba(128,255,255,0.75);
 			}
-			.btn-primary:active {
-				background: rgba(0,127,128,0.9);
-			}
-
-
 		</style>
 	</head>
 	<body>
@@ -63,7 +60,7 @@
 		
 		<!-- Prompt used to show interaction result text -->
 		<div id="showText_prompt" style=" width: 70%; position: fixed; top: 50%; left: 50%; transform: translate(-40%, -50%); height: auto; text-align: center; cursor: pointer; padding: 20pt; display:none;">
-			<div class="btn btn-primary example" style=" display:block; width: 70%; height: auto; text-align: center; ">
+			<div class="btn" style=" display:block; width: 70%; height: auto; text-align: center; ">
 				<div id="close_showText_prompt_btn" style="display:inline-block; margin-left: 96%; color: white; font-weight: bold; cursor: pointer;">
 					x
 				</div>
@@ -75,7 +72,7 @@
 		</div>
 
 		<!-- Prompt used to show "Press E for interaction" when near the interaction object -->
-		<div id="interaction_prompt" class="btn btn-primary example" style=" width: 70%; position: fixed; top: 90%; left: 50%; transform: translate(-50%, -50%); height: auto; text-align: center; cursor: pointer; padding: 20pt; display:none;">
+		<div id="interaction_prompt" class="btn" style=" width: 70%; position: fixed; top: 90%; left: 50%; transform: translate(-50%, -50%); height: auto; text-align: center; cursor: pointer; padding: 20pt; display:none;">
 			<span style="vertical-align: middle;">PRESS </span><img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/e-key.png" width="50px"><span style="vertical-align: middle;"> TO INTERACT</span>
 		</div>
 
@@ -91,7 +88,7 @@
 			</div>
 
 			<!-- Pause foreground to show the effective content -->
-			<button id="pause_fg" class="btn btn-primary example" style=" width: 70%; position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); height: auto; text-align: center; cursor: pointer; padding: 20pt; display:none;">
+			<button id="pause_fg" class="btn" style=" width: 70%; position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); height: auto; text-align: center; cursor: pointer; padding: 20pt; display:none;">
 				<p style="margin:10pt; font-size: 50px; vertical-align: top;">
 					<b>PAUSE</b>
 				</p>
@@ -137,7 +134,7 @@
 
 			 <!-- Home button -->
 			<div style = "width: 100%; position: fixed; top: 94%; left: 10%;  ">
-				<button id="home_btn" class="btn btn-primary example" style="width: 20%; height: auto; text-align: center; cursor: pointer;  padding: 20pt; transform: translate(-50%, -50%);">
+				<button id="home_btn" class="btn" style="width: 20%; height: auto; text-align: center; cursor: pointer;  padding: 20pt; transform: translate(-50%, -50%);">
 					<span>
 						<img style="-webkit-filter: invert(1); filter: invert(1); vertical-align:middle" src="img/home.png" width="50px">
 						<span style="vertical-align:middle; font-size: 50px;"><b>HOME</b></span>
@@ -251,7 +248,7 @@
 		sunPosition.setFromSphericalCoords( 1, THREE.MathUtils.degToRad( 90 - 45 ), THREE.MathUtils.degToRad( 90 ) );
 		sky.material.uniforms[ 'sunPosition' ].value.copy( sunPosition );
 
-		//Configuring initial position for camera (immediately overwritten to follow the player)
+		//Configuring settings and initial position for camera (immediately overwritten to follow the player)
 		const camera = new THREE.PerspectiveCamera(
 			45,
 			window.innerWidth / window.innerHeight,
@@ -994,7 +991,6 @@
 
 		//Here defining the functions to be triggered for each terminal activated
 		function triggerTerminal0(){
-			// console.log("triggerTerminal0")
 			terminals[0]["triggered"] = true;
 			obsPlat[44]["rotatePlatFloating"].stop();
 			obsPlat[45]["rotatePlatFloating"].stop();
@@ -3567,7 +3563,7 @@
 
 		//Function that make the floating platforms fall once the archer goes through the starting line
 		function level4Animate(){
-			if(cubeBody.position.z > 190 && cubeBody.position.z < 295 && canFallPlatform && obsPlat[currentObsPlat]){
+			if(currentObsPlat<44 && cubeBody.position.z > 190 && cubeBody.position.z < 305 && canFallPlatform && obsPlat[currentObsPlat]){
 					canFallPlatform=false;
 					setTimeout(function() {
 						canFallPlatform = true;
@@ -3698,10 +3694,10 @@
 		const cubeBody = new CANNON.Body({
 			mass: 80,
 			shape: new CANNON.Box(new CANNON.Vec3(0.7, 1.5, 1.0)),
-			// position: new CANNON.Vec3(0, 2.8 + 6., 0 + 180),
-			position: new CANNON.Vec3(0, 2.8, 0),
-			// position: new CANNON.Vec3(0, 2.8 +6 , 320),
-			// position: new CANNON.Vec3(10, 2.8 +6 , 380),
+			position: new CANNON.Vec3(0, 2.8, 0), //INITIAL POSITION
+			//position: new CANNON.Vec3(0, 2.8 + 6., 0 + 180), //SKIP TO END CANNON
+			// position: new CANNON.Vec3(0, 2.8 +6 , 320), //SKIP TO FIRST TERMINAL
+			// position: new CANNON.Vec3(10, 2.8 +6 , 380), //SKIP TO SECOND TERMINAL
 			material: cubePhysMat,
 			linearDamping: 0.5,
  		    angularDamping: 0.5,
@@ -3887,7 +3883,6 @@
 		//Function called when the fourth objective is reached (end of the game, showing the endModel balloons)
 		function obj4Completed(){
 			if(target5hit == true){
-				// console.log("Obj4")
 				scene.add(endModel);
 				new TWEEN.Tween({"y" : endModel.position.y}).to({"y": 15},5000).easing(TWEEN.Easing.Circular.Out).onUpdate((object)=>{
 						endModel.position.y = object.y;
@@ -4459,17 +4454,13 @@
 					element["model"].quaternion.copy(element["body"].quaternion);
 
 					//Check if the floating platform is falling down, if it is then delete it
-					if(element["body"].position.y < -10){
+					if(element["body"].position.y < -20){
 						scene.remove(element["model"]);
 						//Can't remove it immediately from the CANNON world, otherwise error
 						setTimeout(function() {
 							world.removeBody(element["body"]);
 						},0);
 						scene.remove(element["mesh"]);
-						obsPlat = obsPlat.filter(function(ele){ 
-							return ele != element; 
-						});
-						currentObsPlat--;
 					}
 				});
 
@@ -4947,25 +4938,25 @@
 			oldx =cubeBody.position.x;
 			oldz =cubeBody.position.z;
 
+		//If player falling down reload the page
 		if(cubeBody.position.y < -5){
 				gameOver();
 			}
 
+		//Function that plays the correct animation and sound
 		changePlayerState();
 		};
 
+		//Function managing the behaviour of the robot enemies
 		function enemiesAnimate(deltaTime){
-			var i = 0;
-			var str ="";
-			robots.forEach(enemy => {
-				//Camera angle with respect to player (obtained through x and z displacements)
-				
+			robots.forEach(enemy => {				
 				var enemyPosition = enemy.body.position;
 				var archerPos = cubeBody.position;
 				var distance = new THREE.Vector3();
 				
 				distance.subVectors( archerPos, enemyPosition );
 
+				//Approximated distance vector
 				if(distance.dot(distance) <  150  && enemy["active"]){
 					
 					if(enemy.state != "RUNNING"){
@@ -4975,6 +4966,7 @@
 						enemy.state = "RUNNING";
 					}
 
+					//Rotating and making the enemy run to the player
 					var enemyDir = distance.normalize();
 					var desAngle = Math.atan2(
 						(enemyPosition.x - archerPos.x),
@@ -4992,9 +4984,8 @@
 						enemy.tweens.idleA.start();
 						enemy.state = "IDLE";
 					}
-				// str += "Player "+(i++)+ "State: "+ enemy.state+ " | ";
 
-			//Check if the enemy is falling down
+			//Check if the enemy is falling down, if it is then remove it
 			if(enemyPosition.y < -5){
 					scene.remove(enemy["model"]);
 					setTimeout(function() {
@@ -5006,9 +4997,9 @@
 					});
 				}
 			});
-			// console.log(str);
 		}
 		
+		//When there is at least a specific displacement then move the camera with animation
 		function cameraMoveY(){
 			var moveYTween= new TWEEN.Tween({y : cameraTarget.y}).to({y : cubeBody.position.y + 2}, 800).onUpdate((object)=>{cameraTarget.y= object.y;});
 			moveYTween.easing(TWEEN.Easing.Quadratic.InOut);
@@ -5022,18 +5013,7 @@
 
 		requestAnimationFrame(animate);
 
-		function dumpObject(obj, lines = [], isLast = true, prefix = '') {
-			const localPrefix = isLast ? '└─' : '├─';
-			lines.push(`${prefix}${prefix ? localPrefix : ''}${obj.name || '*no-name*'} [${obj.type}]`);
-			const newPrefix = prefix + (isLast ? '  ' : '│ ');
-			const lastNdx = obj.children.length - 1;
-			obj.children.forEach((child, ndx) => {
-				const isLast = ndx === lastNdx;
-				dumpObject(child, lines, isLast, newPrefix);
-			});
-			return lines;
-			}
-
+		//Function to obtain a GET parameter with a specific name
 		function findGetParameter(parameterName) {
 			var result = null,
 				tmp = [];
