@@ -219,6 +219,7 @@
         var generatingStep = 4;
         var targetsDepth = 20;
 		var addedTarget = 0;
+		var spawnedTargets = false;
 
 		//Settings parameters
 		var shadows = 3;
@@ -529,6 +530,7 @@
             for(var i=0; i<positions.length; i++){
                createTarget(positions[i]);
             }
+			spawnedTargets = true
 		});
 
 	//Function to fully create a target and add it to the main array given a position
@@ -604,7 +606,7 @@
                 });
 				
 				//Variable that takes into account when we have to spawn new targets
-				if(targets[0])
+				if(spawnedTargets)
 					addedTarget += (deltaTime * 1000 * targetSpeed);
 				
 				//If it's the time then spawn a new set of targets (a new column)
