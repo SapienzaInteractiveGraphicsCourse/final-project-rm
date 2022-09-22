@@ -127,6 +127,12 @@
 								<img style="vertical-align:middle" src="img/f-key.png" width="60pt">
 							</span>
 						</th>
+						<th style="padding-left: 10pt; padding-right: 20pt;border: 2px solid white; border-collapse: collapse;">
+							<span>
+								<span style="vertical-align:middle">Run: </span>
+								<img style="vertical-align:middle" src="img/shift-key.png" width="60pt">
+							</span>
+						</th>
 				</tr>
 				</table>
 				</span>
@@ -153,7 +159,7 @@
 		import { Sky } from './node_modules/three/examples/jsm/objects/Sky.js';
 
 		var gameLoaded = false;
-		var animateScene = true;
+		var gameUnlocked = true;
 		var relDir=0;
 		var playerState = "Idle";
 		var cameraTarget = new THREE.Vector3();
@@ -4059,7 +4065,7 @@
 			if(event.key.toLowerCase() == "f") pressed["F"] = true;
 			if(event.key.toLowerCase() == "e") {
 				pressed["E"] = true
-				if(animateScene == true)return;
+				if(gameUnlocked == true)return;
 				//If the interaction prompt text is showed, then hide it
 				if(document.getElementById("showText_prompt").style.display == ""){
 					document.getElementById("showText_prompt").style.display = "none";
@@ -4275,8 +4281,8 @@
 		});
 
 		//Orbit locking and unlocking listeners
-		orbit.addEventListener('lock', function() {animateScene=false; pause_bg.style.display = 'none'; pause_fg.style.display = 'none';});
-		orbit.addEventListener('unlock', function() {lastUnlockTime = performance.now(); animateScene=true; pause_fg.style.display = ''; pause_bg.style.display = '';});
+		orbit.addEventListener('lock', function() {gameUnlocked=false; pause_bg.style.display = 'none'; pause_fg.style.display = 'none';});
+		orbit.addEventListener('unlock', function() {lastUnlockTime = performance.now(); gameUnlocked=true; pause_fg.style.display = ''; pause_bg.style.display = '';});
 
 
 		//Using time utility to get time deltas and currentTime
@@ -4287,8 +4293,8 @@
 		//Animate function called for every frame
 		function animate() {
 			deltaTime = time.getDelta();
-			//AnimateScene tells wether game must be blocked or resumed
-			if(animateScene == false){
+			//GameUnlocked tells wether game must be blocked or resumed
+			if(gameUnlocked == false){
 				elapsedTime = time.getElapsedTime() * 1000;
 
 				//Updating functions for every library
