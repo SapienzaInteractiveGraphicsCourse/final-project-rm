@@ -1,5 +1,5 @@
 
-<img style="invert(1); filter: invert(1); vertical-align:middle" src="img/favicon.png" width="50px"><span style="font-size: 50px; vertical-align: middle; text-shadow: 0 0 4px rgba(0,255,255,0.95);"><b>TheArcher</b> </span><br>
+# TheArcher
 TheArcher is third person shooter game developed as a final project for the 2022 Interactive Graphics course in Sapienza.<br><br>
 <font color="green"><u><b>You can try it immediately at the following [LINK](https://sapienzainteractivegraphicscourse.github.io/final-project-rm/menu.html "Github pages of the project").</b></u></font><br><br>  It is fully based on the following Javascript libraries: <br><font size="2px"><i>(click on the images to reach the corresponding websites)</font></i>
 <ul>
@@ -8,10 +8,10 @@ TheArcher is third person shooter game developed as a final project for the 2022
      alt="ThreeJS icon"
      style="width:100px; vertical-align:middle;"/>
      </a></li>
-  <li style="margin-top:10px; margin-bottom: 10px;"><a href="https://github.com/pmndrs/cannon-es">Cannon-ES</a><i> (no logo available)</i></li>
   <li><a href="https://github.com/tweenjs/tween.js/">
 <img src="https://jonlennartaasenden.files.wordpress.com/2015/12/tween-js-javascript-tweening-engine.png?w=400" alt="TweenJS icon"
      style="width:100px; vertical-align:middle;"/></a></li>
+  <li style="margin-top:10px; margin-bottom: 10px;"><a href="https://github.com/pmndrs/cannon-es">Cannon-ES</a><i> (no logo available)</i></li>
 </ul><br>
 Here you can find some screenshots of the game:<br><br>
 <div style="text-align:center;">
@@ -54,12 +54,6 @@ Here you can find some screenshots of the game:<br><br>
 <td>
 <img src="./screenshots/enemiesA.png" alt="Screenshot enemiesA"
      style= "margin-top:4px; width:100%; background: rgba(0,127,128,0.68); -webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5); box-shadow: 0px 0px 15px rgba(0,255,255,0.5); border: 2px solid rgba(128,255,255,0.25);"/>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-<img src="./screenshots/section7.png" alt="Screenshot section7"
-     style= "margin-top:4px; width:50%; background: rgba(0,127,128,0.68); -webkit-box-shadow: 0px 0px 12px rgba(0,255,255,0.5); box-shadow: 0px 0px 15px rgba(0,255,255,0.5); border: 2px solid rgba(128,255,255,0.25);"/>
 </td>
 </tr>
 </table>
