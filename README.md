@@ -1,6 +1,6 @@
 
 # TheArcher
-TheArcher is a third person shooter game developed as a final project for the 2022 Interactive Graphics course in Sapienza.<br><br>
+TheArcher is a third person shooter game developed by <b>Riccardo Mascello (1853552)</b> as a final project for the 2022 Interactive Graphics course in Sapienza.<br><br>
 <em>WARNING:  The game can be played only from a PC. For a better experience, I personally suggest to play it using an external keyboard and mouse (not the touchpad).</em><br><br>
 <font color="green"><u><b>You can try it immediately at the following [LINK](https://sapienzainteractivegraphicscourse.github.io/final-project-rm/menu.html "Github pages of the project").</b></u></font><br><br>  It is fully based on the following Javascript libraries: <br><font size="2px"><i>(click on the images to reach the corresponding websites)</font></i>
 <ul>
